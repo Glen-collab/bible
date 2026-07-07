@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Footsteps — Workshop: The Donkey</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600&family=Spline+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  :root{--parch:#f4ead3;--parch-deep:#e8d8b0;--ink:#3a2c1a;--ink-soft:#6b563a;--olive:#6b7a3f;--olive-deep:#4d5a2b;--terra:#b5532a;--terra-deep:#8a3d1d;--gold:#c79a3a;--sky:#8fb0c4;--shadow:rgba(58,44,26,.18);--term-bg:#241d13;--term-green:#8fd67a;--term-amber:#e8b34a;--term-dim:#7a6f5c;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{font-family:'Spline Sans',sans-serif;background:radial-gradient(ellipse at 50% 0%,#fbf3df 0%,var(--parch) 45%,var(--parch-deep) 100%);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");mix-blend-mode:multiply;}
+  #app{width:100%;max-width:520px;flex:1;display:flex;flex-direction:column;position:relative;z-index:2;padding:0 16px 32px;}
+  header{text-align:center;padding:18px 0 6px;}
+  .kicker{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--terra);font-weight:600;}
+  h1{font-family:'Fraunces';font-weight:600;font-size:24px;margin-top:5px;}h1 em{font-style:italic;color:var(--olive-deep);}
+  .rungs{display:flex;justify-content:center;gap:6px;margin:10px 0 6px;flex-wrap:wrap;}
+  .rung{font-size:11px;padding:4px 10px;border-radius:20px;background:var(--parch-deep);color:var(--ink-soft);font-weight:500;}
+  .rung.here{background:var(--gold);color:#fff;font-weight:600;box-shadow:0 2px 8px -2px rgba(199,154,58,.6);}
+  .rung.done{background:var(--olive);color:#fff;}
+  .goal{background:linear-gradient(180deg,#fdf8ec,#f6ecd4);border:1px solid var(--parch-deep);border-radius:14px;padding:13px 15px;margin:8px 0 10px;box-shadow:0 6px 18px -10px var(--shadow);}
+  .goal .g-lab{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--terra);font-weight:600;}
+  .goal .g-txt{font-family:'Fraunces';font-size:15.5px;margin-top:4px;line-height:1.4;}
+  .goal .g-txt code{font-family:'JetBrains Mono';font-size:13px;background:rgba(107,122,63,.14);padding:2px 6px;border-radius:5px;color:var(--olive-deep);}
+  .toolbar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .toggle{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-soft);cursor:pointer;user-select:none;background:#fff;border:1px solid var(--parch-deep);padding:6px 11px;border-radius:20px;}
+  .toggle .sw{width:34px;height:19px;border-radius:20px;background:var(--olive);position:relative;transition:.2s;}
+  .toggle .sw::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.2s;}
+  .toggle.off .sw{background:#c9bfa8;}.toggle.off .sw::after{left:17px;}
+  .palettebtn{font-size:12.5px;color:var(--terra-deep);background:#fff;border:1px solid var(--parch-deep);padding:6px 12px;border-radius:20px;cursor:pointer;font-weight:600;}
+  .stage-outer{background:linear-gradient(180deg,#efe6cf,#e6dcc0);border-radius:14px;padding:8px;box-shadow:0 6px 18px -10px var(--shadow);}
+  .ruler-top{display:grid;grid-template-columns:22px repeat(8,1fr);margin-bottom:2px;transition:opacity .2s;}
+  .ruler-top span{text-align:center;font-family:'JetBrains Mono';font-size:11px;color:var(--terra-deep);font-weight:700;}
+  .stage-row{display:grid;grid-template-columns:22px 1fr;align-items:stretch;}
+  .ruler-left{display:grid;grid-template-rows:repeat(6,1fr);transition:opacity .2s;}
+  .ruler-left span{display:grid;place-items:center;font-family:'JetBrains Mono';font-size:11px;color:var(--terra-deep);font-weight:700;}
+  .stage-wrap{background:linear-gradient(#bfe0ef,#dce7d6 60%,#e8dcbf);border-radius:8px;overflow:hidden;}
+  #stage{position:relative;width:100%;aspect-ratio:8/6;overflow:hidden;}
+  #stage.grid{background-image:linear-gradient(rgba(58,44,26,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(58,44,26,.16) 1px,transparent 1px);background-size:12.5% 16.666%;}
+  .sprite{position:absolute;width:12.5%;height:16.666%;display:grid;place-items:center;font-size:25px;transition:left .12s,top .12s;pointer-events:none;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25));}
+  .sprite.moving{transition:left .55s cubic-bezier(.4,0,.2,1),top .55s cubic-bezier(.4,0,.2,1);}
+  .target-mark{position:absolute;width:12.5%;height:16.666%;border:2px dashed var(--terra);border-radius:8px;box-sizing:border-box;pointer-events:none;animation:pulse 1.2s infinite;}
+  @keyframes pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
+  .palette{display:none;flex-wrap:wrap;gap:7px;margin:8px 0 4px;padding:11px;background:#fff;border:1px solid var(--parch-deep);border-radius:12px;}
+  .palette.open{display:flex;}
+  .palette .p-item{display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono';font-size:12px;background:rgba(107,122,63,.1);border:1px solid var(--parch-deep);padding:5px 9px;border-radius:8px;cursor:pointer;color:var(--ink);}
+  .palette .p-item:active{background:rgba(199,154,58,.2);}.palette .p-item .emo{font-size:16px;}
+  .console{background:var(--term-bg);border-radius:14px;margin-top:10px;overflow:hidden;box-shadow:0 8px 22px -10px rgba(0,0,0,.5);}
+  .term-bar{display:flex;align-items:center;gap:6px;padding:9px 12px;background:#1b1610;border-bottom:1px solid #000;}
+  .term-bar .dot{width:10px;height:10px;border-radius:50%;}
+  .term-bar .r{background:#e06b5a;}.term-bar .y{background:#e8b34a;}.term-bar .g{background:#8fd67a;}
+  .term-bar .ttl{margin-left:6px;font-family:'JetBrains Mono';font-size:11px;color:var(--term-dim);}
+  #termout{padding:11px 14px;font-family:'JetBrains Mono';font-size:12.5px;line-height:1.55;color:var(--term-green);min-height:52px;max-height:130px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;}
+  #termout .echo{color:#cdbfa6;}#termout .ok{color:var(--term-green);}#termout .err{color:var(--term-amber);}#termout .sys{color:var(--term-dim);}
+  .inputline{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#1b1610;border-top:1px solid #000;}
+  .inputline .prompt{font-family:'JetBrains Mono';font-size:13px;color:var(--term-green);}
+  #cmd{flex:1;background:transparent;border:none;outline:none;color:#f2e9d6;font-family:'JetBrains Mono';font-size:13.5px;caret-color:var(--term-green);}
+  .runbtn{background:var(--olive);border:none;color:#fff;font-family:'Spline Sans';font-weight:600;font-size:13px;padding:8px 14px;border-radius:9px;cursor:pointer;}
+  .runbtn:active{transform:translateY(1px);}
+  .tutor{margin-top:11px;background:rgba(143,176,196,.14);border-left:3px solid var(--sky);border-radius:0 14px 14px 0;padding:13px 15px;}
+  .tutor .t-head{display:flex;align-items:center;gap:9px;}
+  .tutor .t-face{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#bfe0ef,#7ba7bd);display:grid;place-items:center;font-size:16px;flex:0 0 30px;}
+  .tutor .t-name{font-weight:600;font-size:13px;color:var(--olive-deep);}.tutor .t-name span{font-weight:400;color:var(--ink-soft);font-size:11.5px;}
+  .tutor .t-body{font-size:13.5px;line-height:1.5;margin-top:8px;}
+  .tutor .t-body code{font-family:'JetBrains Mono';font-size:12px;background:rgba(58,44,26,.08);padding:2px 6px;border-radius:5px;color:var(--terra-deep);}
+  .didyoumean{margin-top:10px;padding:11px 13px;background:#fff;border:1.5px dashed var(--gold);border-radius:11px;}
+  .didyoumean .dym-q{font-size:13px;color:var(--ink);}
+  .dym-code{display:block;font-family:'JetBrains Mono';font-size:13px;color:var(--olive-deep);margin:7px 0 10px;padding:8px 10px;background:rgba(107,122,63,.1);border-radius:7px;}
+  .dym-btns{display:flex;gap:8px;}
+  .dym-btns button{flex:1;padding:9px;border-radius:9px;border:none;cursor:pointer;font-family:'Spline Sans';font-weight:600;font-size:13px;}
+  .dym-yes{background:linear-gradient(180deg,var(--olive),var(--olive-deep));color:#fff;box-shadow:0 3px 0 #39431f;}
+  .dym-yes:active{transform:translateY(2px);box-shadow:0 1px 0 #39431f;}
+  .dym-no{background:#fff;border:1.5px solid var(--parch-deep)!important;color:var(--ink-soft);}
+  .scorebar{display:none;justify-content:space-between;align-items:center;margin-top:10px;padding:10px 14px;background:linear-gradient(180deg,#fdf8ec,#f6ecd4);border:1px solid var(--parch-deep);border-radius:12px;font-size:13px;}
+  .scorebar.show{display:flex;}
+  .scorebar b{font-family:'Fraunces';color:var(--terra-deep);font-size:16px;}
+  .nextbtn{display:block;width:100%;margin-top:12px;padding:14px;border:none;border-radius:13px;cursor:pointer;font-family:'Spline Sans';font-size:15px;font-weight:600;background:linear-gradient(180deg,var(--terra),var(--terra-deep));color:#fff;box-shadow:0 4px 0 #6e2f14;}
+  .nextbtn:active{transform:translateY(3px);box-shadow:0 1px 0 #6e2f14;}
+  .nextbtn.olive{background:linear-gradient(180deg,var(--olive),var(--olive-deep));box-shadow:0 4px 0 #39431f;}
+  .celebrate{animation:pop .5s;}
+  @keyframes pop{0%{transform:scale(.6);opacity:0;}60%{transform:scale(1.2);}100%{transform:scale(1);opacity:1;}}
+  footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-top:16px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header><div class="kicker">Workshop · Same Truth, New Scribes</div><h1>Build the <em>Manger Scene</em></h1></header>
+  <div class="rungs" id="rungs"></div>
+  <div class="goal" id="goal"></div>
+  <div class="toolbar">
+    <div class="toggle" id="gridToggle" onclick="toggleGrid()"><span class="sw"></span> Grid &amp; numbers</div>
+    <button class="palettebtn" onclick="togglePalette()">📦 Objects you can place</button>
+  </div>
+  <div class="palette" id="palette"></div>
+  <div class="stage-outer">
+    <div class="ruler-top" id="rulerTop"></div>
+    <div class="stage-row"><div class="ruler-left" id="rulerLeft"></div><div class="stage-wrap"><div id="stage" class="grid"></div></div></div>
+  </div>
+  <div class="scorebar" id="scorebar"><span id="scoretxt">Practice</span><b id="scoreval">0</b></div>
+  <div class="console">
+    <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="ttl">code.js — type real JavaScript</span></div>
+    <div id="termout"><span class="sys">// The computer is ready. Type a command and press Run.</span></div>
+    <div class="inputline"><span class="prompt">&gt;</span><input id="cmd" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="place(&quot;donkey&quot;, 3, 4)"><button class="runbtn" onclick="runCmd()">Run</button></div>
+  </div>
+  <div class="tutor" id="tutor">
+    <div class="t-head"><div class="t-face">🦉</div><div><div class="t-name">Ada <span>· your code helper</span></div></div></div>
+    <div class="t-body" id="tutorbody">Let's start! Type <code>place("donkey", 3, 4)</code> and press Run. The two numbers are <b>column</b> (across ↔) and <b>row</b> (down ↕). Watch the numbers around the grid to see where things land.</div>
+    <div id="dym"></div>
+  </div>
+  <div id="nextwrap"></div>
+  <footer>Workshop prototype · real JavaScript, gentle net</footer>
+</div>
+<script>
+const COLS=8,ROWS=6;
+const ITEMS={donkey:"🫏",sheep:"🐑",camel:"🐪",ox:"🐂",dove:"🕊️",manger:"🪵",star:"⭐",lamp:"🪔",shepherd:"🧎",wiseman:"🧙",angel:"👼",palm:"🌴",house:"🏠",well:"🪣",fire:"🔥"};
+const stage=document.getElementById('stage'),out=document.getElementById('termout'),cmd=document.getElementById('cmd');
+const sprites={};let showGrid=true;
+function place(name,col,row){
+  if(typeof name!=="string")throw{kind:"quotes"};
+  if(!(name in ITEMS))throw{kind:"unknownItem",got:name};
+  if(typeof col!=="number"||typeof row!=="number")throw{kind:"numbers"};
+  if(col<0||col>=COLS||row<0||row>=ROWS)throw{kind:"range",col,row};
+  let s=sprites[name];
+  if(!s){const el=document.createElement('div');el.className='sprite celebrate';el.textContent=ITEMS[name];stage.appendChild(el);s=sprites[name]={el,col,row};}
+  s.col=col;s.row=row;s.el.style.left=(col*(100/COLS))+"%";s.el.style.top=(row*(100/ROWS))+"%";
+  chime(520+col*40);return name+" placed at "+col+", "+row;
+}
+function move(name,dir){
+  const s=sprites[name];if(!s)throw{kind:"notPlaced",got:name};
+  const d={left:[-1,0],right:[1,0],up:[0,-1],down:[0,1]}[dir];if(!d)throw{kind:"dir",got:dir};
+  let nc=Math.max(0,Math.min(COLS-1,s.col+d[0]*7)),nr=Math.max(0,Math.min(ROWS-1,s.row+d[1]*5));
+  s.el.classList.add('moving');s.col=nc;s.row=nr;s.el.style.left=(nc*(100/COLS))+"%";s.el.style.top=(nr*(100/ROWS))+"%";
+  sweepChime();return name+" moves "+dir+"!";
+}
+let actx;
+function chime(f){try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();const o=actx.createOscillator(),g=actx.createGain();o.type="sine";o.frequency.value=f;o.connect(g);g.connect(actx.destination);g.gain.setValueAtTime(.0001,actx.currentTime);g.gain.exponentialRampToValueAtTime(.15,actx.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+.25);o.start();o.stop(actx.currentTime+.26);}catch(e){}}
+function sweepChime(){[440,560,680,820].forEach((f,i)=>setTimeout(()=>chime(f),i*90));}
+function happyChime(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>chime(f),i*80));}
+function print(t,cls){const s=document.createElement('span');s.className=cls||'';s.textContent=t+"\n";out.appendChild(s);out.scrollTop=out.scrollHeight;}
+function buildRulers(){const rt=document.getElementById('rulerTop');rt.innerHTML='<span></span>';for(let c=0;c<COLS;c++)rt.innerHTML+=`<span>${c}</span>`;const rl=document.getElementById('rulerLeft');rl.innerHTML='';for(let r=0;r<ROWS;r++)rl.innerHTML+=`<span>${r}</span>`;}
+function buildPalette(){const p=document.getElementById('palette');p.innerHTML='';Object.entries(ITEMS).forEach(([k,e])=>{const b=document.createElement('button');b.className='p-item';b.innerHTML=`<span class="emo">${e}</span>"${k}"`;b.onclick=()=>{cmd.value=`place("${k}", 3, 3)`;cmd.focus();};p.appendChild(b);});}
+function togglePalette(){document.getElementById('palette').classList.toggle('open');}
+function toggleGrid(){showGrid=!showGrid;stage.classList.toggle('grid',showGrid);document.getElementById('gridToggle').classList.toggle('off',!showGrid);document.getElementById('rulerTop').style.opacity=showGrid?1:.2;document.getElementById('rulerLeft').style.opacity=showGrid?1:.2;}
+const RUNGS=[
+  {id:0,label:"1 · Donkey",goal:'Type <code>place("donkey", 3, 4)</code> to make the donkey appear. Numbers = column (across), row (down).',check:()=>sprites.donkey&&sprites.donkey.col===3&&sprites.donkey.row===4},
+  {id:1,label:"2 · Move him",goal:'Send him across the stable! Type <code>move("donkey", "right")</code> and watch him go.',check:()=>sprites.donkey&&sprites.donkey.col>=6},
+  {id:2,label:"3 · Manger",goal:'Add a manger: <code>place("manger", 3, 5)</code>.',check:()=>sprites.manger},
+  {id:3,label:"4 · Star",goal:'Hang the star up high: <code>place("star", 6, 0)</code>. A small row number is near the top.',check:()=>sprites.star},
+];
+let rung=0,mode="guided",score=0,target=null;
+function renderRungs(){const r=document.getElementById('rungs');r.innerHTML='';RUNGS.forEach(x=>{const d=document.createElement('span');d.className='rung '+(x.id<rung?'done':x.id===rung?'here':'');d.textContent=x.label;r.appendChild(d);});document.getElementById('goal').innerHTML=`<div class="g-lab">Your goal</div><div class="g-txt">${RUNGS[rung].goal}</div>`;}
+function tutorSay(html){document.getElementById('tutorbody').innerHTML=html;document.getElementById('dym').innerHTML='';}
+function didYouMean(q,line){document.getElementById('dym').innerHTML=`<div class="didyoumean"><div class="dym-q">${q}</div><code class="dym-code">${line.replace(/</g,'&lt;')}</code><div class="dym-btns"><button class="dym-yes" onclick="acceptSuggestion('${line.replace(/'/g,"\\'")}')">Yes, show me!</button><button class="dym-no" onclick="dismissSuggestion()">Let me try</button></div></div>`;}
+function acceptSuggestion(l){cmd.value=l;document.getElementById('dym').innerHTML='';runCmd(true);}
+function dismissSuggestion(){document.getElementById('dym').innerHTML='';cmd.focus();}
+function inferIntent(raw){
+  const t=raw.trim(),low=t.toLowerCase();
+  let item=null;for(const k of Object.keys(ITEMS)){if(low.includes(k))item=k;}
+  if(!item&&/d[o0]nk|donky|donki|dnky/.test(low))item="donkey";
+  if(!item&&/mang|crib/.test(low))item="manger";if(!item&&/star/.test(low))item="star";
+  const nums=(t.match(/-?\d+/g)||[]).map(Number);
+  const dir=(low.match(/left|right|up|down/)||[])[0];
+  const wantsMove=/move|go|walk|run|slide|cross/.test(low);
+  const wantsPlace=/place|put|add|make|draw|set|spawn/.test(low)||(!wantsMove&&nums.length>=2);
+  if(wantsMove&&item)return{line:`move("${item}", "${dir||'right'}")`,why:`Looks like you want to <b>move the ${item}</b>.`};
+  if((wantsPlace||item)&&item){const c=nums[0]??3,r=nums[1]??4;return{line:`place("${item}", ${c}, ${r})`,why:`Looks like you're placing the <b>${item}</b>${nums.length>=2?` at column ${c}, row ${r}`:''}.`};}
+  if(nums.length>=2&&!item){const gi=mode==="practice"&&target?target.item:(rung===2?"manger":rung===3?"star":"donkey");return{line:`place("${gi}", ${nums[0]}, ${nums[1]})`,why:`Did you want to place the <b>${gi}</b> there?`};}
+  return null;
+}
+function explainError(e){
+  if(e&&e.kind){switch(e.kind){
+    case"quotes":return{msg:`The name needs quotes around it, like "donkey".`};
+    case"unknownItem":return{msg:`I don't know "${e.got}". Tap "Objects you can place" to see the list.`};
+    case"numbers":return{msg:`Both spots need to be numbers — a column and a row.`};
+    case"range":return{msg:`That's off the stage. Columns go 0–7, rows go 0–5. You wrote ${e.col}, ${e.row}.`};
+    case"notPlaced":return{msg:`Place the ${e.got} first, then you can move it.`};
+    case"dir":return{msg:`Direction should be "left", "right", "up", or "down".`};
+  }}
+  return{msg:`That's not quite valid code yet — usually a missing quote, comma, or bracket.`};
+}
+function runCmd(fromSug){
+  const raw=cmd.value;if(!raw.trim())return;
+  print("> "+raw,"echo");let result,threw=null;
+  try{result=Function("place","move",`"use strict"; return (${raw});`)(place,move);}catch(err){threw=err;}
+  if(threw===null){
+    print("✓ "+(result||"done"),"ok");cmd.value="";
+    if(mode==="practice"){checkPractice();return;}
+    if(RUNGS[rung].check())onRungComplete();else tutorSay(`Nice — that ran! ${nudge()}`);
+    return;
+  }
+  const ex=explainError(threw);print("… "+ex.msg,"err");
+  const g=inferIntent(raw);
+  if(g){tutorSay(`${g.why} ${ex.msg}`);didYouMean("Did you mean this?",g.line);}
+  else tutorSay(`${ex.msg}<br><br>Remember the shape: <code>place("donkey", 3, 4)</code> — word in quotes, then two numbers.`);
+  cmd.value="";
+}
+function nudge(){if(rung===0)return `Get him to <b>column 3, row 4</b>: <code>place("donkey", 3, 4)</code>.`;if(rung===1)return `Send him right: <code>move("donkey", "right")</code>.`;return `Keep going toward the goal above!`;}
+function onRungComplete(){
+  happyChime();
+  const msgs=[`🎉 <b>You did it!</b> You wrote real JavaScript and the donkey appeared — that's exactly how coders put things on a screen.`,`🐴 <b>He's moving!</b> One line of code brought him to life, just like the very first programmers did.`,`🪵 <b>Manger's in place.</b> You're building a whole scene, one real line at a time.`,`⭐ <b>Scene complete!</b> Every piece placed with real code. You're a scribe now.`];
+  tutorSay(msgs[rung]);document.getElementById('dym').innerHTML='';
+  const nw=document.getElementById('nextwrap');
+  if(rung<RUNGS.length-1)nw.innerHTML=`<button class="nextbtn" onclick="advanceRung()">Next step →</button>`;
+  else nw.innerHTML=`<button class="nextbtn olive" onclick="startPractice()">Now practice on your own →</button>`;
+}
+function advanceRung(){rung++;document.getElementById('nextwrap').innerHTML='';renderRungs();tutorSay(RUNGS[rung].goal);cmd.focus();}
+function startPractice(){
+  mode="practice";score=0;document.getElementById('nextwrap').innerHTML='';document.getElementById('rungs').style.display='none';
+  document.getElementById('scorebar').classList.add('show');
+  document.getElementById('goal').innerHTML=`<div class="g-lab">Practice Mode</div><div class="g-txt">I'll call out a spot — you write the code to place it there. Get faster at reading the grid!</div>`;
+  tutorSay(`Free practice! Use the grid numbers to aim. Once you feel confident, hide the grid with the toggle and picture it in your head — that's what real coders do.`);
+  newTarget();
+}
+function newTarget(){
+  clearTargetMark();
+  const keys=Object.keys(ITEMS);const item=keys[Math.floor(Math.random()*keys.length)];
+  const col=Math.floor(Math.random()*COLS),row=Math.floor(Math.random()*ROWS);target={item,col,row};
+  const m=document.createElement('div');m.className='target-mark';m.id='tmark';m.style.left=(col*(100/COLS))+"%";m.style.top=(row*(100/ROWS))+"%";stage.appendChild(m);
+  document.getElementById('scoretxt').textContent=`Place the ${item} at ${col}, ${row}`;
+  tutorSay(`Place the <b>${item}</b> at <b>column ${col}, row ${row}</b>. Write the code and press Run!`);
+}
+function clearTargetMark(){const m=document.getElementById('tmark');if(m)m.remove();}
+function checkPractice(){
+  const s=sprites[target.item];
+  if(s&&s.col===target.col&&s.row===target.row){score++;document.getElementById('scoreval').textContent=score;happyChime();tutorSay(`✅ <b>Perfect!</b> The ${target.item} is exactly where I asked. ${score>=3?"You're getting good at this!":""}`);cmd.value='';setTimeout(newTarget,1150);}
+  else if(s){tutorSay(`So close! The ${target.item} landed at <b>${s.col}, ${s.row}</b>, but I asked for <b>${target.col}, ${target.row}</b>. First number is column (across), second is row (down). Try again!`);}
+}
+cmd.addEventListener('keydown',e=>{if(e.key==="Enter"){e.preventDefault();runCmd();}});
+buildRulers();buildPalette();renderRungs();cmd.focus();
+</script>
+</body>
+</html>
