@@ -2,93 +2,38 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Footsteps — Learn to Code, One Story at a Time</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Spline+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-  :root{--parch:#f4ead3;--parch-deep:#e8d8b0;--ink:#3a2c1a;--ink-soft:#6b563a;--olive:#6b7a3f;--olive-deep:#4d5a2b;--terra:#b5532a;--terra-deep:#8a3d1d;--gold:#c79a3a;--sky:#8fb0c4;--shadow:rgba(58,44,26,.18);}
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-  html,body{min-height:100%;}
-  body{font-family:'Spline Sans',sans-serif;background:radial-gradient(ellipse at 50% 0%,#fbf3df 0%,var(--parch) 45%,var(--parch-deep) 100%);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 16px 40px;}
-  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");mix-blend-mode:multiply;}
-  .wrap{width:100%;max-width:560px;position:relative;z-index:2;}
-  header{text-align:center;padding:44px 0 8px;}
-  .kicker{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--terra);font-weight:600;}
-  h1{font-family:'Fraunces';font-weight:600;font-size:38px;margin-top:8px;line-height:1.1;}
-  h1 em{font-style:italic;color:var(--olive-deep);}
-  .tagline{font-family:'Fraunces';font-style:italic;font-size:17px;color:var(--ink-soft);margin-top:12px;line-height:1.5;}
-  .intro{background:linear-gradient(180deg,#fdf8ec,#f6ecd4);border:1px solid var(--parch-deep);border-radius:16px;padding:18px 20px;margin:24px 0 12px;box-shadow:0 6px 18px -10px var(--shadow);font-size:14.5px;line-height:1.6;color:var(--ink-soft);}
-  .intro b{color:var(--ink);}
-  .section-lab{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--terra);font-weight:600;margin:26px 4px 12px;}
-  .card{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--parch-deep);border-radius:16px;padding:18px 20px;margin-bottom:12px;box-shadow:0 6px 18px -12px var(--shadow);transition:transform .15s,box-shadow .15s;}
-  .card:hover{transform:translateY(-2px);box-shadow:0 12px 26px -14px var(--shadow);}
-  .card.soon{opacity:.62;pointer-events:none;background:linear-gradient(180deg,#faf4e5,#f2e8cf);}
-  .card-top{display:flex;align-items:center;gap:14px;}
-  .card-emoji{font-size:34px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.18));flex:0 0 auto;}
-  .card-titles{flex:1;}
-  .card-num{font-family:'JetBrains Mono';font-size:11px;color:var(--terra-deep);font-weight:500;letter-spacing:.05em;}
-  .card-name{font-family:'Fraunces';font-weight:600;font-size:20px;margin-top:2px;}
-  .card-badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;background:var(--olive);color:#fff;flex:0 0 auto;}
-  .card-badge.soon{background:var(--parch-deep);color:var(--ink-soft);}
-  .card-desc{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin-top:11px;}
-  .card-teaches{margin-top:11px;display:flex;flex-wrap:wrap;gap:6px;}
-  .chip{font-family:'JetBrains Mono';font-size:11px;background:rgba(107,122,63,.12);color:var(--olive-deep);padding:3px 8px;border-radius:6px;}
-  footer{text-align:center;font-size:12px;color:var(--ink-soft);opacity:.7;margin-top:32px;line-height:1.6;}
-  footer .mono{font-family:'JetBrains Mono';}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Footsteps of the Teacher</title>
+<meta name="description" content="A faith-based deduction-and-discovery game for kids that teaches biblical stories and the basics of real coding.">
+<link rel="stylesheet" href="styles/footsteps.css">
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="kicker">Same Truth · New Scribes</div>
-    <h1>Foot<em>steps</em></h1>
-    <div class="tagline">Learn to write real code by building the stories you already know by heart.</div>
+<div id="app">
+  <div class="statusbar" id="statusbar" style="display:none"></div>
+  <header id="appheader" style="display:none">
+    <div class="kicker">A Walk-With-the-Teacher Game</div>
+    <h1>Footsteps <em>of the Teacher</em></h1>
   </header>
-
-  <div class="intro">
-    Every workshop hands you a real <b>JavaScript</b> console and a scene to build. You type a line, something appears. <b>Ada the owl</b> 🦉 catches your typos, guesses what you meant, and never scolds. No accounts, no installs — just open and start writing code.
-  </div>
-
-  <div class="section-lab">Workshops</div>
-
-  <a class="card" href="workshops/the-donkey.html">
-    <div class="card-top">
-      <div class="card-emoji">🫏</div>
-      <div class="card-titles">
-        <div class="card-num">WORKSHOP 01</div>
-        <div class="card-name">The Donkey</div>
-      </div>
-      <div class="card-badge">Ready</div>
-    </div>
-    <div class="card-desc">Build the manger scene one command at a time. Place the donkey, send him across the stable, add the manger, and hang the star overhead.</div>
-    <div class="card-teaches">
-      <span class="chip">place()</span>
-      <span class="chip">move()</span>
-      <span class="chip">strings</span>
-      <span class="chip">coordinates</span>
-    </div>
-  </a>
-
-  <div class="card soon">
-    <div class="card-top">
-      <div class="card-emoji">🌊</div>
-      <div class="card-titles">
-        <div class="card-num">WORKSHOP 02</div>
-        <div class="card-name">The Parting</div>
-      </div>
-      <div class="card-badge soon">Coming soon</div>
-    </div>
-    <div class="card-desc">A workshop for loops and repetition — walk a whole people across, one step at a time.</div>
-    <div class="card-teaches">
-      <span class="chip">loops</span>
-      <span class="chip">repeat()</span>
-    </div>
-  </div>
-
-  <footer>
-    A Footsteps workshop · real JavaScript, gentle net<br>
-    <span class="mono">glen-collab/bible</span>
-  </footer>
+  <div id="screen"></div>
 </div>
+
+<!-- badges modal (shared) -->
+<div class="modal" id="badgeModal" onclick="if(event.target.id==='badgeModal')this.classList.remove('show')">
+  <div class="sheet">
+    <h3>Your Badges</h3>
+    <div class="badgegrid" id="badgegrid"></div>
+    <button class="btn ghost" style="margin-top:16px" onclick="document.getElementById('badgeModal').classList.remove('show')">Close</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- content (data) -->
+<script src="data/cases.js"></script>
+<script src="data/workshops.js"></script>
+<!-- engines -->
+<script src="src/engine.js"></script>
+<script src="src/workshop.js"></script>
+<!-- app shell -->
+<script src="src/app.js"></script>
 </body>
 </html>
