@@ -515,15 +515,117 @@ const CASE_PAUL = {
    REGISTRY — the engine reads this. Order = suggested play order.
    Claude Code: import CASES and render by id. Add new cases by appending.
    ===================================================================== */
+/* =====================================================================
+   CASE 6 — NOAH · "The Ark and the Promise"
+   Theme: Obedience & Faith.  Eli's flaw: wants to do it his own way / doubts.
+   Story-moments: Field → Ark Yard → The Door → On the Waters → The Rainbow
+   Unlocks the "Fill the Ark" workshop.
+   ===================================================================== */
+const CASE_NOAH = {
+  id: "noah",
+  title: "The Ark and the Promise",
+  theme: "Obedience & Faith",
+  badges: {
+    firstSteps: { icon:"👣",  name:"First Steps",        desc:"Began the journey" },
+    faithful:   { icon:"🔨",  name:"Faithful Builder",    desc:"Solved a stop with no hints" },
+    thorough:   { icon:"🔍",  name:"Careful Seeker",      desc:"Investigated every spot at a location" },
+    steady:     { icon:"🌧️", name:"Weathered the Storm", desc:"Pressed on through a detour" },
+    helper:     { icon:"🤝",  name:"Kind Helper",         desc:"Completed a side quest" },
+    promise:    { icon:"🌈",  name:"Kept the Promise",    desc:"Finished the whole case" },
+  },
+  detours: [
+    { place:"The Doubters' Road",
+      scene:"Eli listens to the crowd who laugh at the ark. 'Why build a boat on dry land? This is silly!' Following the doubters leads nowhere but in a long circle.",
+      lesson:"Doing the right thing can look strange to everyone else. You turn back and keep trusting." },
+    { place:"The My-Own-Way Path",
+      scene:"Eli wants to build it his own way and ignore the plans. But guesses and shortcuts leave the ark leaky and unsafe — some instructions are worth following exactly.",
+      lesson:"Obedience means trusting the plan even when we can't see the whole picture yet. You find your way back." },
+  ],
+  stops: [
+    { place:"Noah's Field", tag:"Where a strange task begins",
+      eli:"Build a giant boat? Out here, with no water anywhere? That makes <b>no</b> sense. I'd just... not.",
+      spots:[
+        { ico:"📜", label:"Hear the warning", lead:"Noah is told a great flood is coming, and to build an ark to save his family and the animals.",
+          clue:"It sounds impossible — but Noah listens carefully instead of arguing." },
+        { ico:"📏", label:"Measure the plans", lead:"Exact instructions: how long, how wide, how tall, and what wood to use.",
+          clue:"Noah follows the plan exactly, even the parts he doesn't understand yet." },
+        { ico:"😐", label:"Notice the neighbors", lead:"Everyone thinks Noah is foolish for building a boat on dry land.",
+          clue:"Doing right doesn't always look right to others. Noah begins anyway." },
+      ],
+      ask:"What does Noah do when he's given this strange task?",
+      options:["Argue that it makes no sense","Obey and start building the ark","Wait to see if it rains first"],
+      answer:1,
+      hint:"Look again at 'measure the plans' — Noah follows the instructions exactly, even before he understands them.",
+      sidequest:{ title:"Help gather the wood", desc:"The work is huge and Noah's sons are tired. Lend a hand hauling timber?",
+        lesson:"You pitch in on the hard, unglamorous work. Eli sees that obeying often means plain hard work, done faithfully.", badge:"helper" } },
+
+    { place:"The Ark Yard", tag:"Years of building while others laugh",
+      eli:"He's <b>still</b> building? For years? And everyone's still laughing? I'd have quit ages ago.",
+      spots:[
+        { ico:"🔨", label:"Watch the building", lead:"Year after year, Noah and his family keep working on the enormous ark.",
+          clue:"Faith isn't a one-day thing — it's showing up and obeying, day after day." },
+        { ico:"🗣️", label:"Hear the mockers", lead:"Crowds gather to laugh and jeer at the huge boat on dry ground.",
+          clue:"Noah doesn't stop because people mock him — he keeps his eyes on the task." },
+        { ico:"🌿", label:"See it finished", lead:"At last the ark is complete, sealed with pitch inside and out.",
+          clue:"The long, patient obedience is nearly done. Now come the animals." },
+      ],
+      ask:"Why does Noah keep building despite all the mocking?",
+      options:["He trusts God's word more than the crowd","He enjoys the attention","He isn't sure, but keeps busy"],
+      answer:0,
+      hint:"The 'mockers' clue is the key — Noah keeps his eyes on the task instead of on the crowd.",
+      sidequest:null },
+
+    { place:"The Great Door", tag:"Two by two",
+      eli:"Okay <b>this</b> part is cool. Every animal, two by two? How do they all even fit?",
+      spots:[
+        { ico:"🐘", label:"Count the pairs", lead:"The animals come, two by two — a male and female of every kind.",
+          clue:"Everything needed to start the world again is being gathered safely aboard." },
+        { ico:"🍞", label:"Check the stores", lead:"Food for every animal and the family, enough for a long time.",
+          clue:"Obedience thinks ahead — Noah has prepared for a long wait." },
+        { ico:"🚪", label:"Look at the door", lead:"When all are aboard, the great door must be shut.",
+          clue:"Noah doesn't shut it himself — the door is shut for him, and then the rain begins." },
+      ],
+      ask:"Who shuts the great door of the ark?",
+      options:["Noah shuts it himself","God shuts them safely in","The animals push it closed"],
+      answer:1,
+      hint:"The 'door' clue says it plainly — Noah doesn't shut it himself; it is shut for him.",
+      sidequest:{ title:"Settle the frightened animals", desc:"As the rain starts, the animals are scared. Move among them to calm them?",
+        lesson:"You bring calm in a scary moment. Eli learns that trusting God doesn't mean nothing is scary — it means being steady inside the storm.", badge:"helper" } },
+
+    { place:"On the Waters", tag:"Rain, then a long, long wait",
+      eli:"They're safe... but now they just float here for how long? Waiting is the <b>worst</b> part!",
+      spots:[
+        { ico:"🌧️", label:"Endure the rain", lead:"It rains forty days and nights, and the waters cover everything.",
+          clue:"The safe ones are the ones who obeyed and waited inside the ark." },
+        { ico:"🕊️", label:"Send the dove", lead:"After many days, Noah sends out a dove to look for dry land. It returns with nothing.",
+          clue:"Not yet. Noah waits, and sends it out again." },
+        { ico:"🌿", label:"The dove returns", lead:"At last the dove comes back carrying a fresh olive leaf.",
+          clue:"The waters are going down. Dry land — and a new beginning — is near." },
+      ],
+      ask:"How does Noah know it is nearly safe to leave the ark?",
+      options:["The rain simply stops","The dove returns with an olive leaf","He just gets tired of waiting"],
+      answer:1,
+      hint:"The 'dove returns' clue — the olive leaf is the sign that the waters are going down.",
+      sidequest:null },
+
+    { place:"The Rainbow", tag:"A promise across the sky",
+      eli:"We made it. All that building, all that waiting... and it wasn't silly at all. I think I finally get it.",
+      final:true,
+      teaching:"Noah obeyed when it made no sense, built for years while everyone laughed, gathered the animals two by two, and waited out the long storm — all because he trusted. When the family and animals finally stepped onto dry land, God set a rainbow in the sky as a promise never to flood the whole earth again. Obedience and faith aren't about understanding everything first. They're about trusting the One who does, and doing the next right thing — even when it looks strange to everyone else." },
+  ]
+};
+
+
 const CASES = {
   jesus: CASE_JESUS,
   david: CASE_DAVID,
   moses: CASE_MOSES,
   ruth:  CASE_RUTH,
   paul:  CASE_PAUL,
+  noah:  CASE_NOAH,
 };
 
-const CASE_ORDER = ["jesus", "david", "moses", "ruth", "paul"];
+const CASE_ORDER = ["jesus", "david", "moses", "ruth", "paul", "noah"];
 
 /* Universal badge earned across any case (engine may reference) */
 const SHARED_RANKS = {
@@ -674,6 +776,33 @@ const ROUNDTABLES = {
       "Everybody has parts of themselves they want to change — growing is lifelong, for grown-ups too.",
       "We've all written someone off and been proven wrong. Second chances surprise everybody.",
       "No one is beyond change — and that good news is for grown-ups just as much as kids.",
+    ],
+  },
+  noah: { // Obedience & Faith
+    kid: [
+      "Has a grown-up ever asked you to do something that didn't make sense at first, but turned out to be right?",
+      "Is it hard to keep doing the right thing when others laugh or say it's weird? When?",
+      "What's something you have to do over and over, even when it's boring or nobody notices?",
+      "When is it tempting to do things <i>your</i> own way instead of the way you were told?",
+      "Who do you trust enough to obey even when you don't understand why?",
+    ],
+    parent: [
+      "When you were about this age, was there a rule you didn't understand until later? Tell the story.",
+      "Was there a time you did the right thing while others laughed or doubted you? How did it feel?",
+      "Did you ever cut a corner or do it 'your own way' as a kid and wish you'd followed the plan?",
+      "Who did you trust enough to obey when you were young, even without understanding why?",
+      "What's something you had to keep at for a long time before it finally paid off?",
+    ],
+    together: [
+      "Name one thing this week you'll do the right way, even if it's harder or slower.",
+      "Is there an instruction — a rule, a chore — you could follow more faithfully together?",
+      "Pick something worth being patient about, and encourage each other while you wait.",
+      "Think of someone doing right while others doubt them. How could you cheer them on together?",
+    ],
+    notAlone: [
+      "Almost everyone has felt silly doing the right thing while others laughed — you're in good company.",
+      "Trusting instructions you don't fully understand yet is hard for grown-ups too.",
+      "Doing the same faithful thing over and over, with no applause, is quietly one of the bravest things there is.",
     ],
   },
 };

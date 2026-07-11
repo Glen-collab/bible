@@ -193,7 +193,8 @@ const WORKSHOPS = {
   /* ---- Standalone scene (no full case yet): Noah's Ark ---- */
   noahsArk: {
     id: "noahsArk",
-    standalone: true,                              // reachable from the home "Build a Scene" section
+    standalone: true,                              // stays in the free-play "Build a Scene" sandbox
+    forCase: "noah",                               // …and unlocks as the reward of the Noah case
     title: "Fill the Ark",
     subtitle: "Two by Two",
     grid: { cols: 8, rows: 6 },
