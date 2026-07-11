@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Footsteps — Bring the Scene to Life (preview)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600&family=Spline+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  :root{--parch:#f4ead3;--parch-deep:#e8d8b0;--ink:#3a2c1a;--ink-soft:#6b563a;--olive:#6b7a3f;--olive-deep:#4d5a2b;--terra:#b5532a;--terra-deep:#8a3d1d;--gold:#c79a3a;--sky:#8fb0c4;--shadow:rgba(58,44,26,.18);--term-bg:#241d13;--term-green:#8fd67a;--term-amber:#e8b34a;--term-dim:#7a6f5c;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{font-family:'Spline Sans',sans-serif;background:radial-gradient(ellipse at 50% 0%,#fbf3df 0%,var(--parch) 45%,var(--parch-deep) 100%);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 16px 40px;}
+  #app{width:100%;max-width:520px;}
+  header{text-align:center;padding:18px 0 6px;}
+  .kicker{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--terra);font-weight:600;}
+  h2{font-family:'Fraunces';font-weight:600;font-size:23px;margin-top:5px;}h2 em{font-style:italic;color:var(--olive-deep);}
+  .note{font-size:13px;line-height:1.5;color:var(--ink-soft);text-align:center;margin:8px 6px 12px;}
+  .note b{color:var(--ink);}
+  .stage-outer{background:linear-gradient(180deg,#efe6cf,#e6dcc0);border-radius:14px;padding:8px;box-shadow:0 6px 18px -10px var(--shadow);}
+  #stage{position:relative;width:100%;aspect-ratio:8/6;border-radius:8px;overflow:hidden;transition:background 2.2s ease;
+    background:linear-gradient(#bfe0ef,#dce7d6 60%,#e8dcbf);}
+  #stage.night{background:linear-gradient(#1c2a4a,#33415f 55%,#5a5136);}
+  .sprite{position:absolute;width:12.5%;height:16.666%;display:grid;place-items:center;font-size:26px;
+    transition:left 1s cubic-bezier(.4,0,.2,1),top 1s cubic-bezier(.4,0,.2,1),transform .4s;
+    filter:drop-shadow(0 2px 2px rgba(0,0,0,.25));pointer-events:none;}
+  .sprite.pop{animation:pop .5s;}
+  @keyframes pop{0%{transform:scale(.3);opacity:0;}60%{transform:scale(1.2);}100%{transform:scale(1);opacity:1;}}
+  .sprite.scenery{font-size:19px;opacity:.9;}
+  .sprite.shimmer{animation:shimmer 1.4s ease-in-out infinite;}
+  @keyframes shimmer{0%,100%{transform:scale(1);filter:drop-shadow(0 0 2px rgba(255,231,150,.5));}
+    50%{transform:scale(1.28) rotate(8deg);filter:drop-shadow(0 0 14px rgba(255,221,120,.95));}}
+  .sprite.flicker{animation:flick .5s ease-in-out infinite;}
+  @keyframes flick{0%,100%{transform:scale(1) translateY(0);}50%{transform:scale(1.14) translateY(-2px);}}
+  .sprite.twinkle{font-size:14px;animation:tw 1.8s ease-in-out infinite;}
+  @keyframes tw{0%,100%{opacity:.25;}50%{opacity:1;}}
+  .sprite.fly{transition:left 3.4s linear,top 3.4s ease-in-out;}
+  .btn{display:block;width:100%;margin-top:14px;padding:15px;border:none;border-radius:13px;cursor:pointer;font-family:'Spline Sans';font-size:15.5px;font-weight:600;color:#fff;background:linear-gradient(180deg,var(--olive),var(--olive-deep));box-shadow:0 4px 0 #39431f;transition:transform .12s,box-shadow .12s;}
+  .btn:active{transform:translateY(3px);box-shadow:0 1px 0 #39431f;}
+  .btn.terra{background:linear-gradient(180deg,var(--terra),var(--terra-deep));box-shadow:0 4px 0 #6e2f14;}
+  .btn:disabled{opacity:.5;cursor:default;}
+  .console{background:var(--term-bg);border-radius:14px;margin-top:12px;overflow:hidden;box-shadow:0 8px 22px -10px rgba(0,0,0,.5);}
+  .term-bar{display:flex;align-items:center;gap:6px;padding:9px 12px;background:#1b1610;border-bottom:1px solid #000;}
+  .term-bar .dot{width:10px;height:10px;border-radius:50%;}
+  .term-bar .r{background:#e06b5a;}.term-bar .y{background:#e8b34a;}.term-bar .g{background:#8fd67a;}
+  .term-bar .ttl{margin-left:6px;font-family:'JetBrains Mono';font-size:11px;color:var(--term-dim);}
+  .term-bar .count{margin-left:auto;font-family:'JetBrains Mono';font-size:11px;color:var(--term-green);}
+  #termout{padding:12px 14px;font-family:'JetBrains Mono';font-size:12.5px;line-height:1.6;color:var(--term-green);height:150px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;}
+  #termout .c{color:var(--term-dim);}
+  #termout .k{color:#e8b34a;}
+  #termout .caret{color:var(--term-green);animation:blink .9s step-end infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  #termout .codeline{border-radius:5px;padding:0 3px;margin:0 -3px;}
+  #termout.teach .codeline.learn{cursor:pointer;transition:background .15s;}
+  #termout.teach .codeline.learn:hover,#termout .codeline.active{background:rgba(143,176,196,.28);box-shadow:inset 2px 0 0 var(--term-green);}
+  .teachhint{margin-top:9px;text-align:center;font-size:12px;color:var(--olive-deep);font-weight:600;display:none;}
+  .teachhint.show{display:block;animation:pop .4s;}
+  #termout.teach .codeline.editable{position:relative;}
+  #termout.teach .codeline.editable::after{content:"✎ play";font-family:'Spline Sans';font-size:10px;color:var(--term-amber);margin-left:8px;opacity:.85;}
+  #termout.teach .codeline.editable.playing::after{content:"✕ done";color:var(--term-green);}
+  .editbar{display:flex;align-items:center;gap:8px;margin:7px 0 9px;padding:8px 10px;background:rgba(143,176,196,.16);border-radius:9px;font-family:'JetBrains Mono';font-size:12px;}
+  .editbar .ed-lab{color:var(--term-dim);font-family:'Spline Sans';font-weight:600;font-size:11.5px;}
+  .editbar .ed-b{width:27px;height:27px;border:none;border-radius:7px;background:#3a3020;color:#f2e9d6;font-size:17px;line-height:1;cursor:pointer;}
+  .editbar .ed-b:active{transform:translateY(1px);}
+  .editbar .ed-val{min-width:24px;text-align:center;color:var(--term-green);font-weight:700;font-size:14px;}
+  .editbar .ed-run{margin-left:auto;border:none;border-radius:8px;padding:7px 13px;background:var(--olive);color:#fff;font-family:'Spline Sans';font-weight:600;font-size:12.5px;cursor:pointer;}
+  .editbar .ed-run:active{transform:translateY(1px);}
+  .tutor{margin-top:12px;background:rgba(143,176,196,.14);border-left:3px solid var(--sky);border-radius:0 14px 14px 0;padding:13px 15px;display:flex;gap:10px;align-items:flex-start;}
+  .tutor .face{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#bfe0ef,#7ba7bd);display:grid;place-items:center;font-size:16px;flex:0 0 30px;}
+  .tutor .body{font-size:13.5px;line-height:1.5;}
+  .tutor .body b{color:var(--olive-deep);}
+  footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-top:16px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="kicker">Workshop finale · preview</div>
+    <h2>Watch your scene <em>come alive</em></h2>
+  </header>
+  <p class="note">Here's a little scene <b>a kid built</b> with a few <code>place()</code> lines — a shepherd, a couple of sheep, a star. Tap the button and watch Ada's code finish it, <b>while every real line it runs scrolls by</b>.</p>
+
+  <div class="stage-outer"><div id="stage"></div></div>
+  <button class="btn" id="goBtn">🦉 Bring the scene to life</button>
+
+  <div class="console">
+    <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="ttl">finish-scene.js</span><span class="count" id="count">0 lines run</span></div>
+    <div id="termout"><span class="c">// The kid wrote the first lines. Press the button to watch the rest…</span></div>
+  </div>
+  <div class="teachhint" id="teachhint">👆 Tap any line and Ada explains it. Lines marked <b>✎ play</b> let you change a number and Run it live.</div>
+
+  <div class="tutor"><div class="face">🦉</div><div class="body" id="ada"><b>Ada:</b> You placed 4 things. Want to see what code can really do? Tap the button and keep your eye on both the scene <i>and</i> the code.</div></div>
+
+  <footer>Footsteps of the Teacher · finale concept</footer>
+</div>
+
+<script>
+const COLS=8, ROWS=6;
+const stage=document.getElementById('stage');
+const out=document.getElementById('termout');
+const countEl=document.getElementById('count');
+const ada=document.getElementById('ada');
+const goBtn=document.getElementById('goBtn');
+let linesRun=0, occupied=new Set(), animals=[], wanderTimers=[];
+
+const L=c=>c*(100/COLS), T=r=>r*(100/ROWS);
+function key(c,r){return c+','+r;}
+function sprite(emoji,c,r,cls){
+  const el=document.createElement('div');
+  el.className='sprite pop'+(cls?' '+cls:'');
+  el.textContent=emoji; el.style.left=L(c)+'%'; el.style.top=T(r)+'%';
+  el.dataset.c=c; el.dataset.r=r; el.dataset.k=key(c,r); stage.appendChild(el);
+  occupied.add(key(c,r));
+  return el;
+}
+/* groups we can RESET, so the number means "how many there are" (not "add more") */
+let twinkleEls=[], grassEls=[];
+function clearGroup(arr){ arr.forEach(e=>{ occupied.delete(e.dataset.k); e.remove(); }); arr.length=0; }
+function setTwinkles(n){ clearGroup(twinkleEls); let made=0,tries=0;
+  while(made<n && tries<150){ tries++; let c=Math.floor(Math.random()*COLS), r=Math.floor(Math.random()*2);
+    if(occupied.has(key(c,r)))continue; twinkleEls.push(sprite('✨',c,r,'twinkle')); made++; } }
+function setGrass(n){ clearGroup(grassEls); let made=0,tries=0;
+  while(made<n && tries<150){ tries++; let c=Math.floor(Math.random()*COLS), r=4+Math.floor(Math.random()*2);
+    if(occupied.has(key(c,r)))continue; grassEls.push(sprite('🌿',c,r,'scenery')); made++; } }
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+/* ---- the scene the "kid" already built ---- */
+const kidStar   = sprite('⭐',6,0);
+const kidShep   = sprite('🧎',3,3);
+const kidSheepA = sprite('🐑',2,4);
+const kidSheepB = sprite('🐑',5,4);
+animals=[kidSheepA,kidSheepB];
+
+/* ---- code streamer: prints the actual line being run ---- */
+function color(line){
+  return line
+    .replace(/(\/\/.*)$/,'<span class="c">$1</span>')
+    .replace(/\b(for|const|of|function|await)\b/g,'<span class="k">$1</span>');
+}
+const CHAR_MS=24;            // gentler typing speed
+async function typeLine(line, explain, edit){
+  const div=document.createElement('div'); div.className='codeline';
+  if(explain) div.dataset.explain=explain;
+  if(edit){ div._edit=edit; div.classList.add('editable'); }
+  const text=document.createElement('span'); div.appendChild(text);
+  const caret=document.createElement('span'); caret.className='caret'; caret.textContent='▋'; div.appendChild(caret);
+  out.appendChild(div);
+  for(let i=0;i<line.length;i++){ text.innerHTML=color(line.slice(0,i+1)); out.scrollTop=out.scrollHeight; await sleep(CHAR_MS); }
+  text.innerHTML=color(line); caret.remove();
+  linesRun++; countEl.textContent=linesRun+' lines run';
+  out.scrollTop=out.scrollHeight;
+}
+// run a step: show its code (with a kid-friendly explanation), then perform it
+async function step(code, fn, pause, explain, edit){ await typeLine(code, explain, edit); if(fn) fn(); await sleep(pause==null?650:pause); }
+
+// after the finale, let a curious kid hover/tap any line to hear + PLAY with it
+function enableTeaching(){
+  out.classList.add('teach');
+  const lines=out.querySelectorAll('.codeline');
+  lines.forEach(el=>{
+    if(!el.dataset.explain) return;
+    el.classList.add('learn');
+    const show=()=>{ lines.forEach(x=>x.classList.remove('active')); el.classList.add('active');
+      ada.innerHTML='<b>Ada:</b> '+el.dataset.explain; };
+    el.addEventListener('mouseenter',show);
+    el.addEventListener('click',()=>{ show(); if(el._edit) toggleEditor(el); });
+  });
+  document.getElementById('teachhint').classList.add('show');
+}
+
+// inline number-tinkerer: tap the line to open (✎ play) / tap again to close (✕ done)
+function toggleEditor(el){ if(el._editorOpen) closeEditor(el); else openEditor(el); }
+function closeEditor(el){ if(el._editbar){ el._editbar.remove(); el._editbar=null; } el._editorOpen=false; el.classList.remove('playing'); }
+function openEditor(el){
+  el._editorOpen=true; el.classList.add('playing');
+  const spec=el._edit; let val=spec.value;
+  const codeText=el.querySelector('span');
+  const bar=document.createElement('div'); bar.className='editbar';
+  bar.innerHTML='<span class="ed-lab">try a number →</span>'
+    +'<button class="ed-b" data-d="-1">−</button><span class="ed-val"></span><button class="ed-b" data-d="1">+</button>'
+    +'<button class="ed-run">Run ▶</button>';
+  el.after(bar); el._editbar=bar;
+  const valEl=bar.querySelector('.ed-val');
+  function paint(){ valEl.textContent=val; spec.value=val; codeText.innerHTML=color(spec.code(val)); }
+  bar.querySelectorAll('.ed-b').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation(); val=Math.max(spec.min,Math.min(spec.max,val+ +b.dataset.d)); paint(); }));
+  bar.querySelector('.ed-run').addEventListener('click',e=>{
+    e.stopPropagation(); spec.run(val); ada.innerHTML='<b>Ada:</b> '+spec.cheer(val); });
+  paint();
+}
+
+/* ---- effects (each is a real function the streamed code calls) ---- */
+function nightfall(){ stage.classList.add('night'); }
+function twinkle(n){ for(let i=0;i<n;i++){ let c=Math.floor(Math.random()*COLS), r=Math.floor(Math.random()*2);
+  if(occupied.has(key(c,r)))continue; sprite('✨',c,r,'twinkle'); } }
+function scatter(emoji,n,rowMin,rowMax){ let placed=0,tries=0;
+  while(placed<n && tries<80){ tries++; let c=Math.floor(Math.random()*COLS), r=rowMin+Math.floor(Math.random()*(rowMax-rowMin+1));
+    if(occupied.has(key(c,r)))continue; sprite(emoji,c,r,'scenery'); placed++; } }
+function shimmer(el){ el.classList.add('shimmer'); }
+function wander(el){ const t=setInterval(()=>{
+  let c=+el.dataset.c, r=+el.dataset.r;
+  let nc=Math.max(0,Math.min(COLS-1,c+(Math.random()<.5?-1:1)));
+  let nr=Math.max(3,Math.min(ROWS-1,r+(Math.random()<.5?0:(Math.random()<.5?-1:1))));
+  el.dataset.c=nc; el.dataset.r=nr; el.style.left=L(nc)+'%'; el.style.top=T(nr)+'%';
+},1300); wanderTimers.push(t); }
+function lightFire(c,r){ const f=sprite('🔥',c,r,'flicker'); return f; }
+function releaseDove(){ const d=sprite('🕊️',0,1); d.classList.add('fly');
+  requestAnimationFrame(()=>{ d.style.left=L(7)+'%'; d.style.top=T(0)+'%'; }); }
+
+/* ---- the finale sequence: code shown === code run ---- */
+async function bringToLife(){
+  goBtn.disabled=true;
+  ada.innerHTML='<b>Ada:</b> Watch closely — the scene <i>and</i> the code…';
+  out.innerHTML='';
+  await step('// Ada is finishing the scene you started', null, 700,
+    'This whole line is a <b>comment</b> — a friendly note for people. The <code>//</code> at the front tells the computer to skip it.');
+  await step('nightfall();  // dusk settles over the field', nightfall, 1500,
+    '<code>nightfall()</code> turns the daytime sky to evening — one command changes the whole background. The green words after <code>//</code> are just a note for you; the computer ignores them.');
+  await step('twinkle(9);   // stars wake up across the sky', ()=>setTwinkles(9), 950,
+    '<code>twinkle(9)</code> makes <b>9</b> stars appear and sparkle. That number is <i>how many</i> — <b>tap this line</b>, change it with − and +, and press <b>Run</b> to try it yourself!',
+    { value:9, min:1, max:30, code:n=>`twinkle(${n});   // stars wake up across the sky`, run:n=>setTwinkles(n),
+      cheer:n=>`You changed the code to <code>twinkle(${n})</code> and ran it — now the sky has exactly <b>${n}</b> twinkling stars. ✨ Try another number!` });
+  await step('scatter("🌿", 8, 4, 5);  // grass fills the field', ()=>setGrass(8), 950,
+    '<code>scatter</code> sprinkles <b>8</b> blades of grass into the field. <b>Tap this line</b> and change the number to grow the field yourself.',
+    { value:8, min:1, max:20, code:n=>`scatter("🌿", ${n}, 4, 5);  // grass fills the field`, run:n=>setGrass(n),
+      cheer:n=>`Now the field has <b>${n}</b> blades of grass — watch it change up and down. You just edited and ran real code. 🌿` });
+  await step('scatter("🌾", 4, 5, 5);', ()=>scatter('🌾',4,5,5), 800,
+    'The same <code>scatter</code> command again — this time 4 stalks of wheat in row 5. Reusing a command with new numbers is how coders build a lot, fast.');
+  await step('star.shimmer();  // your star begins to glow', ()=>shimmer(kidStar), 1100,
+    '<code>star.shimmer()</code> means “star — do your shimmer.” The star <b>you</b> placed is now glowing. The little <b>dot</b> means “this thing, do this action.”');
+  await step('lightFire(1, 5);  // a campfire for the shepherd', ()=>lightFire(1,5), 950,
+    '<code>lightFire(1, 5)</code> puts a fire at column 1, row 5 — the same column/row idea you already used with <code>place()</code>.');
+  await step('for (const sheep of flock) {', null, 700,
+    'This starts a <b>loop</b>. It means “for every sheep in the flock, do the next line” — however many sheep there are.');
+  await step('  sheep.wander();  // the flock roams the field', ()=>animals.forEach(wander), 900,
+    '<code>sheep.wander()</code> tells a sheep to roam on its own. Because it’s <i>inside the loop</i>, <b>every</b> sheep does it.');
+  await step('}', null, 900,
+    'This curly brace <code>}</code> closes the loop — it marks where “do it for every sheep” ends.');
+  await step('releaseDove();  // a dove crosses at dawn', releaseDove, 1500,
+    '<code>releaseDove()</code> sends a dove flying across the sky from one side to the other.');
+  await step('// scene complete — drawn by ' + (linesRun+1) + ' lines of real code', null, 400,
+    'One more <b>comment</b> — just a note for us. The computer skips it, but it’s nice to read.');
+  ada.innerHTML='<b>Ada:</b> You placed <b>4</b> things. Your code did the rest — the whole living scene, drawn by real JavaScript. <b>Curious what each line does? Hover or tap any line and I’ll explain.</b> <i>Same truth, new scribes.</i> 🌟';
+  enableTeaching();
+  goBtn.disabled=false; goBtn.textContent='↻ Play it again';
+  goBtn.onclick=()=>location.reload();
+}
+goBtn.onclick=bringToLife;
+</script>
+</body>
+</html>
