@@ -15,6 +15,20 @@
   const $ = (id) => document.getElementById(id);
   const WS = {};
 
+  // A sprite shows real art (assets/sprites/<name>.png) if that file exists,
+  // and falls back to its emoji if not. So dropping a PNG in "upgrades" a piece
+  // automatically — no code change. See assets/README.md for the naming contract.
+  const SPRITE_BASE = 'assets/sprites/';
+  function paintSprite(el, name) {
+    const emoji = (window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS[name]) || '';
+    el.textContent = '';
+    const img = document.createElement('img');
+    img.className = 'spr-img'; img.alt = '';
+    img.onerror = function () { el.textContent = emoji; };  // no PNG yet -> emoji
+    img.src = SPRITE_BASE + name + '.png';
+    el.appendChild(img);
+  }
+
   let CFG, ITEMS, COLS, ROWS, opts;
   // cells: "col,row" -> { name, el }.  Keying by CELL (not by name) lets the
   // same item appear in several places at once — a real flock — while move()
@@ -128,13 +142,13 @@
     let cell = cells[k];
     if (cell) {
       // a sprite is already in this cell — swap what it shows
-      cell.name = name; cell.el.textContent = ITEMS[name];
+      cell.name = name; paintSprite(cell.el, name);
       cell.el.classList.remove('celebrate'); void cell.el.offsetWidth; cell.el.classList.add('celebrate');
     } else {
       const el = document.createElement('div');
       el.className = 'sprite celebrate';
       el.style.width = (100 / COLS) + '%'; el.style.height = (100 / ROWS) + '%';
-      el.textContent = ITEMS[name];
+      paintSprite(el, name);
       positionEl(el, col, row);
       $('stage').appendChild(el);
       cells[k] = { name, el };

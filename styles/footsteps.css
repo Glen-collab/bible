@@ -197,6 +197,7 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
 #stage.grid{background-image:linear-gradient(rgba(58,44,26,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(58,44,26,.16) 1px,transparent 1px);}
 .sprite{position:absolute;display:grid;place-items:center;font-size:25px;transition:left .12s,top .12s;pointer-events:none;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25));}
 .sprite.moving{transition:left .55s cubic-bezier(.4,0,.2,1),top .55s cubic-bezier(.4,0,.2,1);}
+.sprite .spr-img{width:92%;height:92%;object-fit:contain;display:block;pointer-events:none;}
 .target-mark{position:absolute;border:2px dashed var(--terra);border-radius:8px;box-sizing:border-box;pointer-events:none;animation:pulse 1.2s infinite;}
 @keyframes pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
 .palette{display:none;flex-wrap:wrap;gap:7px;margin:8px 0 4px;padding:11px;background:#fff;border:1px solid var(--parch-deep);border-radius:12px;}
