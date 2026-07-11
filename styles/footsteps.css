@@ -195,9 +195,17 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
 .stage-wrap{background:linear-gradient(#bfe0ef,#dce7d6 60%,#e8dcbf);border-radius:8px;overflow:hidden;}
 #stage{position:relative;width:100%;overflow:hidden;}
 #stage.grid{background-image:linear-gradient(rgba(58,44,26,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(58,44,26,.16) 1px,transparent 1px);}
-.sprite{position:absolute;display:grid;place-items:center;font-size:25px;transition:left .12s,top .12s;pointer-events:none;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25));}
+.sprite{position:absolute;display:grid;place-items:center;font-size:25px;transition:left .12s,top .12s,width .18s,height .18s;pointer-events:auto;cursor:pointer;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25));z-index:1;}
 .sprite.moving{transition:left .55s cubic-bezier(.4,0,.2,1),top .55s cubic-bezier(.4,0,.2,1);}
+.sprite.selected{outline:2px dashed var(--terra);outline-offset:-2px;border-radius:6px;}
 .sprite .spr-img{width:92%;height:92%;object-fit:contain;display:block;pointer-events:none;}
+.stage-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;}
+.resizebar{display:none;align-items:center;gap:10px;margin-top:8px;padding:8px 12px;background:linear-gradient(180deg,#fdf8ec,#f6ecd4);border:1px solid var(--parch-deep);border-radius:12px;font-size:13px;}
+.resizebar .rz-lab{color:var(--ink-soft);}.resizebar .rz-lab b{color:var(--terra-deep);font-family:'JetBrains Mono';}
+.resizebar .rz-b{width:30px;height:30px;border:none;border-radius:8px;background:var(--olive);color:#fff;font-size:19px;line-height:1;cursor:pointer;}
+.resizebar .rz-b:active{transform:translateY(1px);}
+.resizebar #rzval{font-family:'JetBrains Mono';font-weight:700;color:var(--olive-deep);min-width:48px;text-align:center;}
+.resizebar .rz-done{margin-left:auto;border:none;background:none;color:var(--ink-soft);font-family:'Spline Sans';font-weight:600;font-size:13px;cursor:pointer;text-decoration:underline;}
 .target-mark{position:absolute;border:2px dashed var(--terra);border-radius:8px;box-sizing:border-box;pointer-events:none;animation:pulse 1.2s infinite;}
 @keyframes pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
 .palette{display:none;flex-wrap:wrap;gap:7px;margin:8px 0 4px;padding:11px;background:#fff;border:1px solid var(--parch-deep);border-radius:12px;}

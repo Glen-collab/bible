@@ -188,7 +188,8 @@ const WORKSHOPS = {
     title: "Fill the Ark",
     subtitle: "Two by Two",
     grid: { cols: 8, rows: 6 },
-    items: ["elephant","giraffe","lion","zebra","tiger","panda","monkey","kangaroo","owl","mouse","butterfly","dove"],
+    background: "noahs_ark",                        // the ark art sits behind the grid; animals board the deck
+    items: ["elephant","giraffe","lion","zebra","tiger","panda","monkey","kangaroo","owl","mouse","butterfly","rainbow","dove"],
     aiPreview: [ 'place("elephant", 1, 4)', 'place("elephant", 2, 4)', 'place("giraffe", 4, 3)', 'place("dove", 6, 1)' ],
     rungs: [
       { id:0, label:"1 · First aboard", goalItem:"elephant", target:{col:1,row:4},

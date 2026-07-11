@@ -102,6 +102,13 @@
         <div class="stage-row"><div class="ruler-left" id="rulerLeft"></div>
           <div class="stage-wrap"><div id="stage" class="grid"></div></div></div>
       </div>
+      <div class="resizebar" id="resizebar" style="display:none">
+        <span class="rz-lab">Resize <b id="rzname"></b></span>
+        <button class="rz-b" onclick="FootstepsWorkshop._resize(-1)">−</button>
+        <span id="rzval">1.00×</span>
+        <button class="rz-b" onclick="FootstepsWorkshop._resize(1)">＋</button>
+        <button class="rz-done" onclick="FootstepsWorkshop._deselect()">done</button>
+      </div>
       <div class="scorebar" id="scorebar"><span id="scoretxt">Practice</span><b id="scoreval">0</b></div>
       <div class="console">
         <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="ttl">code.js — type real JavaScript</span></div>
@@ -119,12 +126,19 @@
     const stage = $('stage');
     stage.style.aspectRatio = `${COLS}/${ROWS}`;
     stage.style.backgroundSize = `${100 / COLS}% ${100 / ROWS}%`;
+    // optional scene background (e.g. the ark) — animals get placed on top of it
+    if (CFG.background) {
+      const bg = document.createElement('img');
+      bg.className = 'stage-bg'; bg.alt = '';
+      bg.src = 'assets/scenes/' + CFG.background + '.png';
+      stage.appendChild(bg);
+    }
     $('rulerTop').style.gridTemplateColumns = `22px repeat(${COLS},1fr)`;
     $('rulerLeft').style.gridTemplateRows = `repeat(${ROWS},1fr)`;
 
     buildRulers(); buildPalette(); renderRungs();
     tutorSay(CFG.rungs[0].goal
-      ? `Let's start! Type <code>${escapeHtml(CFG.rungs[0].command || firstCommand())}</code> and press Run. The two numbers are <b>column</b> (across ↔) and <b>row</b> (down ↕).`
+      ? `Let's start! Type <code>${escapeHtml(CFG.rungs[0].command || firstCommand())}</code> and press Run. The two numbers are <b>column</b> (across ↔) and <b>row</b> (down ↕). Once a piece is on the stage, <b>tap it</b> to make it bigger or smaller.`
       : `Let's build the scene! Follow the goal above.`);
     const cmd = $('cmd');
     cmd.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); WS._run(); } });
@@ -144,44 +158,80 @@
     el.style.left = (col * (100 / COLS)) + '%';
     el.style.top = (row * (100 / ROWS)) + '%';
   }
-  function place(name, col, row) {
+  function sizeSprite(el, size) {
+    el.style.width = (size * 100 / COLS) + '%';
+    el.style.height = (size * 100 / ROWS) + '%';
+  }
+  function place(name, col, row, size) {
     if (typeof name !== 'string') throw { kind: 'quotes' };
     if (!(name in ITEMS)) throw { kind: 'unknownItem', got: name };
     if (typeof col !== 'number' || typeof row !== 'number') throw { kind: 'numbers' };
     if (col < 0 || col >= COLS || row < 0 || row >= ROWS) throw { kind: 'range', col, row };
+    size = (typeof size === 'number' && size > 0) ? Math.max(0.25, Math.min(5, size)) : 1;
     const k = keyOf(col, row);
     let cell = cells[k];
     if (cell) {
-      // a sprite is already in this cell — swap what it shows
-      cell.name = name; paintSprite(cell.el, name);
+      cell.name = name; cell.size = size; paintSprite(cell.el, name); sizeSprite(cell.el, size);
       cell.el.classList.remove('celebrate'); void cell.el.offsetWidth; cell.el.classList.add('celebrate');
     } else {
       const el = document.createElement('div');
       el.className = 'sprite celebrate';
-      el.style.width = (100 / COLS) + '%'; el.style.height = (100 / ROWS) + '%';
+      sizeSprite(el, size);
       paintSprite(el, name);
       positionEl(el, col, row);
+      el.onclick = () => selectSprite(el);   // tap a piece to resize it
       $('stage').appendChild(el);
-      cells[k] = { name, el };
+      cell = cells[k] = { name, el, size, col, row };
     }
+    el_cell(cells[k].el, cells[k]);
     chime(520 + col * 40);
-    return name + ' placed at ' + col + ', ' + row;
+    return name + ' placed at ' + col + ', ' + row + (size !== 1 ? ', size ' + size : '');
   }
+  function el_cell(el, rec) { el._cell = rec; }
   function move(name, dir) {
     const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
     const d = { left: [-1, 0], right: [1, 0], up: [0, -1], down: [0, 1] }[dir];
     if (!d) throw { kind: 'dir', got: dir };
     const nc = Math.max(0, Math.min(COLS - 1, s.col + d[0] * COLS));
     const nr = Math.max(0, Math.min(ROWS - 1, s.row + d[1] * ROWS));
+    const size = (cells[s.k] && cells[s.k].size) || 1;
     delete cells[s.k];
     const nk = keyOf(nc, nr);
     if (cells[nk] && cells[nk].el !== s.el) { cells[nk].el.remove(); } // clear whatever it lands on
     s.el.classList.add('moving');
     positionEl(s.el, nc, nr);
-    cells[nk] = { name, el: s.el };
+    cells[nk] = { name, el: s.el, size, col: nc, row: nr };
+    el_cell(s.el, cells[nk]);
     sweepChime();
     return name + ' moves ' + dir + '!';
   }
+
+  /* ---- tap-a-piece to resize it (＋ / −) ---- */
+  let selected = null;
+  function selectSprite(el) {
+    if (!el._cell) return;
+    if (selected) selected.classList.remove('selected');
+    selected = el; el.classList.add('selected');
+    const bar = $('resizebar'); if (!bar) return;
+    bar.style.display = 'flex';
+    $('rzname').textContent = el._cell.name;
+    $('rzval').textContent = (el._cell.size || 1).toFixed(2) + '×';
+  }
+  WS._resize = function (dir) {
+    if (!selected || !selected._cell) return;
+    let sz = Math.max(0.25, Math.min(5, (selected._cell.size || 1) + dir * 0.25));
+    selected._cell.size = sz; sizeSprite(selected, sz);
+    $('rzval').textContent = sz.toFixed(2) + '×';
+    const c = selected._cell;
+    print('> place("' + c.name + '", ' + c.col + ', ' + c.row + ', ' + sz + ')', 'echo');
+    print('✓ ' + c.name + ' resized to ' + sz + '×', 'ok');
+    chime(500 + sz * 120);
+  };
+  WS._deselect = function () {
+    if (selected) selected.classList.remove('selected');
+    selected = null;
+    const bar = $('resizebar'); if (bar) bar.style.display = 'none';
+  };
 
   /* ---- sound ---- */
   function chime(f) { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); const o = actx.createOscillator(), g = actx.createGain(); o.type = 'sine'; o.frequency.value = f; o.connect(g); g.connect(actx.destination); g.gain.setValueAtTime(.0001, actx.currentTime); g.gain.exponentialRampToValueAtTime(.15, actx.currentTime + .02); g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime + .25); o.start(); o.stop(actx.currentTime + .26); } catch (e) {} }
