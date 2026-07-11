@@ -28,6 +28,7 @@
     goliath:1.15, joseph:1.05, mary:0.95, david:0.90, man:0.90, female:0.90,
     tomb:1.05, boulder:0.85,
   };
+  const SCENE_BASE = 'assets/scenes/';
   function paintSprite(el, name) {
     const emoji = (window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS[name]) || '';
     el.textContent = '';
@@ -35,7 +36,11 @@
     img.className = 'spr-img'; img.alt = '';
     const s = (SPRITE_SCALE[name] || 0.85) * 100;
     img.style.width = s + '%'; img.style.height = s + '%';
-    img.onerror = function () { el.textContent = emoji; };  // no PNG yet -> emoji
+    let triedScenes = false;
+    img.onerror = function () {
+      if (!triedScenes) { triedScenes = true; img.src = SCENE_BASE + name + '.png'; } // try scenes/ next
+      else { el.textContent = emoji; }                                                 // then fall back to emoji
+    };
     img.src = SPRITE_BASE + name + '.png';
     el.appendChild(img);
   }

@@ -32,7 +32,12 @@ const WORKSHOP_ITEMS = {
   // figures for the iconic-scene rethemes
   david:"🧒", goliath:"🧌", mary:"🧕", joseph:"🧔", man:"🧑", female:"👩", baby_jesus:"👶",
   // resurrection scene pieces
-  tomb:"🪦", boulder:"🪨"
+  tomb:"🪦", boulder:"🪨",
+  // larger illustrated images (loaded from assets/scenes/) usable as placeable
+  // pieces too — scale them up with place(name, col, row, size) or the ＋ button
+  jesus_tomb:"⚰️", crowd_listening:"👥", crowd_eating_fish:"🍽️",
+  jesus_sermon:"🧎", jesus_teaching:"📖", jesus_help_woman:"🤝",
+  jesus_2fish_2bread:"🐟", loaves_fish:"🍞", daniel_lion_den:"🦁"
 };
 
 /* Real functions the kid's JS calls (defined in the engine):
@@ -214,7 +219,7 @@ const WORKSHOPS = {
     title: "Roll the Stone Away",
     subtitle: "He is not here",
     grid: { cols: 8, rows: 6 },
-    items: ["tomb","boulder","angel","dove"],
+    items: ["tomb","boulder","jesus_tomb","angel","man","female","crowd_listening","dove"],
     aiPreview: [ 'place("tomb", 6, 3)', 'place("boulder", 5, 3)', 'move("boulder", "left")' ],
     rungs: [
       { id:0, label:"1 · The tomb", goalItem:"tomb", target:{col:6,row:3},
