@@ -32,7 +32,7 @@ const WORKSHOP_ITEMS = {
   // figures for the iconic-scene rethemes
   david:"🧒", goliath:"🧌", mary:"🧕", joseph:"🧔", man:"🧑", female:"👩", baby_jesus:"👶",
   // resurrection scene pieces
-  boulder:"🪨",
+  boulder:"🪨", jesus:"🧍",
   // backdrop objects: placing one becomes the whole scene (manger already above)
   ark:"🚢", tomb:"⚰️",
   // larger illustrated images (loaded from assets/scenes/) usable as placeable
@@ -221,18 +221,22 @@ const WORKSHOPS = {
     title: "Roll the Stone Away",
     subtitle: "He is not here",
     grid: { cols: 8, rows: 6 },
-    items: ["tomb","boulder","angel","man","female","crowd_listening","dove"],
-    aiPreview: [ 'place("tomb")', 'place("boulder", 2, 1, 5)', 'move("boulder", 0, 1)' ],
+    items: ["tomb","boulder","jesus","angel","man","female","crowd_listening","dove"],
+    // the stone is on a track: it always sits at "home" (sealed) and rolls to "open"
+    rail: { item:"boulder", home:{col:2,row:1}, open:{col:0,row:1} },
+    aiPreview: [ 'place("tomb")', 'place("boulder", 2, 1)', 'move("boulder", "left")', 'place("jesus", 4, 3)' ],
     rungs: [
       { id:0, label:"1 · The tomb", goalItem:"tomb",
         goal:'Set the tomb as your scene: place("tomb"). It fills the whole stage.' },
       { id:1, label:"2 · Seal it",  goalItem:"boulder", target:{col:2,row:1},
-        goal:'Roll the great stone over the door: place("boulder", 2, 1, 5).' },
-      { id:2, label:"3 · Third day", goalItem:"boulder", target:{col:0,row:1},
-        goal:'On the third day, roll the stone away: move("boulder", 0, 1). Close it again with move("boulder", 2, 1).' },
+        goal:'Roll the great stone over the door: place("boulder"). It sits right at the entrance.' },
+      { id:2, label:"3 · Roll it away", goalMove:{item:"boulder",dir:"left"},
+        goal:'On the third day, roll the stone away: move("boulder", "left"). Roll it back with move("boulder", "right").' },
+      { id:3, label:"4 · He is risen", goalItem:"jesus", target:{col:4,row:3},
+        goal:'The tomb is empty — reveal him: place("jesus", 4, 3).' },
     ],
-    practice: { enabled:true, prompt:"I'll call out where the stone and figures go." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:7, rows:[0,2]}], dove:true, shimmer:["angel"], wander:["dove"] }
+    practice: { enabled:true, prompt:"I'll call out where the figures go." },
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:7, rows:[0,2]}], dove:true, shimmer:["jesus","angel"], wander:["dove"] }
   },
 
 };

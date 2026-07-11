@@ -33,7 +33,7 @@
   // next to single figures. Kids can still override with place(name, c, r, size).
   const DEFAULT_SIZE = {
     boulder: 5,
-    man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, goliath: 2, david: 1.25,
+    man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, jesus: 2, goliath: 2, david: 1.25,
     crowd_listening: 4.25, crowd_eating_fish: 4.25, daniel_lion_den: 4.25,
     jesus_tomb: 3, jesus_sermon: 4, jesus_teaching: 3.5, jesus_help_woman: 3.5,
     jesus_2fish_2bread: 4, loaves_fish: 4,
@@ -203,6 +203,7 @@
     if (typeof name !== 'string') throw { kind: 'quotes' };
     if (!(name in ITEMS)) throw { kind: 'unknownItem', got: name };
     if (BACKDROPS[name]) { setBackdrop(BACKDROPS[name]); chime(440); return name + ' set as the scene'; }
+    if (CFG.rail && CFG.rail.item === name) { col = CFG.rail.home.col; row = CFG.rail.home.row; }  // railed piece snaps home
     if (typeof col !== 'number' || typeof row !== 'number') throw { kind: 'numbers' };
     if (col < 0 || col >= COLS || row < 0 || row >= ROWS) throw { kind: 'range', col, row };
     size = (typeof size === 'number' && size > 0) ? Math.max(0.25, Math.min(6, size)) : (DEFAULT_SIZE[name] || 1);
@@ -238,6 +239,18 @@
   }
   function move(name, a, b) {
     const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
+    // railed piece: only rolls between "home" (sealed) and "open"
+    if (CFG.rail && CFG.rail.item === name) {
+      const home = CFG.rail.home, open = CFG.rail.open;
+      let dest;
+      if (typeof a === 'number' && typeof b === 'number') {
+        const dH = Math.abs(a - home.col) + Math.abs(b - home.row), dO = Math.abs(a - open.col) + Math.abs(b - open.row);
+        dest = dO < dH ? open : home;
+      } else { dest = (a === 'left') ? open : home; }
+      reposition(s, dest.col, dest.row); sweepChime();
+      const sz = (cells[keyOf(dest.col, dest.row)] || {}).size || 1;
+      return name + (dest === open ? ' rolls away — the tomb is open!' : ' rolls back — sealed.') + centerNote(dest.col, dest.row, sz);
+    }
     // move("name", col, row) -> go straight to that square
     if (typeof a === 'number' && typeof b === 'number') {
       const nc = Math.max(0, Math.min(COLS - 1, Math.round(a)));
