@@ -28,6 +28,16 @@
     goliath:1.15, joseph:1.05, mary:0.95, david:0.90, man:0.90, female:0.90,
     boulder:0.85,
   };
+  // Default number of cells a piece spans when no size is given. Big illustrated
+  // images (crowds, scenes) are drawn wide, so they need more cells to look right
+  // next to single figures. Kids can still override with place(name, c, r, size).
+  const DEFAULT_SIZE = {
+    boulder: 2,
+    man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, goliath: 2, david: 1.25,
+    crowd_listening: 4.25, crowd_eating_fish: 4.25, daniel_lion_den: 4.25,
+    jesus_tomb: 3, jesus_sermon: 4, jesus_teaching: 3.5, jesus_help_woman: 3.5,
+    jesus_2fish_2bread: 4, loaves_fish: 4,
+  };
   const SCENE_BASE = 'assets/scenes/';
   // "Backdrop" items: placing one sets the whole scene behind the grid (instead of
   // dropping a small piece), and everything else places on top. item name -> scene file.
@@ -191,7 +201,7 @@
     if (BACKDROPS[name]) { setBackdrop(BACKDROPS[name]); chime(440); return name + ' set as the scene'; }
     if (typeof col !== 'number' || typeof row !== 'number') throw { kind: 'numbers' };
     if (col < 0 || col >= COLS || row < 0 || row >= ROWS) throw { kind: 'range', col, row };
-    size = (typeof size === 'number' && size > 0) ? Math.max(0.25, Math.min(5, size)) : 1;
+    size = (typeof size === 'number' && size > 0) ? Math.max(0.25, Math.min(6, size)) : (DEFAULT_SIZE[name] || 1);
     const k = keyOf(col, row);
     let cell = cells[k];
     if (cell) {
@@ -293,7 +303,7 @@
   }
   WS._resize = function (dir) {
     if (!selected || !selected._cell) return;
-    let sz = Math.max(0.25, Math.min(5, (selected._cell.size || 1) + dir * 0.25));
+    let sz = Math.max(0.25, Math.min(6, (selected._cell.size || 1) + dir * 0.25));
     selected._cell.size = sz; sizeSprite(selected, sz);
     $('rzval').textContent = sz.toFixed(2) + '×';
     const c = selected._cell;
