@@ -249,10 +249,10 @@ const WORKSHOPS = {
     subtitle: "Shut the Lions' Mouths",
     grid: { cols: 8, rows: 6 },
     items: ["daniel_lion_den","lion","king","angel","man","dove"],
-    aiPreview: [ 'place("daniel_lion_den", 3, 2)', 'place("king", 6, 4)', 'place("dove", 4, 0)' ],
+    aiPreview: [ 'place("daniel_lion_den", 3, 0)', 'place("king", 6, 4)', 'place("dove", 4, 0)' ],
     rungs: [
-      { id:0, label:"1 · The den",  goalItem:"daniel_lion_den", target:{col:3,row:2},
-        goal:'Set the lions\' den: place("daniel_lion_den", 3, 2).' },
+      { id:0, label:"1 · The den",  goalItem:"daniel_lion_den", target:{col:3,row:0},
+        goal:'Set the lions\' den: place("daniel_lion_den", 3, 0).' },
       { id:1, label:"2 · The king", goalItem:"king", target:{col:6,row:4},
         goal:'At dawn the king comes to check on Daniel: place("king", 6, 4).' },
       { id:2, label:"3 · A dove",   goalItem:"dove", target:{col:4,row:0},
