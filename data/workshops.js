@@ -33,6 +33,8 @@ const WORKSHOP_ITEMS = {
   david:"🧒", goliath:"🧌", mary:"🧕", joseph:"🧔", man:"🧑", female:"👩", baby_jesus:"👶",
   // resurrection scene pieces
   boulder:"🪨",
+  // backdrop objects: placing one becomes the whole scene (manger already above)
+  ark:"🚢", tomb:"⚰️",
   // larger illustrated images (loaded from assets/scenes/) usable as placeable
   // pieces too — scale them up with place(name, col, row, size) or the ＋ button
   jesus_tomb:"⚰️", crowd_listening:"👥", crowd_eating_fish:"🍽️",
@@ -219,18 +221,18 @@ const WORKSHOPS = {
     title: "Roll the Stone Away",
     subtitle: "He is not here",
     grid: { cols: 8, rows: 6 },
-    items: ["jesus_tomb","boulder","angel","man","female","crowd_listening","dove"],
-    aiPreview: [ 'place("jesus_tomb", 4, 2, 3)', 'place("boulder", 3, 3)', 'move("boulder", "left")' ],
+    items: ["tomb","boulder","angel","man","female","crowd_listening","dove"],
+    aiPreview: [ 'place("tomb")', 'place("boulder", 3, 3)', 'move("boulder", "left")' ],
     rungs: [
-      { id:0, label:"1 · The tomb", goalItem:"jesus_tomb", target:{col:4,row:2},
-        goal:'Set the tomb in the rock: place("jesus_tomb", 4, 2, 3). That last number makes it big.' },
+      { id:0, label:"1 · The tomb", goalItem:"tomb",
+        goal:'Set the tomb as your scene: place("tomb"). It fills the whole stage.' },
       { id:1, label:"2 · Seal it",  goalItem:"boulder", target:{col:3,row:3},
-        goal:'Roll the great stone across the door: place("boulder", 3, 3).' },
+        goal:'Roll the great stone over the door: place("boulder", 3, 3).' },
       { id:2, label:"3 · Third day", goalMove:{item:"boulder",dir:"left"},
-        goal:'On the third day — roll the stone away! move("boulder", "left").' },
+        goal:'On the third day — roll the stone away! move("boulder", "left"). Roll it back with "right".' },
     ],
-    practice: { enabled:true, prompt:"I'll call out where the tomb and stone go." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:7, rows:[0,2]}], dove:true, shimmer:["jesus_tomb","angel"], wander:["dove"] }
+    practice: { enabled:true, prompt:"I'll call out where the stone and figures go." },
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:7, rows:[0,2]}], dove:true, shimmer:["angel"], wander:["dove"] }
   },
 
 };

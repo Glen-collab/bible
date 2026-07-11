@@ -29,6 +29,19 @@
     boulder:0.85,
   };
   const SCENE_BASE = 'assets/scenes/';
+  // "Backdrop" items: placing one sets the whole scene behind the grid (instead of
+  // dropping a small piece), and everything else places on top. item name -> scene file.
+  const BACKDROPS = { manger: 'manger', ark: 'noahs_ark', tomb: 'jesus_tomb' };
+  let backdropEl = null, backdropName = null;
+  function setBackdrop(file) {
+    if (!backdropEl) {
+      backdropEl = document.createElement('img');
+      backdropEl.className = 'stage-bg'; backdropEl.alt = '';
+      $('stage').appendChild(backdropEl);   // .stage-bg has z-index:0 so it stays behind sprites
+    }
+    backdropEl.src = SCENE_BASE + file + '.png'; backdropName = file;
+  }
+  function clearBackdrop() { if (backdropEl) { backdropEl.remove(); backdropEl = null; } backdropName = null; }
   function paintSprite(el, name) {
     const emoji = (window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS[name]) || '';
     el.textContent = '';
@@ -57,6 +70,7 @@
     ITEMS = window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS;
     COLS = CFG.grid.cols; ROWS = CFG.grid.rows;
     cells = {}; showGrid = true; rung = 0; mode = 'guided'; score = 0; target = null;
+    backdropEl = null; backdropName = null;
     render();
   };
 
@@ -69,6 +83,7 @@
 
   /* ---- build a check() for a rung from its data shape ---- */
   function rungCheck(r) {
+    if (r.goalItem && BACKDROPS[r.goalItem]) return () => backdropName === BACKDROPS[r.goalItem];
     if (r.goalMove) {
       const { item, dir } = r.goalMove;
       return () => {
@@ -139,13 +154,8 @@
     const stage = $('stage');
     stage.style.aspectRatio = `${COLS}/${ROWS}`;
     stage.style.backgroundSize = `${100 / COLS}% ${100 / ROWS}%`;
-    // optional scene background (e.g. the ark) — animals get placed on top of it
-    if (CFG.background) {
-      const bg = document.createElement('img');
-      bg.className = 'stage-bg'; bg.alt = '';
-      bg.src = 'assets/scenes/' + CFG.background + '.png';
-      stage.appendChild(bg);
-    }
+    // optional preset scene background (e.g. the ark) — pieces get placed on top of it
+    if (CFG.background) setBackdrop(CFG.background);
     $('rulerTop').style.gridTemplateColumns = `22px repeat(${COLS},1fr)`;
     $('rulerLeft').style.gridTemplateRows = `repeat(${ROWS},1fr)`;
 
@@ -178,6 +188,7 @@
   function place(name, col, row, size) {
     if (typeof name !== 'string') throw { kind: 'quotes' };
     if (!(name in ITEMS)) throw { kind: 'unknownItem', got: name };
+    if (BACKDROPS[name]) { setBackdrop(BACKDROPS[name]); chime(440); return name + ' set as the scene'; }
     if (typeof col !== 'number' || typeof row !== 'number') throw { kind: 'numbers' };
     if (col < 0 || col >= COLS || row < 0 || row >= ROWS) throw { kind: 'range', col, row };
     size = (typeof size === 'number' && size > 0) ? Math.max(0.25, Math.min(5, size)) : 1;
@@ -233,6 +244,7 @@
 
   function findKeyOfEl(el) { for (const k in cells) if (cells[k].el === el) return k; return null; }
   function remove(name) {
+    if (BACKDROPS[name] && backdropName === BACKDROPS[name]) { clearBackdrop(); return name + ' removed from the scene'; }
     const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
     delete cells[s.k]; s.el.remove();
     if (selected === s.el) WS._deselect();
@@ -338,9 +350,14 @@
       b.className = 'p-item';
       const ico = document.createElement('span'); ico.className = 'p-ico';
       const img = document.createElement('img'); img.className = 'p-img'; img.alt = '';
-      let tried = false;
-      img.onerror = function () { if (!tried) { tried = true; img.src = SCENE_BASE + k + '.png'; } else { img.remove(); ico.textContent = ITEMS[k]; } };
-      img.src = SPRITE_BASE + k + '.png';
+      if (BACKDROPS[k]) {
+        img.src = SCENE_BASE + BACKDROPS[k] + '.png';                  // backdrop items show their scene art
+        img.onerror = function () { img.remove(); ico.textContent = ITEMS[k]; };
+      } else {
+        let tried = false;
+        img.onerror = function () { if (!tried) { tried = true; img.src = SCENE_BASE + k + '.png'; } else { img.remove(); ico.textContent = ITEMS[k]; } };
+        img.src = SPRITE_BASE + k + '.png';
+      }
       ico.appendChild(img);
       const nm = document.createElement('span'); nm.className = 'p-name'; nm.textContent = '"' + k + '"';
       b.appendChild(ico); b.appendChild(nm);
@@ -516,7 +533,7 @@
   };
   function newTarget() {
     clearTargetMark();
-    const keys = (CFG.items && CFG.items.length ? CFG.items : Object.keys(ITEMS)).filter(k => ITEMS[k]);
+    const keys = (CFG.items && CFG.items.length ? CFG.items : Object.keys(ITEMS)).filter(k => ITEMS[k] && !BACKDROPS[k]);
     const item = keys[Math.floor(Math.random() * keys.length)];
     const col = Math.floor(Math.random() * COLS), row = Math.floor(Math.random() * ROWS);
     target = { item, col, row };
