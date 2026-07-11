@@ -147,6 +147,13 @@
           <button class="rz-b rz-del" title="delete" onclick="FootstepsWorkshop._deleteSelected()">🗑</button>
           <button class="rz-done" onclick="FootstepsWorkshop._deselect()">done</button>
         </div>
+        <div class="rz-dpad">
+          <span class="rz-dlab">nudge</span>
+          <button class="rz-b" title="up" onclick="FootstepsWorkshop._nudge(0,-1)">↑</button>
+          <button class="rz-b" title="left" onclick="FootstepsWorkshop._nudge(-1,0)">←</button>
+          <button class="rz-b" title="down" onclick="FootstepsWorkshop._nudge(0,1)">↓</button>
+          <button class="rz-b" title="right" onclick="FootstepsWorkshop._nudge(1,0)">→</button>
+        </div>
         <div class="rz-code" id="rzcode"></div>
       </div>
       <div class="scorebar" id="scorebar"><span id="scoretxt">Practice</span><b id="scoreval">0</b></div>
@@ -371,6 +378,18 @@
     rotate(selected._cell.name, 45);
     showCode('rotate("' + selected._cell.name + '", 45)');
     print('> rotate("' + selected._cell.name + '", 45)', 'echo');
+  };
+  WS._nudge = function (dx, dy) {
+    if (!selected || !selected._cell) return;
+    const c = selected._cell;
+    const nc = Math.max(0, Math.min(COLS - 1, c.col + dx));
+    const nr = Math.max(0, Math.min(ROWS - 1, c.row + dy));
+    if (nc === c.col && nr === c.row) return;
+    reposition({ k: findKeyOfEl(selected), el: selected, col: c.col, row: c.row }, nc, nr);
+    const rec = selected._cell;   // reposition re-points selected._cell to the new cell
+    showCode('move("' + rec.name + '", ' + nc + ', ' + nr + ')' + centerNote(nc, nr, rec.size || 1));
+    print('> move("' + rec.name + '", ' + nc + ', ' + nr + ')', 'echo');
+    chime(480);
   };
 
   /* ---- sound ---- */

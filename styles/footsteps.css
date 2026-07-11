@@ -205,6 +205,8 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
 .stage-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;}
 .resizebar{display:none;flex-direction:column;gap:8px;margin-top:8px;padding:8px 12px;background:linear-gradient(180deg,#fdf8ec,#f6ecd4);border:1px solid var(--parch-deep);border-radius:12px;font-size:13px;}
 .resizebar .rz-row{display:flex;align-items:center;gap:9px;}
+.resizebar .rz-dpad{display:flex;align-items:center;gap:9px;}
+.resizebar .rz-dlab{color:var(--ink-soft);font-family:'Spline Sans';font-weight:600;font-size:11.5px;}
 .resizebar .rz-lab{color:var(--ink-soft);}.resizebar .rz-lab b{color:var(--terra-deep);font-family:'JetBrains Mono';}
 .resizebar .rz-b{width:30px;height:30px;border:none;border-radius:8px;background:var(--olive);color:#fff;font-size:19px;line-height:1;cursor:pointer;flex:0 0 auto;}
 .resizebar .rz-b:active{transform:translateY(1px);}
