@@ -188,7 +188,7 @@ const WORKSHOPS = {
     title: "Fill the Ark",
     subtitle: "Two by Two",
     grid: { cols: 8, rows: 6 },
-    items: ["elephant","giraffe","lion","zebra","tiger","panda","monkey","kangaroo","owl","dove"],
+    items: ["elephant","giraffe","lion","zebra","tiger","panda","monkey","kangaroo","owl","mouse","butterfly","dove"],
     aiPreview: [ 'place("elephant", 1, 4)', 'place("elephant", 2, 4)', 'place("giraffe", 4, 3)', 'place("dove", 6, 1)' ],
     rungs: [
       { id:0, label:"1 · First aboard", goalItem:"elephant", target:{col:1,row:4},
@@ -197,11 +197,34 @@ const WORKSHOPS = {
         goal:'Two by two! Bring its pair: place("elephant", 2, 4).' },
       { id:2, label:"3 · A tall one",   goalItem:"giraffe",  target:{col:4,row:3},
         goal:'Now a giraffe: place("giraffe", 4, 3).' },
-      { id:3, label:"4 · The dove",     goalItem:"dove",     target:{col:6,row:1},
+      { id:3, label:"4 · The smallest", goalItem:"mouse",    target:{col:5,row:5},
+        goal:'Even the smallest creature has a place: place("mouse", 5, 5).' },
+      { id:4, label:"5 · The dove",     goalItem:"dove",     target:{col:6,row:1},
         goal:'The dove will search for dry land: place("dove", 6, 1).' },
     ],
     practice: { enabled:true, prompt:"Fill the ark! I'll call out which animal goes where." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"💧", n:8, rows:[0,2]}, extras:[{emoji:"🌈", n:1, rows:[0,0]}], dove:true, shimmer:[], wander:["elephant","giraffe","lion","zebra","tiger","panda","monkey","kangaroo"] }
+    finale: { sky:"day", twinkle:0, grass:{emoji:"💧", n:8, rows:[0,2]}, extras:[{emoji:"🌈", n:1, rows:[0,0]}], dove:true, shimmer:[], wander:["elephant","giraffe","lion","zebra","tiger","panda","monkey","kangaroo","mouse","butterfly"] }
+  },
+
+  /* ---- Standalone scene: the empty tomb (roll the stone away) ---- */
+  emptyTomb: {
+    id: "emptyTomb",
+    standalone: true,
+    title: "Roll the Stone Away",
+    subtitle: "He is not here",
+    grid: { cols: 8, rows: 6 },
+    items: ["tomb","boulder","angel","dove"],
+    aiPreview: [ 'place("tomb", 6, 3)', 'place("boulder", 5, 3)', 'move("boulder", "left")' ],
+    rungs: [
+      { id:0, label:"1 · The tomb", goalItem:"tomb", target:{col:6,row:3},
+        goal:'Carve the tomb into the rock: place("tomb", 6, 3).' },
+      { id:1, label:"2 · Seal it",  goalItem:"boulder", target:{col:5,row:3},
+        goal:'Roll the great stone across the door: place("boulder", 5, 3).' },
+      { id:2, label:"3 · Third day", goalMove:{item:"boulder",dir:"left"},
+        goal:'On the third day — roll the stone away! move("boulder", "left").' },
+    ],
+    practice: { enabled:true, prompt:"I'll call out where the tomb and stone go." },
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:7, rows:[0,2]}], dove:true, shimmer:["tomb","angel","star"], wander:["dove"] }
   },
 
 };

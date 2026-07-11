@@ -11,7 +11,7 @@
   const { WORKSHOPS } = window.FOOTSTEPS_WORKSHOPS;
 
   const CASE_EMOJI = { jesus: '🫏', david: '🐑', moses: '🔥', ruth: '🌾', paul: '⛵' };
-  const SCENE_EMOJI = { noahsArk: '🌈' };
+  const SCENE_EMOJI = { noahsArk: '🌈', emptyTomb: '🌅' };
 
   function workshopForCase(caseId) {
     return Object.values(WORKSHOPS).find((w) => w.forCase === caseId) || null;
