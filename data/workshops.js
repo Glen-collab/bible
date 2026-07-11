@@ -32,7 +32,7 @@ const WORKSHOP_ITEMS = {
   // figures for the iconic-scene rethemes
   david:"🧒", goliath:"🧌", mary:"🧕", joseph:"🧔", man:"🧑", female:"👩", baby_jesus:"👶",
   // resurrection scene pieces
-  tomb:"🪦", boulder:"🪨",
+  boulder:"🪨",
   // larger illustrated images (loaded from assets/scenes/) usable as placeable
   // pieces too — scale them up with place(name, col, row, size) or the ＋ button
   jesus_tomb:"⚰️", crowd_listening:"👥", crowd_eating_fish:"🍽️",
@@ -219,18 +219,18 @@ const WORKSHOPS = {
     title: "Roll the Stone Away",
     subtitle: "He is not here",
     grid: { cols: 8, rows: 6 },
-    items: ["tomb","boulder","jesus_tomb","angel","man","female","crowd_listening","dove"],
-    aiPreview: [ 'place("tomb", 6, 3)', 'place("boulder", 5, 3)', 'move("boulder", "left")' ],
+    items: ["jesus_tomb","boulder","angel","man","female","crowd_listening","dove"],
+    aiPreview: [ 'place("jesus_tomb", 4, 2, 3)', 'place("boulder", 3, 3)', 'move("boulder", "left")' ],
     rungs: [
-      { id:0, label:"1 · The tomb", goalItem:"tomb", target:{col:6,row:3},
-        goal:'Carve the tomb into the rock: place("tomb", 6, 3).' },
-      { id:1, label:"2 · Seal it",  goalItem:"boulder", target:{col:5,row:3},
-        goal:'Roll the great stone across the door: place("boulder", 5, 3).' },
+      { id:0, label:"1 · The tomb", goalItem:"jesus_tomb", target:{col:4,row:2},
+        goal:'Set the tomb in the rock: place("jesus_tomb", 4, 2, 3). That last number makes it big.' },
+      { id:1, label:"2 · Seal it",  goalItem:"boulder", target:{col:3,row:3},
+        goal:'Roll the great stone across the door: place("boulder", 3, 3).' },
       { id:2, label:"3 · Third day", goalMove:{item:"boulder",dir:"left"},
         goal:'On the third day — roll the stone away! move("boulder", "left").' },
     ],
     practice: { enabled:true, prompt:"I'll call out where the tomb and stone go." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:7, rows:[0,2]}], dove:true, shimmer:["tomb","angel","star"], wander:["dove"] }
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:7, rows:[0,2]}], dove:true, shimmer:["jesus_tomb","angel"], wander:["dove"] }
   },
 
 };
