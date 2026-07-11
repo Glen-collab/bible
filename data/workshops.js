@@ -33,6 +33,8 @@ const WORKSHOP_ITEMS = {
   david:"🧒", goliath:"🧌", mary:"🧕", joseph:"🧔", man:"🧑", female:"👩", baby_jesus:"👶",
   // resurrection scene pieces
   boulder:"🪨", jesus:"🧍", king:"🤴",
+  // nativity stand-ins (emoji until real art is added)
+  cow:"🐄",
   // backdrop objects: placing one becomes the whole scene (manger already above)
   ark:"🚢", tomb:"⚰️",
   // larger illustrated images (loaded from assets/scenes/) usable as placeable
@@ -300,6 +302,29 @@ const WORKSHOPS = {
     ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:6, rows:[4,5]}, extras:[{emoji:"✨", n:4, rows:[0,2]}], dove:true, shimmer:[], wander:["dove"] }
+  },
+
+  /* ---- Standalone scene: the manger (where it all started) ---- */
+  theManger: {
+    id: "theManger",
+    standalone: true,
+    title: "The Manger Scene",
+    subtitle: "Away in a Manger",
+    grid: { cols: 8, rows: 6 },
+    items: ["manger","baby_jesus","mary","joseph","angel","donkey","cow","sheep","baby_deer","dove","mouse","owl"],
+    aiPreview: [ 'place("manger")', 'place("baby_jesus", 4, 3)', 'place("mary", 3, 3)', 'place("joseph", 5, 3)' ],
+    rungs: [
+      { id:0, label:"1 · The stable", goalItem:"manger",
+        goal:'Set the stable: place("manger"). It fills the whole scene.' },
+      { id:1, label:"2 · The baby",   goalItem:"baby_jesus", target:{col:4,row:3},
+        goal:'Lay baby Jesus in the manger: place("baby_jesus", 4, 3).' },
+      { id:2, label:"3 · Mary",       goalItem:"mary", target:{col:3,row:3},
+        goal:'Add Mary beside him: place("mary", 3, 3). Then Joseph: place("joseph", 5, 3).' },
+      { id:3, label:"4 · An angel",   goalItem:"angel", target:{col:4,row:0},
+        goal:'Hang an angel above the stable: place("angel", 4, 0).' },
+    ],
+    practice: { enabled:true, prompt:"I'll call out where each piece goes." },
+    finale: { sky:"night", twinkle:12, grass:{emoji:"🌿", n:3, rows:[5,5]}, extras:[{emoji:"⭐", n:1, rows:[0,0]}], dove:true, shimmer:["baby_jesus","angel"], wander:["donkey","sheep","cow","baby_deer","dove","mouse"] }
   },
 
 };
