@@ -105,14 +105,17 @@
           <div class="stage-wrap"><div id="stage" class="grid"></div></div></div>
       </div>
       <div class="resizebar" id="resizebar" style="display:none">
-        <span class="rz-lab"><b id="rzname"></b></span>
-        <button class="rz-b" title="smaller" onclick="FootstepsWorkshop._resize(-1)">−</button>
-        <span id="rzval">1.00×</span>
-        <button class="rz-b" title="bigger" onclick="FootstepsWorkshop._resize(1)">＋</button>
-        <button class="rz-b" title="rotate" onclick="FootstepsWorkshop._rotateSelected()">↻</button>
-        <button class="rz-b" title="flip" onclick="FootstepsWorkshop._flipSelected()">⇋</button>
-        <button class="rz-b rz-del" title="delete" onclick="FootstepsWorkshop._deleteSelected()">🗑</button>
-        <button class="rz-done" onclick="FootstepsWorkshop._deselect()">done</button>
+        <div class="rz-row">
+          <span class="rz-lab"><b id="rzname"></b></span>
+          <button class="rz-b" title="smaller" onclick="FootstepsWorkshop._resize(-1)">−</button>
+          <span id="rzval">1.00×</span>
+          <button class="rz-b" title="bigger" onclick="FootstepsWorkshop._resize(1)">＋</button>
+          <button class="rz-b" title="rotate" onclick="FootstepsWorkshop._rotateSelected()">↻</button>
+          <button class="rz-b" title="flip" onclick="FootstepsWorkshop._flipSelected()">⇋</button>
+          <button class="rz-b rz-del" title="delete" onclick="FootstepsWorkshop._deleteSelected()">🗑</button>
+          <button class="rz-done" onclick="FootstepsWorkshop._deselect()">done</button>
+        </div>
+        <div class="rz-code" id="rzcode"></div>
       </div>
       <div class="scorebar" id="scorebar"><span id="scoretxt">Practice</span><b id="scoreval">0</b></div>
       <div class="console">
@@ -237,14 +240,27 @@
 
   /* ---- tap-a-piece to resize it (＋ / −) or delete it ---- */
   let selected = null;
+  function codeColor(s) {
+    return String(s)
+      .replace(/("[^"]*")/g, '<span class="c-str">$1</span>')
+      .replace(/\b(-?\d+(?:\.\d+)?)\b/g, '<span class="c-num">$1</span>')
+      .replace(/\b(place|move|remove|flip|rotate)\b/g, '<span class="c-fn">$1</span>');
+  }
+  function showCode(str) {
+    const el = $('rzcode'); if (!el) return;
+    el.innerHTML = codeColor(str);
+    el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+  }
   function selectSprite(el) {
     if (!el._cell) return;
     if (selected) selected.classList.remove('selected');
     selected = el; el.classList.add('selected');
     const bar = $('resizebar'); if (!bar) return;
     bar.style.display = 'flex';
-    $('rzname').textContent = el._cell.name;
-    $('rzval').textContent = (el._cell.size || 1).toFixed(2) + '×';
+    const c = el._cell;
+    $('rzname').textContent = c.name;
+    $('rzval').textContent = (c.size || 1).toFixed(2) + '×';
+    showCode('place("' + c.name + '", ' + c.col + ', ' + c.row + ((c.size && c.size !== 1) ? ', ' + c.size : '') + ')');
   }
   WS._resize = function (dir) {
     if (!selected || !selected._cell) return;
@@ -252,8 +268,8 @@
     selected._cell.size = sz; sizeSprite(selected, sz);
     $('rzval').textContent = sz.toFixed(2) + '×';
     const c = selected._cell;
+    showCode('place("' + c.name + '", ' + c.col + ', ' + c.row + ', ' + sz + ')');
     print('> place("' + c.name + '", ' + c.col + ', ' + c.row + ', ' + sz + ')', 'echo');
-    print('✓ ' + c.name + ' resized to ' + sz + '×', 'ok');
     chime(500 + sz * 120);
   };
   WS._deselect = function () {
@@ -273,12 +289,14 @@
   WS._flipSelected = function () {
     if (!selected || !selected._cell) return;
     flip(selected._cell.name);
-    print('> flip("' + selected._cell.name + '")', 'echo'); print('✓ done', 'ok');
+    showCode('flip("' + selected._cell.name + '")');
+    print('> flip("' + selected._cell.name + '")', 'echo');
   };
   WS._rotateSelected = function () {
     if (!selected || !selected._cell) return;
     rotate(selected._cell.name, 45);
-    print('> rotate("' + selected._cell.name + '", 45)', 'echo'); print('✓ done', 'ok');
+    showCode('rotate("' + selected._cell.name + '", 45)');
+    print('> rotate("' + selected._cell.name + '", 45)', 'echo');
   };
 
   /* ---- sound ---- */
