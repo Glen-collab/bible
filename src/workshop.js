@@ -336,7 +336,14 @@
       if (!ITEMS[k]) return;
       const b = document.createElement('button');
       b.className = 'p-item';
-      b.innerHTML = `<span class="emo">${ITEMS[k]}</span>"${k}"`;
+      const ico = document.createElement('span'); ico.className = 'p-ico';
+      const img = document.createElement('img'); img.className = 'p-img'; img.alt = '';
+      let tried = false;
+      img.onerror = function () { if (!tried) { tried = true; img.src = SCENE_BASE + k + '.png'; } else { img.remove(); ico.textContent = ITEMS[k]; } };
+      img.src = SPRITE_BASE + k + '.png';
+      ico.appendChild(img);
+      const nm = document.createElement('span'); nm.className = 'p-name'; nm.textContent = '"' + k + '"';
+      b.appendChild(ico); b.appendChild(nm);
       b.onclick = () => { const c = $('cmd'); c.value = `place("${k}", 3, 3)`; c.focus(); };
       p.appendChild(b);
     });

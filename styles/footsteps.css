@@ -213,15 +213,19 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
 .rz-code.flash{animation:rzflash .5s;}
 @keyframes rzflash{0%{background:#3a3a1e;}100%{background:var(--term-bg);}}
 .sprite .spr-img{transition:transform .2s;}
-.cmd-item{flex-direction:column;align-items:flex-start !important;gap:2px;}
+.cmd-item{flex-direction:column;align-items:flex-start !important;gap:3px;height:auto !important;padding:9px 11px !important;}
 .cmd-item .cmd-code{font-family:'JetBrains Mono';font-size:12px;color:var(--olive-deep);}
 .cmd-item .cmd-desc{font-size:10.5px;color:var(--ink-soft);}
 .target-mark{position:absolute;border:2px dashed var(--terra);border-radius:8px;box-sizing:border-box;pointer-events:none;animation:pulse 1.2s infinite;}
 @keyframes pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
-.palette{display:none;flex-wrap:wrap;gap:7px;margin:8px 0 4px;padding:11px;background:#fff;border:1px solid var(--parch-deep);border-radius:12px;}
-.palette.open{display:flex;}
-.palette .p-item{display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono';font-size:12px;background:rgba(107,122,63,.1);border:1px solid var(--parch-deep);padding:5px 9px;border-radius:8px;cursor:pointer;color:var(--ink);}
-.palette .p-item:active{background:rgba(199,154,58,.2);}.palette .p-item .emo{font-size:16px;}
+.palette{display:none;gap:7px;margin:8px 0 4px;padding:11px;background:#fff;border:1px solid var(--parch-deep);border-radius:12px;}
+#palette.open{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));}
+#commands.open{display:flex;flex-direction:column;}
+.palette .p-item{display:flex;align-items:center;gap:7px;width:100%;height:42px;font-family:'JetBrains Mono';font-size:12px;background:rgba(107,122,63,.1);border:1px solid var(--parch-deep);padding:0 9px;border-radius:8px;cursor:pointer;color:var(--ink);text-align:left;overflow:hidden;}
+.palette .p-item:active{background:rgba(199,154,58,.2);}
+.p-ico{width:26px;height:26px;flex:0 0 26px;display:grid;place-items:center;font-size:18px;}
+.p-ico .p-img{width:100%;height:100%;object-fit:contain;display:block;}
+.p-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .console{background:var(--term-bg);border-radius:14px;margin-top:10px;overflow:hidden;box-shadow:0 8px 22px -10px rgba(0,0,0,.5);}
 .term-bar{display:flex;align-items:center;gap:6px;padding:9px 12px;background:#1b1610;border-bottom:1px solid #000;}
 .term-bar .dot{width:10px;height:10px;border-radius:50%;}
