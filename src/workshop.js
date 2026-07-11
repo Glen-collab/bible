@@ -201,22 +201,34 @@
     return name + ' placed at ' + col + ', ' + row + (size !== 1 ? ', size ' + size : '');
   }
   function el_cell(el, rec) { el._cell = rec; }
-  function move(name, dir) {
-    const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
-    const d = { left: [-1, 0], right: [1, 0], up: [0, -1], down: [0, 1] }[dir];
-    if (!d) throw { kind: 'dir', got: dir };
-    const nc = Math.max(0, Math.min(COLS - 1, s.col + d[0] * COLS));
-    const nr = Math.max(0, Math.min(ROWS - 1, s.row + d[1] * ROWS));
-    const size = (cells[s.k] && cells[s.k].size) || 1;
+  function reposition(s, nc, nr) {
+    const rec = cells[s.k] || {};
     delete cells[s.k];
     const nk = keyOf(nc, nr);
     if (cells[nk] && cells[nk].el !== s.el) { cells[nk].el.remove(); } // clear whatever it lands on
     s.el.classList.add('moving');
     positionEl(s.el, nc, nr);
-    cells[nk] = { name, el: s.el, size, col: nc, row: nr };
+    cells[nk] = { name: rec.name, el: s.el, size: rec.size || 1, rot: rec.rot || 0, flipped: rec.flipped || false, col: nc, row: nr };
     el_cell(s.el, cells[nk]);
-    sweepChime();
-    return name + ' moves ' + dir + '!';
+  }
+  function move(name, a, b) {
+    const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
+    // move("name", col, row) -> go straight to that square
+    if (typeof a === 'number' && typeof b === 'number') {
+      const nc = Math.max(0, Math.min(COLS - 1, Math.round(a)));
+      const nr = Math.max(0, Math.min(ROWS - 1, Math.round(b)));
+      reposition(s, nc, nr); sweepChime();
+      return name + ' moves to ' + nc + ', ' + nr;
+    }
+    // move("name", dir) or move("name", dir, steps)
+    const dir = a;
+    const d = { left: [-1, 0], right: [1, 0], up: [0, -1], down: [0, 1] }[dir];
+    if (!d) throw { kind: 'dir', got: dir };
+    const steps = (typeof b === 'number' && b > 0) ? b : (COLS + ROWS); // no count given -> slide to the edge
+    const nc = Math.max(0, Math.min(COLS - 1, s.col + d[0] * steps));
+    const nr = Math.max(0, Math.min(ROWS - 1, s.row + d[1] * steps));
+    reposition(s, nc, nr); sweepChime();
+    return name + ' moves ' + dir + (typeof b === 'number' ? ' ' + b : '') + '!';
   }
 
   function findKeyOfEl(el) { for (const k in cells) if (cells[k].el === el) return k; return null; }
@@ -334,7 +346,9 @@
     const CMDS = [
       ['place("' + it + '", 3, 3)', 'put something on the stage'],
       ['place("' + it + '", 3, 3, 2)', 'bigger or smaller (size)'],
-      ['move("' + it + '", "right")', 'send it left / right / up / down'],
+      ['move("' + it + '", "right")', 'slide it to the edge'],
+      ['move("' + it + '", "right", 2)', 'move it 2 squares (distance)'],
+      ['move("' + it + '", 3, 4)', 'move it to a spot'],
       ['remove("' + it + '")', 'take it off the stage'],
       ['flip("' + it + '")', 'face the other way'],
       ['rotate("' + it + '", 90)', 'turn it around'],
@@ -406,7 +420,7 @@
       case 'numbers': return { msg: `Both spots need to be numbers — a column and a row.` };
       case 'range': return { msg: `That's off the stage. Columns go 0–${COLS - 1}, rows go 0–${ROWS - 1}. You wrote ${e.col}, ${e.row}.` };
       case 'notPlaced': return { msg: `Place the ${e.got} first, then you can move it.` };
-      case 'dir': return { msg: `Direction should be "left", "right", "up", or "down".` };
+      case 'dir': return { msg: `Use a direction — "left", "right", "up", or "down". Add a number for distance, like move("${firstItem()}", "right", 2), or move to a spot with move("${firstItem()}", 3, 2).` };
     }
     if (e instanceof Error && e.name === 'ReferenceError') {
       const m = (e.message.match(/variable:\s*([A-Za-z_$][\w$]*)/) || e.message.match(/([A-Za-z_$][\w$]*)\s+is not defined/) || [])[1];
