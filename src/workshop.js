@@ -290,9 +290,32 @@
     tutorSay(msgs[Math.min(rung, msgs.length - 1)]);
     $('dym').innerHTML = '';
     const nw = $('nextwrap');
-    if (!last) nw.innerHTML = `<button class="btn" onclick="FootstepsWorkshop._advance()">Next step →</button>`;
-    else if (CFG.practice && CFG.practice.enabled) nw.innerHTML = `<button class="btn olive" onclick="FootstepsWorkshop._practice()">Now practice on your own →</button><button class="btn ghost" onclick="FootstepsWorkshop._exit()">Back to the map</button>`;
-    else nw.innerHTML = `<button class="btn olive" onclick="FootstepsWorkshop._exit()">Back to the map →</button>`;
+    if (!last) { nw.innerHTML = `<button class="btn" onclick="FootstepsWorkshop._advance()">Next step →</button>`; return; }
+    // last rung done — offer the finale (the "wow"), then practice / map
+    let html = '';
+    if (CFG.finale && window.FootstepsFinale) {
+      tutorSay(`⭐ <b>You built the whole scene!</b> Want to see what your code can really do?`);
+      html += `<button class="btn" onclick="FootstepsWorkshop._finale()">🦉 Bring the scene to life</button>`;
+    }
+    if (CFG.practice && CFG.practice.enabled) html += `<button class="btn olive" onclick="FootstepsWorkshop._practice()">Practice on your own →</button>`;
+    html += `<button class="btn ghost" onclick="FootstepsWorkshop._exit()">Back to the map</button>`;
+    nw.innerHTML = html;
+  }
+  WS._finale = function () {
+    if (window.FootstepsFinale) window.FootstepsFinale.stop();
+    $('nextwrap').innerHTML = '';
+    return window.FootstepsFinale.run({
+      stage: $('stage'), out: $('termout'), ada: $('tutorbody'),
+      cells: cells, COLS: COLS, ROWS: ROWS, ITEMS: ITEMS, config: CFG.finale,
+      onDone: finaleDone,
+    });
+  };
+  function finaleDone() {
+    let html = '';
+    if (CFG.practice && CFG.practice.enabled) html += `<button class="btn olive" onclick="FootstepsWorkshop._practice()">Practice on your own →</button>`;
+    html += `<button class="btn" onclick="FootstepsWorkshop._finale()">↻ Play the finale again</button>`;
+    html += `<button class="btn ghost" onclick="FootstepsWorkshop._exit()">Back to the map</button>`;
+    $('nextwrap').innerHTML = html;
   }
   WS._advance = function () { rung++; $('nextwrap').innerHTML = ''; renderRungs(); tutorSay(linkifyCode(CFG.rungs[rung].goal)); $('cmd').focus(); };
 
@@ -331,7 +354,7 @@
     }
   }
 
-  WS._exit = function () { if (opts.onExit) opts.onExit(); };
+  WS._exit = function () { if (window.FootstepsFinale) window.FootstepsFinale.stop(); if (opts.onExit) opts.onExit(); };
 
   /* ---- small helpers ---- */
   function escapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }

@@ -58,7 +58,17 @@ const WORKSHOPS = {
         goal:'Hang the star up high: place("star", 6, 0). A small row number is near the top.' },
     ],
     // after the guided rungs -> free practice/challenge mode (auto-generated targets)
-    practice: { enabled:true, prompt:"I'll call out a spot — you write the code to place it there." }
+    practice: { enabled:true, prompt:"I'll call out a spot — you write the code to place it there." },
+    // the "bring the scene to life" finale (animates the kid's OWN placed scene)
+    finale: {
+      sky: "night",
+      twinkle: 9,                                 // editable: stars in the sky
+      grass: { emoji:"🌿", n:6, rows:[4,5] },      // editable: scenery scattered in
+      extras: [ { emoji:"🐑", n:2, rows:[4,4] } ], // one-time extra flock members
+      dove: true,
+      shimmer: ["star","lamp"],                    // placed items that glow, if present
+      wander: ["donkey","sheep","ox","camel","dove"] // placed items that roam
+    }
   },
 
   /* ---- Stub for future workshops (one per case). Fill target arrangements. ---- */
@@ -77,7 +87,17 @@ const WORKSHOPS = {
       { id:2, label:"3 · More sheep", goalItem:"sheep",  target:{col:5,row:4},
         goal:'A flock needs more than one. Place another sheep: place("sheep", 5, 4).' },
     ],
-    practice: { enabled:true, prompt:"Fill the field! I'll call out where each animal goes." }
+    practice: { enabled:true, prompt:"Fill the field! I'll call out where each animal goes." },
+    finale: {
+      sky: "night",
+      twinkle: 9,
+      grass: { emoji:"🌿", n:8, rows:[4,5] },
+      extras: [ { emoji:"🌾", n:4, rows:[5,5] } ],
+      fire: [1,5],                                 // a campfire for the shepherd
+      dove: true,
+      shimmer: ["star","lamp"],
+      wander: ["sheep","shepherd","ox"]
+    }
   },
 
   // moses / ruth / paul workshops: add here following the same shape.

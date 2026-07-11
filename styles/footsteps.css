@@ -234,3 +234,38 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
 .scorebar b{font-family:'Fraunces';color:var(--terra-deep);font-size:16px;}
 .celebrate{animation:pop .5s;}
 @keyframes pop{0%{transform:scale(.6);opacity:0;}60%{transform:scale(1.2);}100%{transform:scale(1);opacity:1;}}
+
+/* =====================================================================
+   WORKSHOP FINALE — "bring the scene to life" + tap/tinker teaching
+   ===================================================================== */
+#stage{transition:background 2.2s ease;}
+#stage.night{background:linear-gradient(#1c2a4a,#33415f 55%,#5a5136)!important;}
+.sprite.roam{transition:left 1s ease,top 1s ease;}
+.sprite.scenery{font-size:19px;opacity:.92;}
+.sprite.shimmer{animation:shimmer 1.4s ease-in-out infinite;}
+@keyframes shimmer{0%,100%{transform:scale(1);filter:drop-shadow(0 0 2px rgba(255,231,150,.5));}
+  50%{transform:scale(1.28) rotate(8deg);filter:drop-shadow(0 0 14px rgba(255,221,120,.95));}}
+.sprite.flicker{animation:flick .5s ease-in-out infinite;}
+@keyframes flick{0%,100%{transform:scale(1) translateY(0);}50%{transform:scale(1.14) translateY(-2px);}}
+.sprite.twinkle{font-size:14px;animation:tw 1.8s ease-in-out infinite;}
+@keyframes tw{0%,100%{opacity:.25;}50%{opacity:1;}}
+.sprite.fly{transition:left 3.4s linear,top 3.4s ease-in-out;}
+
+#termout .caret{color:var(--term-green);animation:blink .9s step-end infinite;}
+@keyframes blink{50%{opacity:0;}}
+#termout .c{color:var(--term-dim);}
+#termout .k{color:var(--term-amber);}
+#termout .codeline{border-radius:5px;padding:0 3px;margin:0 -3px;}
+#termout.teach .codeline.learn{cursor:pointer;transition:background .15s;}
+#termout.teach .codeline.learn:hover,#termout .codeline.active{background:rgba(143,176,196,.28);box-shadow:inset 2px 0 0 var(--term-green);}
+#termout.teach .codeline.editable::after{content:"✎ play";font-family:'Spline Sans';font-size:10px;color:var(--term-amber);margin-left:8px;opacity:.85;}
+#termout.teach .codeline.editable.playing::after{content:"✕ done";color:var(--term-green);}
+.editbar{display:flex;align-items:center;gap:8px;margin:7px 0 9px;padding:8px 10px;background:rgba(143,176,196,.16);border-radius:9px;font-family:'JetBrains Mono';font-size:12px;}
+.editbar .ed-lab{color:var(--term-dim);font-family:'Spline Sans';font-weight:600;font-size:11.5px;}
+.editbar .ed-b{width:27px;height:27px;border:none;border-radius:7px;background:#3a3020;color:#f2e9d6;font-size:17px;line-height:1;cursor:pointer;}
+.editbar .ed-b:active{transform:translateY(1px);}
+.editbar .ed-val{min-width:24px;text-align:center;color:var(--term-green);font-weight:700;font-size:14px;}
+.editbar .ed-run{margin-left:auto;border:none;border-radius:8px;padding:7px 13px;background:var(--olive);color:#fff;font-family:'Spline Sans';font-weight:600;font-size:12.5px;cursor:pointer;}
+.editbar .ed-run:active{transform:translateY(1px);}
+.teachhint{margin-top:9px;text-align:center;font-size:12px;color:var(--olive-deep);font-weight:600;display:none;}
+.teachhint.show{display:block;animation:pop .4s;}
