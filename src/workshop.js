@@ -26,6 +26,7 @@
     flamingo:0.68, monkey:0.70, deer:0.72, ostrich:0.75, kangaroo:0.78, panda:0.80, rainbow:0.90,
     lion:0.95, zebra:0.95, tiger:0.98, gorilla:1.00, camel:1.00, ox:1.00, hippo:1.05, rhino:1.05, elephant:1.15, giraffe:1.20,
     goliath:1.15, joseph:1.05, mary:0.95, david:0.90, man:0.90, female:0.90,
+    tomb:1.05, boulder:0.85,
   };
   function paintSprite(el, name) {
     const emoji = (window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS[name]) || '';

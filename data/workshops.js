@@ -30,7 +30,9 @@ const WORKSHOP_ITEMS = {
   baby_deer:"🦌", mouse:"🐭", snail:"🐌", butterfly:"🦋", squirrel:"🐿️",
   owl:"🦉", rainbow:"🌈",
   // figures for the iconic-scene rethemes
-  david:"🧒", goliath:"🧌", mary:"🧕", joseph:"🧔", man:"🧑", female:"👩", baby_jesus:"👶"
+  david:"🧒", goliath:"🧌", mary:"🧕", joseph:"🧔", man:"🧑", female:"👩", baby_jesus:"👶",
+  // resurrection scene pieces
+  tomb:"🪦", boulder:"🪨"
 };
 
 /* Real functions the kid's JS calls (defined in the engine):
