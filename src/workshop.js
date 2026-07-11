@@ -195,6 +195,10 @@
     el.style.width = (size * 100 / COLS) + '%';
     el.style.height = (size * 100 / ROWS) + '%';
   }
+  // pieces anchor by their corner; this reports where the visual center lands
+  function numStr(n) { return (n % 1 === 0) ? String(n) : n.toFixed(1); }
+  function centerCells(col, row, size) { size = size || 1; return numStr(col + (size - 1) / 2) + ', ' + numStr(row + (size - 1) / 2); }
+  function centerNote(col, row, size) { return '  // center at grid ' + centerCells(col, row, size); }
   function place(name, col, row, size) {
     if (typeof name !== 'string') throw { kind: 'quotes' };
     if (!(name in ITEMS)) throw { kind: 'unknownItem', got: name };
@@ -219,7 +223,7 @@
     }
     el_cell(cells[k].el, cells[k]);
     chime(520 + col * 40);
-    return name + ' placed at ' + col + ', ' + row + (size !== 1 ? ', size ' + size : '');
+    return name + ' placed at ' + col + ', ' + row + (size !== 1 ? ', size ' + size : '') + centerNote(col, row, size);
   }
   function el_cell(el, rec) { el._cell = rec; }
   function reposition(s, nc, nr) {
@@ -239,7 +243,7 @@
       const nc = Math.max(0, Math.min(COLS - 1, Math.round(a)));
       const nr = Math.max(0, Math.min(ROWS - 1, Math.round(b)));
       reposition(s, nc, nr); sweepChime();
-      return name + ' moves to ' + nc + ', ' + nr;
+      return name + ' moves to ' + nc + ', ' + nr + centerNote(nc, nr, (cells[keyOf(nc, nr)] || {}).size || 1);
     }
     // move("name", dir) or move("name", dir, steps)
     const dir = a;
@@ -249,7 +253,7 @@
     const nc = Math.max(0, Math.min(COLS - 1, s.col + d[0] * steps));
     const nr = Math.max(0, Math.min(ROWS - 1, s.row + d[1] * steps));
     reposition(s, nc, nr); sweepChime();
-    return name + ' moves ' + dir + (typeof b === 'number' ? ' ' + b : '') + '!';
+    return name + ' moves ' + dir + (typeof b === 'number' ? ' ' + b : '') + centerNote(nc, nr, (cells[keyOf(nc, nr)] || {}).size || 1);
   }
 
   function findKeyOfEl(el) { for (const k in cells) if (cells[k].el === el) return k; return null; }
@@ -280,10 +284,15 @@
   /* ---- tap-a-piece to resize it (＋ / −) or delete it ---- */
   let selected = null;
   function codeColor(s) {
-    return String(s)
+    s = String(s);
+    const i = s.indexOf('//');
+    let code = i >= 0 ? s.slice(0, i) : s;
+    const cmt = i >= 0 ? s.slice(i) : '';
+    code = code
       .replace(/("[^"]*")/g, '<span class="c-str">$1</span>')
       .replace(/\b(-?\d+(?:\.\d+)?)\b/g, '<span class="c-num">$1</span>')
       .replace(/\b(place|move|remove|flip|rotate)\b/g, '<span class="c-fn">$1</span>');
+    return code + (cmt ? '<span class="c-cmt">' + cmt + '</span>' : '');
   }
   function showCode(str) {
     const el = $('rzcode'); if (!el) return;
@@ -299,7 +308,7 @@
     const c = el._cell;
     $('rzname').textContent = c.name;
     $('rzval').textContent = (c.size || 1).toFixed(2) + '×';
-    showCode('place("' + c.name + '", ' + c.col + ', ' + c.row + ((c.size && c.size !== 1) ? ', ' + c.size : '') + ')');
+    showCode('place("' + c.name + '", ' + c.col + ', ' + c.row + ((c.size && c.size !== 1) ? ', ' + c.size : '') + ')' + centerNote(c.col, c.row, c.size || 1));
   }
   WS._resize = function (dir) {
     if (!selected || !selected._cell) return;
@@ -307,7 +316,7 @@
     selected._cell.size = sz; sizeSprite(selected, sz);
     $('rzval').textContent = sz.toFixed(2) + '×';
     const c = selected._cell;
-    showCode('place("' + c.name + '", ' + c.col + ', ' + c.row + ', ' + sz + ')');
+    showCode('place("' + c.name + '", ' + c.col + ', ' + c.row + ', ' + sz + ')' + centerNote(c.col, c.row, sz));
     print('> place("' + c.name + '", ' + c.col + ', ' + c.row + ', ' + sz + ')', 'echo');
     chime(500 + sz * 120);
   };

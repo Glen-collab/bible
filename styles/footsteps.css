@@ -209,7 +209,7 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
 .resizebar .rz-b.rz-del{background:#b5532a;}
 .resizebar .rz-done{margin-left:auto;border:none;background:none;color:var(--ink-soft);font-family:'Spline Sans';font-weight:600;font-size:13px;cursor:pointer;text-decoration:underline;}
 .rz-code{font-family:'JetBrains Mono';font-size:12.5px;background:var(--term-bg);color:#f2e9d6;padding:8px 11px;border-radius:8px;overflow-x:auto;white-space:nowrap;}
-.rz-code .c-fn{color:var(--term-green);}.rz-code .c-str{color:#e8b34a;}.rz-code .c-num{color:#8fb0c4;}
+.rz-code .c-fn{color:var(--term-green);}.rz-code .c-str{color:#e8b34a;}.rz-code .c-num{color:#8fb0c4;}.rz-code .c-cmt{color:var(--term-dim);}
 .rz-code.flash{animation:rzflash .5s;}
 @keyframes rzflash{0%{background:#3a3a1e;}100%{background:var(--term-bg);}}
 .sprite .spr-img{transition:transform .2s;}
