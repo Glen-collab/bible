@@ -533,6 +533,153 @@ const SHARED_RANKS = {
   high: "Patient Pilgrim",
 };
 
+/* =====================================================================
+   ROUND TABLES — parent+child discussion, one themed pool set per case.
+   Shown between the story and the workshop. Each slot (kid / parent /
+   together) is a POOL; the engine picks one at random each visit (no
+   immediate repeat) so it stays fresh but always on-theme. notAlone is
+   its own small pool. Framing/labels/badge are generic (in roundtable.js).
+   ===================================================================== */
+const ROUNDTABLES = {
+  jesus: { // Patience & Trust
+    kid: [
+      "What's something you really <i>don't</i> want to wait for right now?",
+      "When is waiting the hardest for you — in the car, in line, for a special day?",
+      "Has waiting for something ever made it feel <i>even better</i> when it finally came?",
+      "What actually helps you when you have to wait and it's really hard?",
+      "Is there something you're waiting for that you don't understand — that you just have to <i>trust</i> will be okay?",
+    ],
+    parent: [
+      "When you were about this age, what's the hardest thing <i>you</i> ever had to wait for? How did it turn out?",
+      "Was there a time as a kid you wanted something <i>now</i>, but waiting turned out better? Tell the story.",
+      "What's something you waited a long time for as a kid — and was it worth it?",
+      "When you were little, who helped you learn to be patient, and how?",
+      "Was there a time you rushed something as a kid and wished you'd waited? What happened?",
+    ],
+    together: [
+      "Pick <i>one</i> thing this week you'll both be patient about — and check in on it later.",
+      "Think of something you're both waiting for. How can you help <i>each other</i> wait well?",
+      "Name a 'waiting moment' that happens a lot in your week. What could make it easier for both of you?",
+      "Choose something worth waiting for, and make a little plan for the wait together.",
+    ],
+    notAlone: [
+      "Here's a secret: almost every grown-up still finds waiting hard, too. You're in good company.",
+      "Even the oldest, wisest people you know still wrestle with waiting. You're not the only one.",
+      "Waiting is hard for just about everybody — that's part of being human, not a problem with you.",
+    ],
+  },
+  david: { // Courage & Humility
+    kid: [
+      "When is it hardest for you to be brave — trying something new, standing up for someone, admitting you're scared?",
+      "Have you ever done something brave that <i>nobody saw</i> or clapped for? What was it?",
+      "David was the youngest and smallest. When have you felt too little or too young to matter?",
+      "What's the difference between being brave and just <i>showing off</i>? Can you think of an example?",
+      "Is it braver to win a fight, or to walk away from one? Why do you think so?",
+    ],
+    parent: [
+      "When you were about this age, what's the bravest thing you ever did — even if it was quiet?",
+      "Was there a time as a kid you were scared but did the right thing anyway? Tell the story.",
+      "Did you ever feel overlooked or 'too little' as a kid? How did that feel, and what changed?",
+      "Was there a time you showed off and it backfired? What did you learn?",
+      "Who taught you that real strength can be gentle? What did they do?",
+    ],
+    together: [
+      "Name one brave-but-quiet thing you could each do this week — no applause needed.",
+      "Is there someone who needs standing up for? How could you help them together?",
+      "Pick a fear you'd each like to face, and agree to cheer each other on.",
+      "Think of a moment coming up to choose the humble path. What would that look like?",
+    ],
+    notAlone: [
+      "Even the bravest grown-ups get scared — courage isn't <i>not</i> being afraid, it's doing the good thing anyway.",
+      "Every strong person you admire once felt small and overlooked. You're not the only one.",
+      "Wanting to be the hero is normal — learning that quiet strength counts more takes everybody a lifetime.",
+    ],
+  },
+  moses: { // Perseverance & Trust
+    kid: [
+      "What's something hard you wanted to quit — but were glad you didn't, or wish you hadn't?",
+      "When something feels too big or too hard, what happens inside you? What do you want to do?",
+      "Moses said 'I can't, I'm not good enough.' When have you felt like that?",
+      "What's one small step you could take on something hard, even if you can't do the whole thing yet?",
+      "Who helps you keep going when you really want to give up?",
+    ],
+    parent: [
+      "When you were about this age, what's something hard you stuck with? What kept you going?",
+      "Was there a time as a kid you quit something and wished you hadn't? Tell the story.",
+      "Did you ever feel 'not good enough' for something as a kid? What happened next?",
+      "Was there a long, hard stretch in your childhood that turned out to matter? What got you through?",
+      "Who refused to let you give up when you were young — and are you glad now?",
+    ],
+    together: [
+      "Name one hard thing you're each working on. How can you keep <i>each other</i> going this week?",
+      "Pick a 'next small step' you could each take on something tough.",
+      "Agree on a signal or a cheer for when one of you wants to quit.",
+      "Think of a long journey you're on together. What would 'not giving up' look like this week?",
+    ],
+    notAlone: [
+      "Everybody wants to quit when things get hard — pushing on anyway is something we all keep learning.",
+      "Even the strongest people you know have felt 'not good enough.' You're in good company.",
+      "Nobody makes the long journey alone — the strong ones accept help. That includes grown-ups.",
+    ],
+  },
+  ruth: { // Loyalty & Faithfulness
+    kid: [
+      "What does it mean to be a really good friend — even when it's <i>not</i> easy?",
+      "Have you ever stuck with someone when it would've been easier to walk away? What happened?",
+      "Ruth stayed when there was nothing in it for her. When is it hard to keep a promise?",
+      "Who is someone you want to <i>always</i> be loyal to? Why them?",
+      "What's the difference between being kind when it's easy and being faithful when it's hard?",
+    ],
+    parent: [
+      "When you were about this age, who was a friend you stayed loyal to? What made them special?",
+      "Was there a time as a kid someone stayed faithful to you when they didn't have to? How did it feel?",
+      "Did you ever keep a hard promise as a kid? Tell the story.",
+      "Was there a time you walked away from someone and wish you hadn't? What did you learn?",
+      "Who taught you what real faithfulness looks like? What did they do?",
+    ],
+    together: [
+      "Name one person you could each be more faithful to this week — and how.",
+      "Is there someone who needs your loyalty right now? How could you show up for them together?",
+      "Make a small promise to each other this week — and a plan to keep it.",
+      "Think of a friend going through a hard time. What's one loyal thing you could do together?",
+    ],
+    notAlone: [
+      "Staying faithful when it's hard is tough for everybody — that's what makes it mean so much.",
+      "Almost everyone has walked away from someone and wished they'd stayed. You're not alone.",
+      "The quiet, loyal people rarely get applause — but they hold the whole world together.",
+    ],
+  },
+  paul: { // Transformation & Mission
+    kid: [
+      "Do you think people can <i>really</i> change? Have you ever seen someone change for the better?",
+      "Is there something about yourself you'd like to change? What might help?",
+      "Paul had done real wrong, and got a second chance. When has someone given <i>you</i> a second chance?",
+      "Is it hard to give someone a second chance after they've hurt you? Why?",
+      "If you had good news you couldn't keep to yourself, who would you tell first?",
+    ],
+    parent: [
+      "When you were about this age, was there something about yourself you worked hard to change?",
+      "Did someone give you a second chance as a kid when you didn't deserve it? Tell the story.",
+      "Was there a person you'd written off who surprised you by changing? What happened?",
+      "Was there a time you gave someone a second chance and were glad you did?",
+      "Who believed you could change or grow when you were young? What did that do for you?",
+    ],
+    together: [
+      "Name one thing you'd each like to change about yourselves — and how you'll help each other.",
+      "Is there someone who deserves a second chance from you? How could you offer it together?",
+      "Think of good news worth sharing. Who could you encourage together this week?",
+      "Pick one small 'new start' you could make together this week.",
+    ],
+    notAlone: [
+      "Everybody has parts of themselves they want to change — growing is lifelong, for grown-ups too.",
+      "We've all written someone off and been proven wrong. Second chances surprise everybody.",
+      "No one is beyond change — and that good news is for grown-ups just as much as kids.",
+    ],
+  },
+};
+// attach each round table to its case (keeps content grouped, cases lean)
+Object.keys(ROUNDTABLES).forEach(function (id) { if (CASES[id]) CASES[id].roundtable = ROUNDTABLES[id]; });
+
 // Export style is left flexible for Claude Code's chosen module system:
 // ES modules:   export { CASES, CASE_ORDER, SHARED_RANKS };
 // CommonJS:     module.exports = { CASES, CASE_ORDER, SHARED_RANKS };

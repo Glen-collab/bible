@@ -54,12 +54,20 @@
   function startCase(id) {
     const c = CASES[id]; if (!c) return;
     const ws = workshopForCase(id);
+    const hasRT = !!(c.roundtable && window.FootstepsRoundTable);
     window.FootstepsEngine.play(c, {
       onExit: renderHome,
-      completeLabel: ws ? 'Take up the pen — enter the Workshop →' : 'Back to the map',
-      onComplete: () => { if (ws) startWorkshop(ws); else renderHome(); },
+      completeLabel: hasRT ? 'Talk it over with a grown-up →' : (ws ? 'Take up the pen — enter the Workshop →' : 'Back to the map'),
+      onComplete: () => afterStory(c, ws),
     });
   }
+
+  // story done -> optional Round Table -> workshop (or home)
+  function afterStory(c, ws) {
+    if (c.roundtable && window.FootstepsRoundTable) window.FootstepsRoundTable.play(c, { onDone: () => afterRoundTable(ws) });
+    else afterRoundTable(ws);
+  }
+  function afterRoundTable(ws) { if (ws) startWorkshop(ws); else renderHome(); }
 
   function startWorkshop(ws) {
     window.FootstepsWorkshop.play(ws, { onExit: renderHome });
