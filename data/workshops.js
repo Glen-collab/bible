@@ -100,7 +100,77 @@ const WORKSHOPS = {
     }
   },
 
-  // moses / ruth / paul workshops: add here following the same shape.
+  /* ---- Workshop for CASE 3 (Moses): light the desert road ---- */
+  desertJourney: {
+    id: "desertJourney",
+    forCase: "moses",
+    title: "Light the Desert Road",
+    subtitle: "Same Truth, New Scribes",
+    grid: { cols: 8, rows: 6 },
+    items: ["palm","well","fire","camel","sheep","star","lamp","dove","ox"],
+    aiPreview: [ 'place("palm", 1, 2)', 'place("well", 3, 4)', 'place("fire", 6, 1)', 'place("camel", 1, 4)' ],
+    rungs: [
+      { id:0, label:"1 · Oasis",     goalItem:"palm",  target:{col:1,row:2},
+        goal:'A resting place in the desert. Type place("palm", 1, 2).' },
+      { id:1, label:"2 · Water",     goalItem:"well",  target:{col:3,row:4},
+        goal:'Every journey needs water. Add a well: place("well", 3, 4).' },
+      { id:2, label:"3 · The fire",  goalItem:"fire",  target:{col:6,row:1},
+        goal:'A pillar of fire to lead by night: place("fire", 6, 1).' },
+      { id:3, label:"4 · The camel", goalItem:"camel", target:{col:1,row:4},
+        goal:'Bring a camel to the caravan: place("camel", 1, 4).' },
+      { id:4, label:"5 · Move on",   goalMove:{item:"camel",dir:"right"},
+        goal:'Lead the caravan across the desert! move("camel", "right").' },
+    ],
+    practice: { enabled:true, prompt:"Set up camp! I'll call out where each thing goes." },
+    finale: { sky:"night", twinkle:10, grass:{emoji:"🌴", n:4, rows:[2,4]}, dove:true, shimmer:["star","lamp"], wander:["camel","sheep","ox","donkey"] }
+  },
+
+  /* ---- Workshop for CASE 4 (Ruth): build the harvest home ---- */
+  harvestField: {
+    id: "harvestField",
+    forCase: "ruth",
+    title: "Build the Harvest Home",
+    subtitle: "Same Truth, New Scribes",
+    grid: { cols: 8, rows: 6 },
+    items: ["house","well","ox","sheep","donkey","star","lamp","dove","palm"],
+    aiPreview: [ 'place("house", 6, 2)', 'place("well", 4, 4)', 'place("ox", 1, 4)' ],
+    rungs: [
+      { id:0, label:"1 · A home",  goalItem:"house", target:{col:6,row:2},
+        goal:'After a long road, a home. Type place("house", 6, 2).' },
+      { id:1, label:"2 · The well", goalItem:"well", target:{col:4,row:4},
+        goal:'Water for the workers: place("well", 4, 4).' },
+      { id:2, label:"3 · The ox",   goalItem:"ox",   target:{col:1,row:4},
+        goal:'An ox for the harvest field: place("ox", 1, 4).' },
+      { id:3, label:"4 · To work",  goalMove:{item:"ox",dir:"right"},
+        goal:'Work the field! move("ox", "right").' },
+    ],
+    practice: { enabled:true, prompt:"Build the homestead! I'll call out where each piece goes." },
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌾", n:10, rows:[3,5]}, extras:[{emoji:"🌿",n:4,rows:[4,5]}], dove:true, shimmer:["star","lamp"], wander:["ox","sheep","donkey"] }
+  },
+
+  /* ---- Workshop for CASE 5 (Paul): carry the light ---- */
+  carryTheLight: {
+    id: "carryTheLight",
+    forCase: "paul",
+    title: "Carry the Light",
+    subtitle: "Same Truth, New Scribes",
+    grid: { cols: 8, rows: 6 },
+    items: ["lamp","house","star","dove","donkey","camel","palm","well","fire"],
+    aiPreview: [ 'place("lamp", 1, 3)', 'place("house", 5, 2)', 'place("dove", 0, 3)' ],
+    rungs: [
+      { id:0, label:"1 · The light",   goalItem:"lamp",  target:{col:1,row:3},
+        goal:'The good news is a light. Type place("lamp", 1, 3).' },
+      { id:1, label:"2 · A city",      goalItem:"house", target:{col:5,row:2},
+        goal:'Carry it to a city: place("house", 5, 2).' },
+      { id:2, label:"3 · The message", goalItem:"dove",  target:{col:0,row:3},
+        goal:'Ready the messenger: place("dove", 0, 3).' },
+      { id:3, label:"4 · Send it far", goalMove:{item:"dove",dir:"right"},
+        goal:'Send the message across the sea! move("dove", "right").' },
+    ],
+    practice: { enabled:true, prompt:"Light the cities! I'll call out where each one goes." },
+    finale: { sky:"night", twinkle:12, grass:{emoji:"🪔", n:6, rows:[2,4]}, extras:[{emoji:"⭐",n:3,rows:[0,1]}], dove:true, shimmer:["lamp","star"], wander:["dove","donkey","camel"] }
+  },
+
 };
 
 if (typeof window !== "undefined") {
