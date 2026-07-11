@@ -22,7 +22,9 @@
 
   const Engine = {};
   let C, opts, roles;
-  let stage, wisdom, earned, usedHintThisStop, visitedSpots, sqDone;
+  let stage, wisdom, earned, visitedSpots, sqDone;
+  // per-stop memory that must survive a detour + re-render
+  let stopHinted, stopWrong, stopThorough;
 
   function resolveRoles(caseObj) {
     const keys = Object.keys(caseObj.badges);
@@ -41,6 +43,7 @@
     opts = options || {};
     roles = resolveRoles(caseObj);
     stage = 0; wisdom = 0; earned = {}; sqDone = {};
+    stopHinted = {}; stopWrong = {}; stopThorough = {};
     renderIntro();
   };
 
@@ -110,7 +113,7 @@
 
   /* ---- a stop ---- */
   function renderStop() {
-    const s = C.stops[stage]; usedHintThisStop = false; visitedSpots = 0;
+    const s = C.stops[stage]; visitedSpots = 0;
     if (s.final) { renderFinal(); return; }
     screenEl().innerHTML = trailDots(stage) + `<div class="card">
       <div class="place-name">${s.place}</div><div class="place-tag">${s.tag}</div>
@@ -146,7 +149,10 @@
     r.innerHTML = `<div class="lead">${sp.lead}</div>${sp.clue ? `<div class="clue">${sp.clue}</div>` : ''}`;
     $('reveals').appendChild(r);
     const s = C.stops[stage];
-    if (visitedSpots >= s.spots.length) { award(roles.thorough); addWisdom(1, 'investigated everything'); }
+    if (visitedSpots >= s.spots.length) {
+      award(roles.thorough);
+      if (!stopThorough[stage]) { stopThorough[stage] = true; addWisdom(1, 'investigated everything'); }
+    }
     if (visitedSpots >= 1) {
       $('decision').style.display = 'block';
       if ($('choices').childElementCount === 0) buildChoices(s);
@@ -180,23 +186,25 @@
     addWisdom(2, 'helped a neighbor');
   }
 
-  Engine._hint = function () { const h = $('hintbox'); if (h) h.classList.add('show'); usedHintThisStop = true; };
+  Engine._hint = function () { const h = $('hintbox'); if (h) h.classList.add('show'); stopHinted[stage] = true; };
 
   function pick(i, el, s) {
     const fb = $('fb');
     if (i === s.answer) {
       document.querySelectorAll('.choice').forEach(c => { c.onclick = null; c.classList.add('locked'); });
       el.classList.remove('locked');
-      if (!usedHintThisStop) { award(roles.noHint); addWisdom(2, 'solved without a hint'); }
+      const clean = !stopHinted[stage] && !stopWrong[stage];
+      if (clean) { award(roles.noHint); addWisdom(2, 'solved without a hint'); }
       else { addWisdom(1, 'trail found'); }
       fb.className = 'fb good show';
-      fb.innerHTML = `<b>Yes — the trail continues.</b> ${usedHintThisStop ? 'You worked it out. Eli sees that slowing down pays off.' : 'First try, no hint. Eli is genuinely impressed.'}`;
+      fb.innerHTML = `<b>Yes — the trail continues.</b> ${clean ? 'First try, no hint. Eli is genuinely impressed.' : 'You worked it out. Eli sees that slowing down pays off.'}`;
       const next = document.createElement('button');
       next.className = 'btn';
       next.textContent = stage < C.stops.length - 2 ? 'Travel onward →' : 'Follow the trail on →';
       next.onclick = () => { stage++; renderStop(); };
       fb.after(next);
     } else {
+      stopWrong[stage] = true;
       el.classList.add('locked'); el.onclick = null;
       renderDetour(s);
     }
