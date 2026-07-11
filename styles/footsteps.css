@@ -180,6 +180,9 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
 .goal .g-lab{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--terra);font-weight:600;}
 .goal .g-txt{font-family:'Fraunces';font-size:15.5px;margin-top:4px;line-height:1.4;}
 .goal .g-txt code{font-family:'JetBrains Mono';font-size:13px;background:rgba(107,122,63,.14);padding:2px 6px;border-radius:5px;color:var(--olive-deep);}
+.railtip{background:rgba(143,176,196,.16);border-left:3px solid var(--sky);border-radius:0 12px 12px 0;padding:10px 13px;margin:0 0 10px;font-size:13px;line-height:1.5;color:var(--ink-soft);}
+.railtip b{color:var(--olive-deep);}
+.railtip code{font-family:'JetBrains Mono';font-size:12px;background:rgba(58,44,26,.08);padding:1px 5px;border-radius:5px;color:var(--terra-deep);}
 .toolbar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:8px;}
 .toggle{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-soft);cursor:pointer;user-select:none;background:#fff;border:1px solid var(--parch-deep);padding:6px 11px;border-radius:20px;}
 .toggle .sw{width:34px;height:19px;border-radius:20px;background:var(--olive);position:relative;transition:.2s;}

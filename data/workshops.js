@@ -32,7 +32,7 @@ const WORKSHOP_ITEMS = {
   // figures for the iconic-scene rethemes
   david:"🧒", goliath:"🧌", mary:"🧕", joseph:"🧔", man:"🧑", female:"👩", baby_jesus:"👶",
   // resurrection scene pieces
-  boulder:"🪨", jesus:"🧍",
+  boulder:"🪨", jesus:"🧍", king:"🤴",
   // backdrop objects: placing one becomes the whole scene (manger already above)
   ark:"🚢", tomb:"⚰️",
   // larger illustrated images (loaded from assets/scenes/) usable as placeable
@@ -237,6 +237,69 @@ const WORKSHOPS = {
     ],
     practice: { enabled:true, prompt:"I'll call out where the figures go." },
     finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:7, rows:[0,2]}], dove:true, shimmer:["jesus","angel"], wander:["dove"] }
+  },
+
+  /* ---- Standalone scene: Daniel in the lions' den ---- */
+  danielDen: {
+    id: "danielDen",
+    standalone: true,
+    title: "Daniel in the Lions' Den",
+    subtitle: "Shut the Lions' Mouths",
+    grid: { cols: 8, rows: 6 },
+    items: ["daniel_lion_den","lion","king","angel","man","dove"],
+    aiPreview: [ 'place("daniel_lion_den", 3, 2)', 'place("king", 6, 4)', 'place("dove", 4, 0)' ],
+    rungs: [
+      { id:0, label:"1 · The den",  goalItem:"daniel_lion_den", target:{col:3,row:2},
+        goal:'Set the lions\' den: place("daniel_lion_den", 3, 2).' },
+      { id:1, label:"2 · The king", goalItem:"king", target:{col:6,row:4},
+        goal:'At dawn the king comes to check on Daniel: place("king", 6, 4).' },
+      { id:2, label:"3 · A dove",   goalItem:"dove", target:{col:4,row:0},
+        goal:'Send a dove over the den: place("dove", 4, 0).' },
+    ],
+    practice: { enabled:true, prompt:"I'll call out where each piece goes." },
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:4, rows:[4,5]}, extras:[{emoji:"✨", n:5, rows:[0,2]}], dove:true, shimmer:["angel"], wander:["dove","lion"] }
+  },
+
+  /* ---- Standalone scene: the loaves and fishes ---- */
+  feeding5000: {
+    id: "feeding5000",
+    standalone: true,
+    title: "The Loaves and Fishes",
+    subtitle: "Feeding the Five Thousand",
+    grid: { cols: 8, rows: 6 },
+    items: ["jesus_2fish_2bread","loaves_fish","crowd_eating_fish","jesus","dove","man","female"],
+    aiPreview: [ 'place("jesus_2fish_2bread", 2, 2)', 'place("crowd_eating_fish", 5, 3)', 'place("dove", 4, 0)' ],
+    rungs: [
+      { id:0, label:"1 · Jesus",     goalItem:"jesus_2fish_2bread", target:{col:2,row:2},
+        goal:'Jesus holds two fish and five loaves: place("jesus_2fish_2bread", 2, 2).' },
+      { id:1, label:"2 · The crowd", goalItem:"crowd_eating_fish", target:{col:5,row:3},
+        goal:'A great crowd is fed: place("crowd_eating_fish", 5, 3).' },
+      { id:2, label:"3 · A dove",    goalItem:"dove", target:{col:4,row:0},
+        goal:'Send a dove over the crowd: place("dove", 4, 0).' },
+    ],
+    practice: { enabled:true, prompt:"I'll call out where each piece goes." },
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:5, rows:[0,2]}], dove:true, shimmer:["jesus"], wander:["dove"] }
+  },
+
+  /* ---- Standalone scene: the sermon on the mount ---- */
+  sermonMount: {
+    id: "sermonMount",
+    standalone: true,
+    title: "The Sermon on the Mount",
+    subtitle: "Blessed are...",
+    grid: { cols: 8, rows: 6 },
+    items: ["jesus_teaching","crowd_listening","jesus","dove","man","female"],
+    aiPreview: [ 'place("jesus_teaching", 2, 2)', 'place("crowd_listening", 5, 3)', 'place("dove", 4, 0)' ],
+    rungs: [
+      { id:0, label:"1 · The Teacher", goalItem:"jesus_teaching", target:{col:2,row:2},
+        goal:'Jesus teaches on the hillside: place("jesus_teaching", 2, 2).' },
+      { id:1, label:"2 · The crowd",   goalItem:"crowd_listening", target:{col:5,row:3},
+        goal:'The crowd gathers to listen: place("crowd_listening", 5, 3).' },
+      { id:2, label:"3 · A dove",      goalItem:"dove", target:{col:4,row:0},
+        goal:'A dove settles over them: place("dove", 4, 0).' },
+    ],
+    practice: { enabled:true, prompt:"I'll call out where each piece goes." },
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:6, rows:[4,5]}, extras:[{emoji:"✨", n:4, rows:[0,2]}], dove:true, shimmer:[], wander:["dove"] }
   },
 
 };

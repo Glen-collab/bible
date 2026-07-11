@@ -33,7 +33,7 @@
   // next to single figures. Kids can still override with place(name, c, r, size).
   const DEFAULT_SIZE = {
     boulder: 5,
-    man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, jesus: 2, goliath: 2, david: 1.25,
+    man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, jesus: 2, king: 1.5, goliath: 2, david: 1.25,
     crowd_listening: 4.25, crowd_eating_fish: 4.25, daniel_lion_den: 4.25,
     jesus_tomb: 3, jesus_sermon: 4, jesus_teaching: 3.5, jesus_help_woman: 3.5,
     jesus_2fish_2bread: 4, loaves_fish: 4,
@@ -80,7 +80,7 @@
     ITEMS = window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS;
     COLS = CFG.grid.cols; ROWS = CFG.grid.rows;
     cells = {}; showGrid = true; rung = 0; mode = 'guided'; score = 0; target = null;
-    backdropEl = null; backdropName = null;
+    backdropEl = null; backdropName = null; railMsg = null;
     render();
   };
 
@@ -122,6 +122,7 @@
       </div>
       <div class="rungs" id="rungs"></div>
       <div class="goal" id="goal"></div>
+      <div class="railtip" id="railtip" style="display:none"></div>
       <div class="toolbar">
         <div class="toggle" id="gridToggle" onclick="FootstepsWorkshop._toggleGrid()"><span class="sw"></span> Grid</div>
         <button class="palettebtn" onclick="FootstepsWorkshop._togglePalette()">📦 Objects</button>
@@ -170,6 +171,10 @@
     $('rulerLeft').style.gridTemplateRows = `repeat(${ROWS},1fr)`;
 
     buildRulers(); buildPalette(); buildCommands(); renderRungs();
+    if (CFG.rail) {
+      const rt = $('railtip'); rt.style.display = 'block';
+      rt.innerHTML = '🦉 <b>Ada:</b> the stone rolls on a track — <code>move("' + CFG.rail.item + '", "left")</code> opens the tomb, <code>move("' + CFG.rail.item + '", "right")</code> seals it.';
+    }
     tutorSay(CFG.rungs[0].goal
       ? `Let's start! Type <code>${escapeHtml(CFG.rungs[0].command || firstCommand())}</code> and press Run. The two numbers are <b>column</b> (across ↔) and <b>row</b> (down ↕). Once a piece is on the stage, <b>tap it</b> to make it bigger or smaller.`
       : `Let's build the scene! Follow the goal above.`);
@@ -203,7 +208,7 @@
     if (typeof name !== 'string') throw { kind: 'quotes' };
     if (!(name in ITEMS)) throw { kind: 'unknownItem', got: name };
     if (BACKDROPS[name]) { setBackdrop(BACKDROPS[name]); chime(440); return name + ' set as the scene'; }
-    if (CFG.rail && CFG.rail.item === name) { col = CFG.rail.home.col; row = CFG.rail.home.row; }  // railed piece snaps home
+    if (CFG.rail && CFG.rail.item === name) { col = CFG.rail.home.col; row = CFG.rail.home.row; railMsg = railHint(false, name); }  // railed piece snaps home (sealed)
     if (typeof col !== 'number' || typeof row !== 'number') throw { kind: 'numbers' };
     if (col < 0 || col >= COLS || row < 0 || row >= ROWS) throw { kind: 'range', col, row };
     size = (typeof size === 'number' && size > 0) ? Math.max(0.25, Math.min(6, size)) : (DEFAULT_SIZE[name] || 1);
@@ -248,6 +253,7 @@
         dest = dO < dH ? open : home;
       } else { dest = (a === 'left') ? open : home; }
       reposition(s, dest.col, dest.row); sweepChime();
+      railMsg = railHint(dest === open, name);
       const sz = (cells[keyOf(dest.col, dest.row)] || {}).size || 1;
       return name + (dest === open ? ' rolls away — the tomb is open!' : ' rolls back — sealed.') + centerNote(dest.col, dest.row, sz);
     }
@@ -296,6 +302,12 @@
 
   /* ---- tap-a-piece to resize it (＋ / −) or delete it ---- */
   let selected = null;
+  let railMsg = null;   // Ada's next open/close hint after a railed piece moves
+  function railHint(isOpen, name) {
+    return isOpen
+      ? 'The tomb is <b>open</b>. Roll the stone back to seal it: <code>move("' + name + '", "right")</code>.'
+      : 'The stone is <b>sealed</b> over the door. Roll it away to open the tomb: <code>move("' + name + '", "left")</code>.';
+  }
   function codeColor(s) {
     s = String(s);
     const i = s.indexOf('//');
@@ -494,9 +506,11 @@
     catch (err) { threw = err; }
     if (threw === null) {
       print('✓ ' + (result || 'done'), 'ok'); cmd.value = '';
-      if (mode === 'practice') { checkPractice(); return; }
+      if (mode === 'practice') { railMsg = null; checkPractice(); return; }
       if (rungCheck(CFG.rungs[rung])()) onRungComplete();
+      else if (railMsg) tutorSay(railMsg);
       else tutorSay(`Nice — that ran! ${nudge()}`);
+      railMsg = null;
       return;
     }
     const ex = explainError(threw); print('… ' + ex.msg, 'err');
