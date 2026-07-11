@@ -16,23 +16,33 @@
   const WS = {};
 
   let CFG, ITEMS, COLS, ROWS, opts;
-  let stage, sprites, showGrid, rung, mode, score, target, actx;
+  // cells: "col,row" -> { name, el }.  Keying by CELL (not by name) lets the
+  // same item appear in several places at once — a real flock — while move()
+  // still works because it finds a sprite by name.
+  let cells, showGrid, rung, mode, score, target, actx;
 
   WS.play = function (config, options) {
     CFG = config;
     opts = options || {};
     ITEMS = window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS;
     COLS = CFG.grid.cols; ROWS = CFG.grid.rows;
-    sprites = {}; showGrid = true; rung = 0; mode = 'guided'; score = 0; target = null;
+    cells = {}; showGrid = true; rung = 0; mode = 'guided'; score = 0; target = null;
     render();
   };
+
+  const keyOf = (c, r) => c + ',' + r;
+  function findByName(name) {
+    for (const k in cells) if (cells[k].name === name) { const p = k.split(','); return { k, el: cells[k].el, col: +p[0], row: +p[1] }; }
+    return null;
+  }
+  const itemAt = (name, c, r) => { const s = cells[keyOf(c, r)]; return !!s && s.name === name; };
 
   /* ---- build a check() for a rung from its data shape ---- */
   function rungCheck(r) {
     if (r.goalMove) {
       const { item, dir } = r.goalMove;
       return () => {
-        const s = sprites[item]; if (!s) return false;
+        const s = findByName(item); if (!s) return false;
         if (dir === 'right') return s.col >= COLS - 2;
         if (dir === 'left') return s.col <= 1;
         if (dir === 'down') return s.row >= ROWS - 2;
@@ -40,10 +50,8 @@
         return false;
       };
     }
-    if (r.goalItem && r.target) {
-      return () => { const s = sprites[r.goalItem]; return !!s && s.col === r.target.col && s.row === r.target.row; };
-    }
-    if (r.goalItem) return () => !!sprites[r.goalItem];
+    if (r.goalItem && r.target) return () => itemAt(r.goalItem, r.target.col, r.target.row);
+    if (r.goalItem) return () => !!findByName(r.goalItem);
     return () => true;
   }
 
@@ -107,35 +115,45 @@
   function firstCommand() { const r = CFG.rungs[0]; return r.goalItem && r.target ? `place("${r.goalItem}", ${r.target.col}, ${r.target.row})` : `place("${firstItem()}", 3, 4)`; }
 
   /* ---- the real functions the kid's JS calls ---- */
+  function positionEl(el, col, row) {
+    el.style.left = (col * (100 / COLS)) + '%';
+    el.style.top = (row * (100 / ROWS)) + '%';
+  }
   function place(name, col, row) {
     if (typeof name !== 'string') throw { kind: 'quotes' };
     if (!(name in ITEMS)) throw { kind: 'unknownItem', got: name };
     if (typeof col !== 'number' || typeof row !== 'number') throw { kind: 'numbers' };
     if (col < 0 || col >= COLS || row < 0 || row >= ROWS) throw { kind: 'range', col, row };
-    let s = sprites[name];
-    if (!s) {
+    const k = keyOf(col, row);
+    let cell = cells[k];
+    if (cell) {
+      // a sprite is already in this cell — swap what it shows
+      cell.name = name; cell.el.textContent = ITEMS[name];
+      cell.el.classList.remove('celebrate'); void cell.el.offsetWidth; cell.el.classList.add('celebrate');
+    } else {
       const el = document.createElement('div');
       el.className = 'sprite celebrate';
       el.style.width = (100 / COLS) + '%'; el.style.height = (100 / ROWS) + '%';
       el.textContent = ITEMS[name];
+      positionEl(el, col, row);
       $('stage').appendChild(el);
-      s = sprites[name] = { el, col, row };
+      cells[k] = { name, el };
     }
-    s.col = col; s.row = row;
-    s.el.style.left = (col * (100 / COLS)) + '%';
-    s.el.style.top = (row * (100 / ROWS)) + '%';
     chime(520 + col * 40);
     return name + ' placed at ' + col + ', ' + row;
   }
   function move(name, dir) {
-    const s = sprites[name]; if (!s) throw { kind: 'notPlaced', got: name };
+    const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
     const d = { left: [-1, 0], right: [1, 0], up: [0, -1], down: [0, 1] }[dir];
     if (!d) throw { kind: 'dir', got: dir };
     const nc = Math.max(0, Math.min(COLS - 1, s.col + d[0] * COLS));
     const nr = Math.max(0, Math.min(ROWS - 1, s.row + d[1] * ROWS));
-    s.el.classList.add('moving'); s.col = nc; s.row = nr;
-    s.el.style.left = (nc * (100 / COLS)) + '%';
-    s.el.style.top = (nr * (100 / ROWS)) + '%';
+    delete cells[s.k];
+    const nk = keyOf(nc, nr);
+    if (cells[nk] && cells[nk].el !== s.el) { cells[nk].el.remove(); } // clear whatever it lands on
+    s.el.classList.add('moving');
+    positionEl(s.el, nc, nr);
+    cells[nk] = { name, el: s.el };
     sweepChime();
     return name + ' moves ' + dir + '!';
   }
@@ -225,6 +243,10 @@
       case 'notPlaced': return { msg: `Place the ${e.got} first, then you can move it.` };
       case 'dir': return { msg: `Direction should be "left", "right", "up", or "down".` };
     }
+    if (e instanceof Error && e.name === 'ReferenceError') {
+      const m = (e.message.match(/variable:\s*([A-Za-z_$][\w$]*)/) || e.message.match(/([A-Za-z_$][\w$]*)\s+is not defined/) || [])[1];
+      return { msg: `${m ? `"${m}"` : 'That'} isn't a command I know — the two commands are place(…) and move(…).` };
+    }
     return { msg: `That's not quite valid code yet — usually a missing quote, comma, or bracket.` };
   }
 
@@ -299,13 +321,13 @@
   }
   function clearTargetMark() { const m = $('tmark'); if (m) m.remove(); }
   function checkPractice() {
-    const s = sprites[target.item];
-    if (s && s.col === target.col && s.row === target.row) {
+    if (itemAt(target.item, target.col, target.row)) {
       score++; $('scoreval').textContent = score; happyChime();
       tutorSay(`✅ <b>Perfect!</b> The ${target.item} is exactly where I asked. ${score >= 3 ? "You're getting good at this!" : ''}`);
       $('cmd').value = ''; setTimeout(newTarget, 1150);
-    } else if (s) {
-      tutorSay(`So close! The ${target.item} landed at <b>${s.col}, ${s.row}</b>, but I asked for <b>${target.col}, ${target.row}</b>. First number is column (across), second is row (down). Try again!`);
+    } else {
+      const s = findByName(target.item);
+      if (s) tutorSay(`So close! The ${target.item} landed at <b>${s.col}, ${s.row}</b>, but I asked for <b>${target.col}, ${target.row}</b>. First number is column (across), second is row (down). Try again!`);
     }
   }
 
