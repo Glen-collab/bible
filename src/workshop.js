@@ -205,14 +205,14 @@
     const k = keyOf(col, row);
     let cell = cells[k];
     if (cell) {
-      cell.name = name; cell.size = size; paintSprite(cell.el, name); sizeSprite(cell.el, size);
+      cell.name = name; cell.size = size; paintSprite(cell.el, name); sizeSprite(cell.el, size); positionEl(cell.el, col, row, size);
       cell.el.classList.remove('celebrate'); void cell.el.offsetWidth; cell.el.classList.add('celebrate');
     } else {
       const el = document.createElement('div');
       el.className = 'sprite celebrate';
       sizeSprite(el, size);
       paintSprite(el, name);
-      positionEl(el, col, row);
+      positionEl(el, col, row, size);
       el.onclick = () => selectSprite(el);   // tap a piece to resize it
       $('stage').appendChild(el);
       cell = cells[k] = { name, el, size, col, row };
