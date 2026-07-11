@@ -22,7 +22,15 @@
 const WORKSHOP_ITEMS = {
   donkey:"🫏", sheep:"🐑", camel:"🐪", ox:"🐂", dove:"🕊️",
   manger:"🪵", star:"⭐", lamp:"🪔", shepherd:"🧎", wiseman:"🧙",
-  angel:"👼", palm:"🌴", house:"🏠", well:"🪣", fire:"🔥"
+  angel:"👼", palm:"🌴", house:"🏠", well:"🪣", fire:"🔥",
+  // animals (real art in assets/sprites/, emoji fallback here)
+  elephant:"🐘", giraffe:"🦒", zebra:"🦓", tiger:"🐅", lion:"🦁",
+  hippo:"🦛", rhino:"🦏", gorilla:"🦍", panda:"🐼", kangaroo:"🦘",
+  monkey:"🐒", flamingo:"🦩", toucan:"🦜", ostrich:"🐦", deer:"🦌",
+  baby_deer:"🦌", mouse:"🐭", snail:"🐌", butterfly:"🦋", squirrel:"🐿️",
+  owl:"🦉", rainbow:"🌈",
+  // figures for the iconic-scene rethemes
+  david:"🧒", goliath:"🧌", mary:"🧕", joseph:"🧔", man:"🧑", female:"👩", baby_jesus:"👶"
 };
 
 /* Real functions the kid's JS calls (defined in the engine):
@@ -169,6 +177,29 @@ const WORKSHOPS = {
     ],
     practice: { enabled:true, prompt:"Light the cities! I'll call out where each one goes." },
     finale: { sky:"night", twinkle:12, grass:{emoji:"🪔", n:6, rows:[2,4]}, extras:[{emoji:"⭐",n:3,rows:[0,1]}], dove:true, shimmer:["lamp","star"], wander:["dove","donkey","camel"] }
+  },
+
+  /* ---- Standalone scene (no full case yet): Noah's Ark ---- */
+  noahsArk: {
+    id: "noahsArk",
+    standalone: true,                              // reachable from the home "Build a Scene" section
+    title: "Fill the Ark",
+    subtitle: "Two by Two",
+    grid: { cols: 8, rows: 6 },
+    items: ["elephant","giraffe","lion","zebra","tiger","panda","monkey","kangaroo","owl","dove"],
+    aiPreview: [ 'place("elephant", 1, 4)', 'place("elephant", 2, 4)', 'place("giraffe", 4, 3)', 'place("dove", 6, 1)' ],
+    rungs: [
+      { id:0, label:"1 · First aboard", goalItem:"elephant", target:{col:1,row:4},
+        goal:'Bring the first animal aboard: place("elephant", 1, 4).' },
+      { id:1, label:"2 · Two by two",   goalItem:"elephant", target:{col:2,row:4},
+        goal:'Two by two! Bring its pair: place("elephant", 2, 4).' },
+      { id:2, label:"3 · A tall one",   goalItem:"giraffe",  target:{col:4,row:3},
+        goal:'Now a giraffe: place("giraffe", 4, 3).' },
+      { id:3, label:"4 · The dove",     goalItem:"dove",     target:{col:6,row:1},
+        goal:'The dove will search for dry land: place("dove", 6, 1).' },
+    ],
+    practice: { enabled:true, prompt:"Fill the ark! I'll call out which animal goes where." },
+    finale: { sky:"day", twinkle:0, grass:{emoji:"💧", n:8, rows:[0,2]}, extras:[{emoji:"🌈", n:1, rows:[0,0]}], dove:true, shimmer:[], wander:["elephant","giraffe","lion","zebra","tiger","panda","monkey","kangaroo"] }
   },
 
 };

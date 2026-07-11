@@ -19,11 +19,21 @@
   // and falls back to its emoji if not. So dropping a PNG in "upgrades" a piece
   // automatically — no code change. See assets/README.md for the naming contract.
   const SPRITE_BASE = 'assets/sprites/';
+  // How much of its cell each sprite fills (a mouse ≠ an elephant). Tune with
+  // tools/sprite-calibrator.html; default 0.85. Only affects real-art sprites.
+  const SPRITE_SCALE = {
+    mouse:0.40, snail:0.42, butterfly:0.50, squirrel:0.55, toucan:0.55, baby_deer:0.60, owl:0.62, dove:0.60,
+    flamingo:0.68, monkey:0.70, deer:0.72, ostrich:0.75, kangaroo:0.78, panda:0.80, rainbow:0.90,
+    lion:0.95, zebra:0.95, tiger:0.98, gorilla:1.00, camel:1.00, ox:1.00, hippo:1.05, rhino:1.05, elephant:1.15, giraffe:1.20,
+    goliath:1.15, joseph:1.05, mary:0.95, david:0.90, man:0.90, female:0.90,
+  };
   function paintSprite(el, name) {
     const emoji = (window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS[name]) || '';
     el.textContent = '';
     const img = document.createElement('img');
     img.className = 'spr-img'; img.alt = '';
+    const s = (SPRITE_SCALE[name] || 0.85) * 100;
+    img.style.width = s + '%'; img.style.height = s + '%';
     img.onerror = function () { el.textContent = emoji; };  // no PNG yet -> emoji
     img.src = SPRITE_BASE + name + '.png';
     el.appendChild(img);

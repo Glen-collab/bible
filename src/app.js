@@ -11,9 +11,13 @@
   const { WORKSHOPS } = window.FOOTSTEPS_WORKSHOPS;
 
   const CASE_EMOJI = { jesus: '🫏', david: '🐑', moses: '🔥', ruth: '🌾', paul: '⛵' };
+  const SCENE_EMOJI = { noahsArk: '🌈' };
 
   function workshopForCase(caseId) {
     return Object.values(WORKSHOPS).find((w) => w.forCase === caseId) || null;
+  }
+  function standaloneScenes() {
+    return Object.values(WORKSHOPS).filter((w) => w.standalone);
   }
 
   /* ---- home / case picker ---- */
@@ -46,6 +50,7 @@
       </div>
       <div class="section-lab">Choose your case</div>
       ${cards}
+      ${sceneSection()}
       <footer>Footsteps of the Teacher · Phase 1 web build</footer>`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -73,7 +78,24 @@
     window.FootstepsWorkshop.play(ws, { onExit: renderHome });
   }
 
-  window.FootstepsApp = { renderHome, startCase, startWorkshop };
+  // "Build a Scene" — standalone workshops with no full case behind them
+  function sceneSection() {
+    const scenes = standaloneScenes();
+    if (!scenes.length) return '';
+    let cards = '';
+    scenes.forEach((w) => {
+      cards += `<button class="case-card" onclick="FootstepsApp.startScene('${w.id}')">
+        <span class="cc-emoji">${SCENE_EMOJI[w.id] || '🛠️'}</span>
+        <span class="cc-body"><span class="cc-num">BUILD A SCENE</span>
+          <span class="cc-name">${w.title}</span>
+          <span class="cc-theme">${w.subtitle || 'Learn to code'} · real JavaScript</span></span>
+        <span class="cc-arrow">→</span></button>`;
+    });
+    return `<div class="section-lab">Build a scene</div>${cards}`;
+  }
+  function startScene(id) { const w = WORKSHOPS[id]; if (w) startWorkshop(w); }
+
+  window.FootstepsApp = { renderHome, startCase, startWorkshop, startScene };
 
   document.addEventListener('DOMContentLoaded', renderHome);
 })();

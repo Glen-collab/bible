@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Footsteps — Sprite Size Calibrator</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Spline+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+  :root{--parch:#f4ead3;--parch-deep:#e8d8b0;--ink:#3a2c1a;--ink-soft:#6b563a;--olive:#6b7a3f;--olive-deep:#4d5a2b;--terra:#b5532a;--gold:#c79a3a;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Spline Sans',sans-serif;background:var(--parch);color:var(--ink);padding:20px 16px 60px;max-width:900px;margin:0 auto;}
+  h1{font-family:'Fraunces';font-size:26px;}
+  .sub{color:var(--ink-soft);font-size:14px;margin:8px 0 4px;line-height:1.5;}
+  .sub b{color:var(--ink);}
+  .bar{position:sticky;top:0;z-index:5;background:var(--parch);padding:12px 0;border-bottom:1px solid var(--parch-deep);margin-bottom:16px;}
+  .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .btn{background:linear-gradient(180deg,var(--olive),var(--olive-deep));color:#fff;border:none;border-radius:9px;padding:9px 14px;font-family:'Spline Sans';font-weight:600;font-size:13px;cursor:pointer;}
+  .btn:active{transform:translateY(1px);}
+  label.cell-size{font-size:13px;color:var(--ink-soft);display:flex;align-items:center;gap:6px;}
+  #out{width:100%;height:90px;margin-top:10px;font-family:'JetBrains Mono';font-size:12px;border:1px solid var(--parch-deep);border-radius:8px;padding:8px;background:#fff;color:var(--olive-deep);resize:vertical;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;}
+  .card{background:#fff;border:1px solid var(--parch-deep);border-radius:12px;padding:10px;text-align:center;}
+  .cellbox{width:100%;aspect-ratio:1;background:linear-gradient(#dce7d6,#e8dcbf);border-radius:8px;display:grid;place-items:center;overflow:hidden;
+    background-image:linear-gradient(rgba(58,44,26,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(58,44,26,.12) 1px,transparent 1px);background-size:25% 25%;}
+  .cellbox img{object-fit:contain;display:block;}
+  .name{font-family:'JetBrains Mono';font-size:12px;margin-top:7px;color:var(--ink);}
+  .val{font-size:12px;color:var(--terra);font-weight:600;}
+  input[type=range]{width:100%;margin-top:5px;accent-color:var(--olive);}
+  .miss{font-size:10px;color:#b5532a;}
+</style>
+</head>
+<body>
+  <h1>Sprite Size Calibrator</h1>
+  <p class="sub">Every sprite shown inside <b>one game cell</b> (all cells are the same size, like the real grid). Drag each slider until the sizes look right <b>relative to each other</b> — a mouse small, an elephant big. Then hit <b>Copy scale map</b> and paste it back to me.</p>
+  <div class="bar">
+    <div class="controls">
+      <button class="btn" onclick="copyMap()">📋 Copy scale map</button>
+      <button class="btn" style="background:linear-gradient(180deg,#b5877f,#8a5a52)" onclick="resetAll()">Reset</button>
+      <label class="cell-size">Cell preview:
+        <select id="cellsize" onchange="setCell()">
+          <option value="120">large</option>
+          <option value="90" selected>medium</option>
+          <option value="64">small</option>
+        </select>
+      </label>
+    </div>
+    <textarea id="out" readonly></textarea>
+  </div>
+  <div class="grid" id="grid"></div>
+
+<script>
+// starting scales (match src/workshop.js SPRITE_SCALE; default 0.85)
+const DEFAULT = {
+  mouse:0.40, snail:0.42, butterfly:0.50, squirrel:0.55, toucan:0.55, baby_deer:0.60, owl:0.62, dove:0.60,
+  flamingo:0.68, monkey:0.70, deer:0.72, ostrich:0.75, kangaroo:0.78, panda:0.80, rainbow:0.90,
+  lion:0.95, zebra:0.95, tiger:0.98, gorilla:1.00, hippo:1.05, rhino:1.05, elephant:1.15, giraffe:1.20,
+  goliath:1.15, joseph:1.05, mary:0.95, david:0.90, man:0.90, female:0.90,
+  angel:0.90, baby_jesus:0.70
+};
+const NAMES = Object.keys(DEFAULT).sort();
+let scale = Object.assign({}, DEFAULT);
+let cell = 90;
+const grid = document.getElementById('grid');
+
+function build(){
+  grid.innerHTML = '';
+  NAMES.forEach(name => {
+    const card = document.createElement('div'); card.className = 'card';
+    card.innerHTML = `
+      <div class="cellbox" style="max-width:${cell}px;margin:0 auto">
+        <img id="img-${name}" src="../assets/sprites/${name}.png" alt=""
+             onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=miss>no PNG</span>')">
+      </div>
+      <div class="name">${name}</div>
+      <div class="val" id="val-${name}">${scale[name].toFixed(2)}</div>
+      <input type="range" min="0.2" max="1.4" step="0.02" value="${scale[name]}"
+             oninput="setScale('${name}', this.value)">`;
+    grid.appendChild(card);
+    sizeImg(name);
+  });
+  writeOut();
+}
+function sizeImg(name){
+  const img = document.getElementById('img-'+name);
+  if(img){ img.style.width = (scale[name]*100)+'%'; img.style.height = (scale[name]*100)+'%'; }
+}
+function setScale(name, v){
+  scale[name] = parseFloat(v);
+  document.getElementById('val-'+name).textContent = scale[name].toFixed(2);
+  sizeImg(name); writeOut();
+}
+function setCell(){ cell = parseInt(document.getElementById('cellsize').value,10); build(); }
+function resetAll(){ scale = Object.assign({}, DEFAULT); build(); }
+function writeOut(){
+  const parts = NAMES.map(n => `${n}:${scale[n].toFixed(2)}`);
+  document.getElementById('out').value = '{ ' + parts.join(', ') + ' }';
+}
+function copyMap(){
+  const ta = document.getElementById('out'); ta.select();
+  try{ document.execCommand('copy'); }catch(e){}
+  navigator.clipboard && navigator.clipboard.writeText(ta.value).catch(()=>{});
+  const b = document.querySelector('.btn'); const t = b.textContent; b.textContent='✓ Copied!'; setTimeout(()=>b.textContent=t,1200);
+}
+build();
+</script>
+</body>
+</html>
