@@ -32,7 +32,7 @@
   // images (crowds, scenes) are drawn wide, so they need more cells to look right
   // next to single figures. Kids can still override with place(name, c, r, size).
   const DEFAULT_SIZE = {
-    boulder: 2,
+    boulder: 5,
     man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, goliath: 2, david: 1.25,
     crowd_listening: 4.25, crowd_eating_fish: 4.25, daniel_lion_den: 4.25,
     jesus_tomb: 3, jesus_sermon: 4, jesus_teaching: 3.5, jesus_help_woman: 3.5,
