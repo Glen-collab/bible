@@ -93,20 +93,25 @@
       <div class="rungs" id="rungs"></div>
       <div class="goal" id="goal"></div>
       <div class="toolbar">
-        <div class="toggle" id="gridToggle" onclick="FootstepsWorkshop._toggleGrid()"><span class="sw"></span> Grid &amp; numbers</div>
-        <button class="palettebtn" onclick="FootstepsWorkshop._togglePalette()">📦 Objects you can place</button>
+        <div class="toggle" id="gridToggle" onclick="FootstepsWorkshop._toggleGrid()"><span class="sw"></span> Grid</div>
+        <button class="palettebtn" onclick="FootstepsWorkshop._togglePalette()">📦 Objects</button>
+        <button class="palettebtn" onclick="FootstepsWorkshop._toggleCommands()">⌨️ Commands</button>
       </div>
       <div class="palette" id="palette"></div>
+      <div class="palette" id="commands"></div>
       <div class="stage-outer">
         <div class="ruler-top" id="rulerTop"></div>
         <div class="stage-row"><div class="ruler-left" id="rulerLeft"></div>
           <div class="stage-wrap"><div id="stage" class="grid"></div></div></div>
       </div>
       <div class="resizebar" id="resizebar" style="display:none">
-        <span class="rz-lab">Resize <b id="rzname"></b></span>
-        <button class="rz-b" onclick="FootstepsWorkshop._resize(-1)">−</button>
+        <span class="rz-lab"><b id="rzname"></b></span>
+        <button class="rz-b" title="smaller" onclick="FootstepsWorkshop._resize(-1)">−</button>
         <span id="rzval">1.00×</span>
-        <button class="rz-b" onclick="FootstepsWorkshop._resize(1)">＋</button>
+        <button class="rz-b" title="bigger" onclick="FootstepsWorkshop._resize(1)">＋</button>
+        <button class="rz-b" title="rotate" onclick="FootstepsWorkshop._rotateSelected()">↻</button>
+        <button class="rz-b" title="flip" onclick="FootstepsWorkshop._flipSelected()">⇋</button>
+        <button class="rz-b rz-del" title="delete" onclick="FootstepsWorkshop._deleteSelected()">🗑</button>
         <button class="rz-done" onclick="FootstepsWorkshop._deselect()">done</button>
       </div>
       <div class="scorebar" id="scorebar"><span id="scoretxt">Practice</span><b id="scoreval">0</b></div>
@@ -136,7 +141,7 @@
     $('rulerTop').style.gridTemplateColumns = `22px repeat(${COLS},1fr)`;
     $('rulerLeft').style.gridTemplateRows = `repeat(${ROWS},1fr)`;
 
-    buildRulers(); buildPalette(); renderRungs();
+    buildRulers(); buildPalette(); buildCommands(); renderRungs();
     tutorSay(CFG.rungs[0].goal
       ? `Let's start! Type <code>${escapeHtml(CFG.rungs[0].command || firstCommand())}</code> and press Run. The two numbers are <b>column</b> (across ↔) and <b>row</b> (down ↕). Once a piece is on the stage, <b>tap it</b> to make it bigger or smaller.`
       : `Let's build the scene! Follow the goal above.`);
@@ -206,7 +211,31 @@
     return name + ' moves ' + dir + '!';
   }
 
-  /* ---- tap-a-piece to resize it (＋ / −) ---- */
+  function findKeyOfEl(el) { for (const k in cells) if (cells[k].el === el) return k; return null; }
+  function remove(name) {
+    const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
+    delete cells[s.k]; s.el.remove();
+    if (selected === s.el) WS._deselect();
+    return name + ' removed';
+  }
+  function applyTransform(el, rec) {
+    const t = `rotate(${rec.rot || 0}deg) scaleX(${rec.flipped ? -1 : 1})`;
+    const img = el.querySelector && el.querySelector('img');
+    if (img) img.style.transform = t; else el.style.transform = t;
+  }
+  function flip(name) {
+    const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
+    const rec = cells[s.k]; rec.flipped = !rec.flipped; applyTransform(s.el, rec);
+    return name + (rec.flipped ? ' flipped' : ' unflipped');
+  }
+  function rotate(name, deg) {
+    const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
+    if (typeof deg !== 'number') deg = 90;
+    const rec = cells[s.k]; rec.rot = (rec.rot || 0) + deg; applyTransform(s.el, rec);
+    return name + ' rotated to ' + (((rec.rot % 360) + 360) % 360) + '°';
+  }
+
+  /* ---- tap-a-piece to resize it (＋ / −) or delete it ---- */
   let selected = null;
   function selectSprite(el) {
     if (!el._cell) return;
@@ -231,6 +260,25 @@
     if (selected) selected.classList.remove('selected');
     selected = null;
     const bar = $('resizebar'); if (bar) bar.style.display = 'none';
+  };
+  WS._deleteSelected = function () {
+    if (!selected || !selected._cell) return;
+    const nm = selected._cell.name;
+    const k = findKeyOfEl(selected); if (k) delete cells[k];
+    selected.remove();
+    print('> remove("' + nm + '")', 'echo'); print('✓ ' + nm + ' removed', 'ok');
+    WS._deselect();
+    chime(300);
+  };
+  WS._flipSelected = function () {
+    if (!selected || !selected._cell) return;
+    flip(selected._cell.name);
+    print('> flip("' + selected._cell.name + '")', 'echo'); print('✓ done', 'ok');
+  };
+  WS._rotateSelected = function () {
+    if (!selected || !selected._cell) return;
+    rotate(selected._cell.name, 45);
+    print('> rotate("' + selected._cell.name + '", 45)', 'echo'); print('✓ done', 'ok');
   };
 
   /* ---- sound ---- */
@@ -258,7 +306,26 @@
       p.appendChild(b);
     });
   }
-  WS._togglePalette = function () { $('palette').classList.toggle('open'); };
+  function buildCommands() {
+    const it = firstItem();
+    const CMDS = [
+      ['place("' + it + '", 3, 3)', 'put something on the stage'],
+      ['place("' + it + '", 3, 3, 2)', 'bigger or smaller (size)'],
+      ['move("' + it + '", "right")', 'send it left / right / up / down'],
+      ['remove("' + it + '")', 'take it off the stage'],
+      ['flip("' + it + '")', 'face the other way'],
+      ['rotate("' + it + '", 90)', 'turn it around'],
+    ];
+    const p = $('commands'); p.innerHTML = '';
+    CMDS.forEach(([code, desc]) => {
+      const b = document.createElement('button'); b.className = 'p-item cmd-item';
+      b.innerHTML = `<span class="cmd-code">${escapeHtml(code)}</span><span class="cmd-desc">${desc}</span>`;
+      b.onclick = () => { const c = $('cmd'); c.value = code; c.focus(); };
+      p.appendChild(b);
+    });
+  }
+  WS._togglePalette = function () { $('palette').classList.toggle('open'); $('commands').classList.remove('open'); };
+  WS._toggleCommands = function () { $('commands').classList.toggle('open'); $('palette').classList.remove('open'); };
   WS._toggleGrid = function () {
     showGrid = !showGrid;
     $('stage').classList.toggle('grid', showGrid);
@@ -330,7 +397,7 @@
     const raw = cmd.value; if (!raw.trim()) return;
     print('> ' + raw, 'echo');
     let result, threw = null;
-    try { result = Function('place', 'move', `"use strict"; return (${raw});`)(place, move); }
+    try { result = Function('place', 'move', 'remove', 'flip', 'rotate', `"use strict"; return (${raw});`)(place, move, remove, flip, rotate); }
     catch (err) { threw = err; }
     if (threw === null) {
       print('✓ ' + (result || 'done'), 'ok'); cmd.value = '';
