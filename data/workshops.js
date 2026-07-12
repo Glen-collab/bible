@@ -99,46 +99,34 @@ const WORKSHOPS = {
   harvestField: {
     id: "harvestField",
     forCase: "ruth",
-    title: "Build the Harvest Home",
-    subtitle: "Same Truth, New Scribes",
+    standalone: true,
+    freeBuild: true,
+    title: "The Barley Field",
+    subtitle: "The Faithful Heart",
     grid: { cols: 8, rows: 6 },
-    items: ["house","well","ox","sheep","donkey","star","lamp","dove","palm"],
-    aiPreview: [ 'place("house", 6, 2)', 'place("well", 4, 4)', 'place("ox", 1, 4)' ],
-    rungs: [
-      { id:0, label:"1 · A home",  goalItem:"house", target:{col:6,row:2},
-        goal:'After a long road, a home. Type place("house", 6, 2).' },
-      { id:1, label:"2 · The well", goalItem:"well", target:{col:4,row:4},
-        goal:'Water for the workers: place("well", 4, 4).' },
-      { id:2, label:"3 · The ox",   goalItem:"ox",   target:{col:1,row:4},
-        goal:'An ox for the harvest field: place("ox", 1, 4).' },
-      { id:3, label:"4 · To work",  goalMove:{item:"ox",dir:"right"},
-        goal:'Work the field! move("ox", "right").' },
-    ],
-    practice: { enabled:true, prompt:"Build the homestead! I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"🌾", n:10, rows:[3,5]}, extras:[{emoji:"🌿",n:4,rows:[4,5]}], dove:true, shimmer:["star","lamp"], wander:["ox","sheep","donkey"] }
+    ground: "grass",
+    freeGoal: 'Build the barley harvest! Place Ruth gleaning grain — place("female", 2, 4) — Boaz the kind landowner, sheaves of wheat, an ox, and a home nearby. Then tap the 🦉 button to bring it to life.',
+    items: ["female","man","wheat","ox","sheep","well","house","dove"],
+    aiPreview: [ 'place("female", 2, 4)', 'place("man", 5, 3)', 'place("wheat", 3, 5)' ],
+    practice: { enabled:true, prompt:"I'll call out where each piece goes." },
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌾", n:10, rows:[3,5]}, extras:[{emoji:"🌿",n:4,rows:[4,5]}], dove:true, shimmer:["female"], wander:["ox","sheep","female","man"] }
   },
 
   /* ---- Workshop for CASE 5 (Paul): carry the light ---- */
   carryTheLight: {
     id: "carryTheLight",
     forCase: "paul",
-    title: "Carry the Light",
-    subtitle: "Same Truth, New Scribes",
+    standalone: true,
+    freeBuild: true,
+    title: "The Damascus Road",
+    subtitle: "The Heart That Changed",
     grid: { cols: 8, rows: 6 },
-    items: ["lamp","house","star","dove","donkey","camel","palm","well","fire"],
-    aiPreview: [ 'place("lamp", 1, 3)', 'place("house", 5, 2)', 'place("dove", 0, 3)' ],
-    rungs: [
-      { id:0, label:"1 · The light",   goalItem:"lamp",  target:{col:1,row:3},
-        goal:'The good news is a light. Type place("lamp", 1, 3).' },
-      { id:1, label:"2 · A city",      goalItem:"house", target:{col:5,row:2},
-        goal:'Carry it to a city: place("house", 5, 2).' },
-      { id:2, label:"3 · The message", goalItem:"dove",  target:{col:0,row:3},
-        goal:'Ready the messenger: place("dove", 0, 3).' },
-      { id:3, label:"4 · Send it far", goalMove:{item:"dove",dir:"right"},
-        goal:'Send the message across the sea! move("dove", "right").' },
-    ],
-    practice: { enabled:true, prompt:"Light the cities! I'll call out where each one goes." },
-    finale: { sky:"night", twinkle:12, grass:{emoji:"🪔", n:6, rows:[2,4]}, extras:[{emoji:"⭐",n:3,rows:[0,1]}], dove:true, shimmer:["lamp","star"], wander:["dove","donkey","camel"] }
+    ground: "road",
+    freeGoal: 'Set the road to Damascus! Place Saul traveling — place("man", 2, 4) — his companions and horse, and the blinding light from heaven above. Then tap the 🦉 button to bring it to life.',
+    items: ["man","light","horse","palm","house","dove"],
+    aiPreview: [ 'place("man", 2, 4)', 'place("light", 3, 0)', 'place("horse", 5, 4)' ],
+    practice: { enabled:true, prompt:"I'll call out where each piece goes." },
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:4, rows:[4,5]}, extras:[{emoji:"⚡", n:4, rows:[0,2]}], dove:true, shimmer:["light","man"], wander:["horse","man"] }
   },
 
   /* ---- Standalone scene (no full case yet): Noah's Ark ---- */
