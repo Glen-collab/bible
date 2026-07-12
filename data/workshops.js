@@ -51,46 +51,7 @@ const WORKSHOP_ITEMS = {
 
 const WORKSHOPS = {
 
-  /* ---- Workshop for CASE 1 (Jesus / Nativity): build the manger scene ---- */
-  nativity: {
-    id: "nativity",
-    forCase: "jesus",
-    title: "Build the Manger Scene",
-    subtitle: "Same Truth, New Scribes",
-    grid: { cols: 8, rows: 6 },
-    // "here's what the computer can make" — shown first as the AI preview
-    aiPreview: [
-      'place("star", 6, 0)',
-      'place("manger", 3, 5)',
-      'place("donkey", 2, 4)',
-      'place("sheep", 5, 4)',
-    ],
-    // the magic ladder — one new idea per rung
-    rungs: [
-      { id:0, label:"1 · Donkey",   goalItem:"donkey",  target:{col:3,row:4},
-        goal:'Type place("donkey", 3, 4) to make the donkey appear. Numbers = column (across), row (down).' },
-      { id:1, label:"2 · Move him", goalMove:{item:"donkey",dir:"right"},
-        goal:'Send him across the stable! Type move("donkey", "right") and watch him go.' },
-      { id:2, label:"3 · Manger",   goalItem:"manger",  target:{col:3,row:5},
-        goal:'Add a manger: place("manger", 3, 5).' },
-      { id:3, label:"4 · Star",     goalItem:"star",    target:{col:6,row:0},
-        goal:'Hang the star up high: place("star", 6, 0). A small row number is near the top.' },
-    ],
-    // after the guided rungs -> free practice/challenge mode (auto-generated targets)
-    practice: { enabled:true, prompt:"I'll call out a spot — you write the code to place it there." },
-    // the "bring the scene to life" finale (animates the kid's OWN placed scene)
-    finale: {
-      sky: "night",
-      twinkle: 9,                                 // editable: stars in the sky
-      grass: { emoji:"🌿", n:6, rows:[4,5] },      // editable: scenery scattered in
-      extras: [ { emoji:"🐑", n:2, rows:[4,4] } ], // one-time extra flock members
-      dove: true,
-      shimmer: ["star","lamp"],                    // placed items that glow, if present
-      wander: ["donkey","sheep","ox","camel","dove"] // placed items that roam
-    }
-  },
-
-  /* ---- Stub for future workshops (one per case). Fill target arrangements. ---- */
+  /* ---- Workshops (each is a case's reward). The Jesus case uses theManger. ---- */
   shepherdField: {
     id: "shepherdField",
     forCase: "david",
@@ -313,7 +274,8 @@ const WORKSHOPS = {
   /* ---- Standalone scene: the manger (where it all started) ---- */
   theManger: {
     id: "theManger",
-    standalone: true,
+    standalone: true,        // stays in the sandbox
+    forCase: "jesus",        // …and is the reward of the Jesus case
     title: "The Manger Scene",
     subtitle: "Away in a Manger",
     grid: { cols: 8, rows: 6 },
