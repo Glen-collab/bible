@@ -717,6 +717,109 @@ const CASE_DANIEL = {
 };
 
 
+/* =====================================================================
+   CASE 8 — THE EMPTY TOMB · "Roll the Stone Away"
+   Theme: Hope.  Eli's flaw: gives up when things look hopeless.
+   Handled gently for kids — grief is real, but the darkest moment isn't the end.
+   Story-moments: The Saddest Evening → Before Dawn → The Stone Is Rolled Away →
+                  The Good News → He Is Risen
+   Unlocks the "Roll the Stone Away" scene.
+   ===================================================================== */
+const CASE_TOMB = {
+  id: "tomb",
+  title: "Roll the Stone Away",
+  theme: "Hope",
+  badges: {
+    firstSteps: { icon:"👣", name:"First Steps",       desc:"Began the journey" },
+    brave:      { icon:"🌅", name:"First Light",        desc:"Solved a stop with no hints" },
+    thorough:   { icon:"🔍", name:"Careful Seeker",     desc:"Investigated every spot at a location" },
+    steadfast:  { icon:"🕊️", name:"Kept Hoping",        desc:"Held onto hope through a detour" },
+    helper:     { icon:"🤝", name:"Kind Helper",        desc:"Completed a side quest" },
+    delivered:  { icon:"💛", name:"Hope Carrier",       desc:"Finished the whole case" },
+  },
+  detours: [
+    { place:"The Give-Up Grove",
+      scene:"When things look this bad, Eli figures, why even bother — just stay home in the dark. But sitting still in the dark never once changed the dark; the little grove just loops back on itself.",
+      lesson:"Hope doesn't mean pretending things aren't sad. It means still showing up, even when you can't see how it'll turn out. You turn back toward the tomb." },
+    { place:"The It's-Too-Late Trail",
+      scene:"'It's over,' Eli sighs. 'Nothing good can come now.' But the 'too late' path just circles around and around, never arriving anywhere.",
+      lesson:"Sometimes the very best thing comes right after the very worst — so it's worth staying till morning. You find the trail again." },
+  ],
+  stops: [
+    { place:"The Saddest Evening", tag:"When love shows up anyway",
+      eli:"Their teacher and friend has died. Everyone's heartbroken and scared, hiding inside. Honestly? I'd probably give up too.",
+      spots:[
+        { ico:"💔", label:"Sit with their sadness", lead:"Jesus' friends are grieving. Their teacher, who they loved, is gone, and the world feels dark.",
+          clue:"Being sad isn't wrong — even brave, faithful people cry when they lose someone they love." },
+        { ico:"🚪", label:"See the locked room", lead:"Most of the friends have shut themselves away, afraid of what might happen next.",
+          clue:"Fear makes us want to hide. But hiding never rolled a single stone away." },
+        { ico:"🕯️", label:"Notice the women", lead:"A few women who loved Jesus quietly gather sweet spices to care for his body.",
+          clue:"Even in their sadness, their love wants to do one last kind thing for him." },
+      ],
+      ask:"What do the grieving women decide to do, even though they're heartbroken?",
+      options:["Go to the tomb to lovingly care for him","Stay home and give up","Pretend nothing sad has happened"],
+      answer:0,
+      hint:"Look at the 'notice the women' clue — their love wants to do one last kind thing, so they get ready to go.",
+      sidequest:{ title:"Sit with a sad friend", desc:"Someone nearby is crying and alone. Just sit beside them, no fixing, only company?",
+        lesson:"You keep a sad person company instead of walking past. Eli learns that showing up matters even when you can't make it better.", badge:"helper" } },
+
+    { place:"Before Dawn", tag:"Walking toward the impossible",
+      eli:"It's dark, they're sad, AND there's a giant stone they can't move... but they're still walking. Why keep going?",
+      spots:[
+        { ico:"🌑", label:"Walk in the dark", lead:"Very early, while it's still dark, the women set out for the tomb.",
+          clue:"They don't wait for everything to feel okay — they go while it's still hard." },
+        { ico:"🪨", label:"Worry about the stone", lead:"On the way they fret: a huge, heavy stone seals the tomb's door.",
+          clue:"'Who will roll the stone away for us?' they ask each other. They have no idea how." },
+        { ico:"💗", label:"Follow their love", lead:"They keep walking anyway, spices in hand, love pulling them forward.",
+          clue:"Sometimes you take the next step before you can see how it all works out." },
+      ],
+      ask:"What worries the women as they walk toward the tomb?",
+      options:["That it might rain","The huge stone they can't move","That they forgot the spices"],
+      answer:1,
+      hint:"The 'worry about the stone' clue has it — a huge, heavy stone seals the door and they can't move it.",
+      sidequest:null },
+
+    { place:"The Stone Is Rolled Away", tag:"The worry undone",
+      eli:"Wait — the stone they were so worried about... is already moved? The thing they thought was impossible is just... handled?",
+      spots:[
+        { ico:"↔️", label:"See the moved stone", lead:"They arrive — and the great stone has already been rolled away from the door.",
+          clue:"The very thing they worried about the whole walk was taken care of before they got there." },
+        { ico:"🕳️", label:"Look inside", lead:"They peek into the tomb, hearts pounding. It's empty.",
+          clue:"Where they expected only sadness, something completely unexpected is waiting." },
+        { ico:"🧻", label:"Notice the folded cloths", lead:"The linen cloths lie neatly folded where his body had been.",
+          clue:"This is no robbery — everything is calm and in order. Something wonderful, not terrible, has happened." },
+      ],
+      ask:"What do the women find when they reach the tomb?",
+      options:["The stone rolled away and the tomb empty","The stone still sealing the door","A crowd blocking the way"],
+      answer:0,
+      hint:"The 'moved stone' and 'look inside' clues together: the stone's rolled away and the tomb is empty.",
+      sidequest:null },
+
+    { place:"The Good News", tag:"Fear turns to joy",
+      eli:"An angel! And instead of 'bad news,' it's the BEST news. And then — go tell everyone? They get to be the messengers?",
+      spots:[
+        { ico:"✨", label:"Hear the angel", lead:"A shining angel greets them: 'Don't be afraid. He is not here — he is risen!'",
+          clue:"The saddest weekend of their lives turns, in one sentence, into the most joyful morning." },
+        { ico:"💛", label:"Feel it change", lead:"Their fear and grief start melting into a joy almost too big to hold.",
+          clue:"Hope didn't erase their sadness — it met them right inside it and turned it around." },
+        { ico:"🏃‍♀️", label:"Watch them run", lead:"The angel says, 'Go quickly and tell the others!' — and they run.",
+          clue:"The ones who showed up in the dark get to be the very first to carry the good news." },
+      ],
+      ask:"What does the angel tell the women to do?",
+      options:["Keep it a secret","Go quickly and tell the others the good news","Wait quietly at the tomb"],
+      answer:1,
+      hint:"The 'watch them run' clue — the angel sends them to go quickly and tell everyone.",
+      sidequest:{ title:"Share a bit of good news", desc:"You know something that would cheer someone up. Go out of your way to tell them?",
+        lesson:"You carry good news to someone who needed it. Eli sees that hope grows bigger the moment you share it.", badge:"helper" } },
+
+    { place:"He Is Risen", tag:"The best thing after the worst",
+      eli:"I walked in ready to give up when things looked hopeless. And the whole story was pointing at ONE thing: the dark part wasn't the end. That changes everything.",
+      final:true,
+      teaching:"On the saddest evening, everything looked finished — their friend was gone, a huge stone sealed the tomb, and it was easy to give up. But a few people loved enough to keep showing up, walking through the dark toward a problem far too big for them. When they arrived, the impossible stone was already rolled away and the tomb was empty: Jesus was alive. Their grief turned to joy, and they became the first to carry that hope to everyone else. That's what hope is. Not pretending the hard part isn't hard — but trusting that the dark part isn't the end of the story, and still taking the next step toward morning." },
+  ]
+};
+
+
 const CASES = {
   jesus: CASE_JESUS,
   david: CASE_DAVID,
@@ -725,9 +828,10 @@ const CASES = {
   paul:  CASE_PAUL,
   noah:  CASE_NOAH,
   daniel: CASE_DANIEL,
+  tomb:  CASE_TOMB,
 };
 
-const CASE_ORDER = ["jesus", "david", "moses", "ruth", "paul", "noah", "daniel"];
+const CASE_ORDER = ["jesus", "david", "moses", "ruth", "paul", "noah", "daniel", "tomb"];
 
 /* Universal badge earned across any case (engine may reference) */
 const SHARED_RANKS = {
@@ -932,6 +1036,33 @@ const ROUNDTABLES = {
       "Everybody feels the pull to blend in and hide — choosing to stay true is brave for grown-ups too.",
       "Doing right when it's unpopular is scary at any age. You're not the only one who finds it hard.",
       "Quiet, steady faithfulness — like Daniel's — is one of the bravest things there is, and it's rare.",
+    ],
+  },
+  tomb: { // Hope
+    kid: [
+      "When was a time something felt hopeless, but then it turned out okay?",
+      "What helps you keep going when you're sad or scared?",
+      "Is it okay to be sad and still have hope at the same time? What would that look like?",
+      "The women showed up even when it was dark and hard. When is it hard for you to 'show up'?",
+      "Who do you go to when you need cheering up — and who comes to you?",
+    ],
+    parent: [
+      "Tell about a time in your life that felt like an ending, but became a new beginning.",
+      "When you were a kid, who showed up for you when things were hard? What did they do?",
+      "Was there a season you almost gave up on something — and were glad later that you didn't?",
+      "What's helped you hold onto hope through a genuinely hard time?",
+      "When did someone's small act of showing up mean more to you than any fix could?",
+    ],
+    together: [
+      "Is there someone going through a hard time you could 'show up' for this week — a note, a visit, a call?",
+      "Name one worry that feels like a stone too big to move. Say it out loud together.",
+      "Pick a family way to remember, when things feel dark, that the story isn't over yet.",
+      "Think of good news you could go out of your way to share with someone soon.",
+    ],
+    notAlone: [
+      "Everyone hits moments that feel hopeless — needing hope isn't weakness, it's being human.",
+      "Grown-ups grieve and worry too; you don't have to pretend to be okay to be brave.",
+      "Showing up for someone in the dark, before you can fix anything, is one of the most powerful things a person can do.",
     ],
   },
 };

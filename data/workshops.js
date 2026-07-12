@@ -162,6 +162,7 @@ const WORKSHOPS = {
   emptyTomb: {
     id: "emptyTomb",
     standalone: true,
+    forCase: "tomb",
     title: "Roll the Stone Away",
     subtitle: "He is not here",
     grid: { cols: 8, rows: 6 },
