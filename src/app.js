@@ -10,7 +10,7 @@
   const { CASES, CASE_ORDER } = window.FOOTSTEPS_CASES;
   const { WORKSHOPS } = window.FOOTSTEPS_WORKSHOPS;
 
-  const CASE_EMOJI = { jesus: '🫏', david: '🐑', moses: '🔥', ruth: '🌾', paul: '⛵', noah: '🚢' };
+  const CASE_EMOJI = { jesus: '🫏', david: '🐑', moses: '🔥', ruth: '🌾', paul: '⛵', noah: '🚢', daniel: '🦁' };
   const SCENE_EMOJI = { noahsArk: '🌈', emptyTomb: '🌅', danielDen: '🦁', feeding5000: '🐟', sermonMount: '⛰️', theManger: '👶', shepherdField: '🪨', desertJourney: '🌊', harvestField: '🌾', carryTheLight: '⚡' };
 
   function workshopForCase(caseId) {

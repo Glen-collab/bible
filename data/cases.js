@@ -616,6 +616,107 @@ const CASE_NOAH = {
 };
 
 
+/* =====================================================================
+   CASE 7 — DANIEL · "The Lions' Den"
+   Theme: Courage & Faithfulness.  Eli's flaw: hides who he is to fit in / avoid trouble.
+   Story-moments: The King's Court → The Trap → The Open Window → The Den → Morning
+   Unlocks the "Daniel in the Lions' Den" scene.
+   ===================================================================== */
+const CASE_DANIEL = {
+  id: "daniel",
+  title: "The Lions' Den",
+  theme: "Courage & Faithfulness",
+  badges: {
+    firstSteps: { icon:"👣", name:"First Steps",       desc:"Began the journey" },
+    brave:      { icon:"🦁", name:"Lion Heart",         desc:"Solved a stop with no hints" },
+    thorough:   { icon:"🔍", name:"Careful Seeker",     desc:"Investigated every spot at a location" },
+    steadfast:  { icon:"🕊️", name:"Stood Firm",         desc:"Held to what's right through a detour" },
+    helper:     { icon:"🤝", name:"Kind Helper",        desc:"Completed a side quest" },
+    delivered:  { icon:"👑", name:"Delivered",          desc:"Finished the whole case" },
+  },
+  detours: [
+    { place:"The Hide-It Road",
+      scene:"Eli figures the safe move is to blend in — 'just pray quietly, or skip it this once, so nobody notices.' But pretending to be someone you're not leads in a nervous circle and never feels right.",
+      lesson:"Courage isn't loud, but it is honest. You can be faithful and kind at the same time. You turn back, ready to stand firm." },
+    { place:"The Please-Everyone Path",
+      scene:"Eli tries to keep everyone happy and bend whichever way the crowd leans. But you can't follow God and the crowd in opposite directions at once — the path just doubles back.",
+      lesson:"Sometimes doing right means someone won't be pleased, and that's okay. You find your footing and rejoin the trail." },
+  ],
+  stops: [
+    { place:"The King's Court", tag:"A faithful man far from home",
+      eli:"Daniel's a foreigner serving a foreign king? I'd just keep my head down and blend in so nobody bugs me.",
+      spots:[
+        { ico:"⭐", label:"Watch him work", lead:"Daniel serves the king so honestly and wisely that he's promoted above everyone.",
+          clue:"He does everything with excellence — and never hides who he is or who he prays to." },
+        { ico:"🙏", label:"See his habit", lead:"Three times a day, Daniel kneels and prays toward home, thanking God.",
+          clue:"Rain or shine, promotion or danger, his faithful habit never changes." },
+        { ico:"😠", label:"Notice the officials", lead:"Other officials are jealous of Daniel and want him gone.",
+          clue:"They search for any fault — but find none, except that he'll always be faithful to his God." },
+      ],
+      ask:"Why can't the jealous officials find anything to accuse Daniel of?",
+      options:["He does everything honestly and faithfully","He hides all his mistakes well","He bribes them to stay quiet"],
+      answer:0,
+      hint:"The 'watch him work' clue is the key — he serves with excellence and honesty, so there's no fault to find.",
+      sidequest:{ title:"Encourage a nervous friend", desc:"A younger servant is scared to be honest about his faith. Sit with him and steady him?",
+        lesson:"You help a friend find courage to be himself. Eli sees that being faithful is easier when we help each other stand.", badge:"helper" } },
+
+    { place:"The Trap", tag:"A law made to catch a good man",
+      eli:"Wait, they tricked the king into a law that says only pray to HIM for 30 days? That's a trap aimed right at Daniel!",
+      spots:[
+        { ico:"📜", label:"Read the new law", lead:"The officials flatter the king into signing a law: for thirty days, pray only to the king.",
+          clue:"Anyone who prays to God instead will be thrown to the lions." },
+        { ico:"🖋️", label:"See the king's seal", lead:"Once signed, the law of the land cannot be changed — not even by the king.",
+          clue:"The trap is set. Now everyone waits to see what Daniel will do." },
+        { ico:"👀", label:"Spot the watchers", lead:"The jealous officials linger near Daniel's house, waiting.",
+          clue:"They're sure he'll keep praying to God — and they mean to catch him." },
+      ],
+      ask:"When Daniel hears about the law, what does he do?",
+      options:["Stops praying to stay safe","Keeps praying to God, just as always","Prays only in secret so no one sees"],
+      answer:1,
+      hint:"Think back to his 'habit' — three times a day, windows open. His faithfulness doesn't change because of a threat.",
+      sidequest:null },
+
+    { place:"The Open Window", tag:"Faithful in plain sight",
+      eli:"He could at least close the window and pray quietly! ...But he's not even hiding it. That's kind of amazing, honestly.",
+      spots:[
+        { ico:"🪟", label:"See the open window", lead:"Daniel goes home, opens his windows toward Jerusalem, and prays as he always has.",
+          clue:"He doesn't hide and he doesn't show off — he simply stays faithful, out in the open." },
+        { ico:"🙏", label:"Hear his prayer", lead:"He gives thanks to God, the same as every other day.",
+          clue:"Courage here isn't a big brave speech — it's quietly doing the right thing anyway." },
+        { ico:"🏃", label:"Watch the officials run", lead:"The watchers see him and hurry straight to the king.",
+          clue:"They've caught him, and now the king is trapped by his own unchangeable law." },
+      ],
+      ask:"How does Daniel show courage in this moment?",
+      options:["By fighting the officials off","By quietly staying faithful, out in the open","By running away to another city"],
+      answer:1,
+      hint:"The 'open window' clue says it — he doesn't hide and doesn't show off; he just keeps doing right.",
+      sidequest:{ title:"Speak up kindly", desc:"A servant mocks Daniel for praying. Stand beside Daniel and answer with kindness, not anger?",
+        lesson:"You defend a friend gently instead of harshly. Eli learns that courage and kindness belong together.", badge:"helper" } },
+
+    { place:"The Den", tag:"The hardest night",
+      eli:"The king likes Daniel but HAS to throw him in? And now we just... wait by a den of lions all night? This is the scariest part.",
+      spots:[
+        { ico:"😔", label:"See the king's sorrow", lead:"The king is grieved — he tried all day to save Daniel, but the law can't be changed.",
+          clue:"As Daniel is lowered in, the king says, 'May your God, whom you serve faithfully, rescue you.'" },
+        { ico:"🪨", label:"Watch the stone", lead:"A great stone is rolled over the mouth of the den and sealed.",
+          clue:"Now nothing can be done but wait, and trust." },
+        { ico:"🌙", label:"Keep the long vigil", lead:"The king can't eat or sleep all night, hoping.",
+          clue:"At the first light of morning, he rushes to the den to see." },
+      ],
+      ask:"What does the king hope for as he waits all night?",
+      options:["That Daniel's God will rescue him","That the lions aren't hungry","That the officials will change the law"],
+      answer:0,
+      hint:"Read what the king says at the 'sorrow' clue — he hopes the God Daniel serves will rescue him.",
+      sidequest:null },
+
+    { place:"Morning", tag:"The mouths of the lions are shut",
+      eli:"He's ALIVE! The lions didn't touch him! I came in wanting to hide who I was... and Daniel just showed me the braver way.",
+      final:true,
+      teaching:"Daniel served faithfully in a foreign land, and when a law was made to trap him, he kept praying to God exactly as he always had — not hiding, not showing off, just quietly faithful even when it could cost him everything. Thrown to the lions, he trusted God through the long dark night. In the morning the king found him unharmed: God had shut the lions' mouths. Courage isn't never being afraid. It's staying true to God and doing the next right thing — especially when it's hard, and especially when others are watching." },
+  ]
+};
+
+
 const CASES = {
   jesus: CASE_JESUS,
   david: CASE_DAVID,
@@ -623,9 +724,10 @@ const CASES = {
   ruth:  CASE_RUTH,
   paul:  CASE_PAUL,
   noah:  CASE_NOAH,
+  daniel: CASE_DANIEL,
 };
 
-const CASE_ORDER = ["jesus", "david", "moses", "ruth", "paul", "noah"];
+const CASE_ORDER = ["jesus", "david", "moses", "ruth", "paul", "noah", "daniel"];
 
 /* Universal badge earned across any case (engine may reference) */
 const SHARED_RANKS = {
@@ -803,6 +905,33 @@ const ROUNDTABLES = {
       "Almost everyone has felt silly doing the right thing while others laughed — you're in good company.",
       "Trusting instructions you don't fully understand yet is hard for grown-ups too.",
       "Doing the same faithful thing over and over, with no applause, is quietly one of the bravest things there is.",
+    ],
+  },
+  daniel: { // Courage & Faithfulness
+    kid: [
+      "When is it hard to do the right thing because you're afraid of what others will think?",
+      "Have you ever felt like you had to hide something true about yourself to fit in?",
+      "What's something you believe in that you'd keep doing even if others teased you?",
+      "Is it braver to go along with the crowd, or to quietly do what's right? Why?",
+      "Who helps you be brave when you're scared to stand out?",
+    ],
+    parent: [
+      "When you were about this age, was there a time you stood for something while others didn't? Tell the story.",
+      "Did you ever hide a part of who you were to fit in as a kid? How did that feel?",
+      "Was there a time being honest cost you something, but you were glad you did it?",
+      "Who taught you that you can be kind <i>and</i> stand firm at the same time?",
+      "When were you scared but did the right thing anyway as a kid?",
+    ],
+    together: [
+      "Name one thing this week you'll do right even if it's not popular — and back each other up.",
+      "Is there someone being pressured to hide who they are? How could you stand with them?",
+      "Pick a good habit — like Daniel's daily prayer — you'll both keep this week, no matter what.",
+      "Think of a place it's hard to be honest. How can you help each other be brave there?",
+    ],
+    notAlone: [
+      "Everybody feels the pull to blend in and hide — choosing to stay true is brave for grown-ups too.",
+      "Doing right when it's unpopular is scary at any age. You're not the only one who finds it hard.",
+      "Quiet, steady faithfulness — like Daniel's — is one of the bravest things there is, and it's rare.",
     ],
   },
 };

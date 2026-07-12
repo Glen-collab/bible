@@ -187,20 +187,15 @@ const WORKSHOPS = {
   danielDen: {
     id: "danielDen",
     standalone: true,
+    freeBuild: true,
+    forCase: "daniel",
     title: "Daniel in the Lions' Den",
     subtitle: "Shut the Lions' Mouths",
     grid: { cols: 8, rows: 6 },
     ground: "cave",
+    freeGoal: "Build the lions' den! Place Daniel and the lions, add the king who came at dawn, an angel, and a dove of peace — arrange it however you like.",
     items: ["daniel_lion_den","lion","king","angel","man","dove"],
     aiPreview: [ 'place("daniel_lion_den", 3, 0)', 'place("king", 6, 4)', 'place("dove", 4, 0)' ],
-    rungs: [
-      { id:0, label:"1 · The den",  goalItem:"daniel_lion_den", target:{col:3,row:0},
-        goal:'Set the lions\' den: place("daniel_lion_den", 3, 0).' },
-      { id:1, label:"2 · The king", goalItem:"king", target:{col:6,row:4},
-        goal:'At dawn the king comes to check on Daniel: place("king", 6, 4).' },
-      { id:2, label:"3 · A dove",   goalItem:"dove", target:{col:4,row:0},
-        goal:'Send a dove over the den: place("dove", 4, 0).' },
-    ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:4, rows:[4,5]}, extras:[{emoji:"✨", n:5, rows:[0,2]}], dove:true, shimmer:["angel"], wander:["dove","lion"] }
   },
