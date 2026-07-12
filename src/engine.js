@@ -161,9 +161,13 @@
 
   function buildChoices(s) {
     const box = $('choices');
-    s.options.forEach((opt, i) => {
+    // shuffle the DISPLAY order so the correct answer isn't always in the same spot;
+    // each button keeps its original index, so the answer logic is unchanged.
+    const order = s.options.map((_, i) => i);
+    for (let j = order.length - 1; j > 0; j--) { const k = Math.floor(Math.random() * (j + 1)); const t = order[j]; order[j] = order[k]; order[k] = t; }
+    order.forEach((i) => {
       const b = document.createElement('button');
-      b.className = 'choice'; b.textContent = opt;
+      b.className = 'choice'; b.textContent = s.options[i];
       b.onclick = () => pick(i, b, s);
       box.appendChild(b);
     });
