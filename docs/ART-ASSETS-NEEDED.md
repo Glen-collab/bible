@@ -1,5 +1,15 @@
 # 🎨 Footsteps of the Teacher — Art Asset List
 
+> **▶️ START HERE TOMORROW:** You need **24 sprite images** (→ `assets/sprites/`) and,
+> optionally, **6 background scenes** (→ `assets/scenes/`). The exact copy-paste
+> filename lists are at the very bottom (§📋). Save each file with the **exact
+> lowercase name**, drop it in the folder, commit + push — it appears in the game
+> automatically. When you've got a batch in, ping me and I'll confirm they're loading
+> (and wire the `place("...")` command for any background scenes you made).
+
+---
+
+
 This is the complete list of art the game can use. Draw/find any of these, save it
 with the **exact filename shown**, drop it in the right folder, and it appears in the
 game automatically — no code changes needed.
