@@ -378,6 +378,16 @@
   WS._nudge = function (dx, dy) {
     if (!selected || !selected._cell) return;
     const c = selected._cell;
+    // a railed piece (the tomb stone) only rolls left/right — no floating up/down
+    if (CFG.rail && CFG.rail.item === c.name) {
+      if (dx === 0) { tutorSay('The stone rolls on a track — use ← to open, → to close.'); return; }
+      const dir = dx < 0 ? 'left' : 'right';
+      move(c.name, dir); railMsg = null;
+      tutorSay(railHint(dir === 'left', c.name));
+      showCode('move("' + c.name + '", "' + dir + '")');
+      print('> move("' + c.name + '", "' + dir + '")', 'echo'); chime(480);
+      return;
+    }
     const nc = Math.max(0, Math.min(COLS - 1, c.col + dx));
     const nr = Math.max(0, Math.min(ROWS - 1, c.row + dy));
     if (nc === c.col && nr === c.row) return;
