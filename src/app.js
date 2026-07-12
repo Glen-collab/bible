@@ -10,8 +10,8 @@
   const { CASES, CASE_ORDER } = window.FOOTSTEPS_CASES;
   const { WORKSHOPS } = window.FOOTSTEPS_WORKSHOPS;
 
-  const CASE_EMOJI = { jesus: '🫏', david: '🐑', moses: '🔥', ruth: '🌾', paul: '⛵', noah: '🚢', daniel: '🦁', tomb: '🌅' };
-  const SCENE_EMOJI = { noahsArk: '🌈', emptyTomb: '🌅', danielDen: '🦁', feeding5000: '🐟', sermonMount: '⛰️', theManger: '👶', shepherdField: '🪨', desertJourney: '🌊', harvestField: '🌾', carryTheLight: '⚡' };
+  const CASE_EMOJI = { jesus: '🫏', david: '🐑', moses: '🔥', ruth: '🌾', paul: '⛵', noah: '🚢', daniel: '🦁', tomb: '🌅', loaves: '🍞', eden: '🌳' };
+  const SCENE_EMOJI = { noahsArk: '🌈', emptyTomb: '🌅', danielDen: '🦁', feeding5000: '🐟', sermonMount: '⛰️', theManger: '👶', shepherdField: '🪨', desertJourney: '🌊', harvestField: '🌾', carryTheLight: '⚡', edenGarden: '🌳' };
 
   function workshopForCase(caseId) {
     return Object.values(WORKSHOPS).find((w) => w.forCase === caseId) || null;

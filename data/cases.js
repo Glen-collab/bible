@@ -820,6 +820,215 @@ const CASE_TOMB = {
 };
 
 
+/* =====================================================================
+   CASE 9 — LOAVES & FISHES · "The Loaves and Fishes"
+   Theme: God Provides (generosity over worry).  Eli's flaw: worries there's
+   never enough, so he keeps what he has and looks away from others' need.
+   Story-moments: The Hungry Hillside → The Big Problem → The Boy's Lunch →
+                  Give Thanks and Share → Twelve Baskets Left
+   Unlocks the "The Loaves and Fishes" scene.
+   ===================================================================== */
+const CASE_LOAVES = {
+  id: "loaves",
+  title: "The Loaves and Fishes",
+  theme: "God Provides",
+  badges: {
+    firstSteps: { icon:"👣", name:"First Steps",       desc:"Began the journey" },
+    brave:      { icon:"🍞", name:"Enough Faith",       desc:"Solved a stop with no hints" },
+    thorough:   { icon:"🔍", name:"Careful Seeker",     desc:"Investigated every spot at a location" },
+    steadfast:  { icon:"🕊️", name:"Trusted Anyway",     desc:"Chose to trust through a detour" },
+    helper:     { icon:"🤝", name:"Kind Helper",        desc:"Completed a side quest" },
+    delivered:  { icon:"🧺", name:"Baskets Full",       desc:"Finished the whole case" },
+  },
+  detours: [
+    { place:"The Not-Enough Nook",
+      scene:"Eli's certain there's never enough to go around, so the safe move is to keep his own snack and say nothing. But counting your own little pile over and over never once made it grow.",
+      lesson:"Worry whispers 'not enough' before you've even tried. Generosity says 'let's share what we have and see.' You head back to the crowd." },
+    { place:"The Someone-Else's-Problem Path",
+      scene:"'All these hungry people aren't really my job,' Eli decides, and slips toward the exit. But walking past someone who needs help just leads down a lonely, empty little loop.",
+      lesson:"You don't have to fix everything — but you can offer something. You turn around and rejoin the others." },
+  ],
+  stops: [
+    { place:"The Hungry Hillside", tag:"A huge crowd, and evening coming",
+      eli:"Thousands of people, way out here, and it's getting dark and everyone's hungry. Yikes. Not my problem though, right?",
+      spots:[
+        { ico:"👥", label:"Count the crowd", lead:"A crowd of thousands has followed Jesus all day to hear him.",
+          clue:"Five thousand men, plus women and children — a whole town's worth of hungry people." },
+        { ico:"🌆", label:"Watch the sun sink", lead:"The day is almost gone, and they're far from any village.",
+          clue:"There's no shop, no market, nowhere nearby to buy food for so many." },
+        { ico:"😟", label:"Hear the disciples", lead:"Jesus' helpers are getting worried about all these hungry people.",
+          clue:"'Send them away,' they say, 'so they can go find their own food. We can't possibly feed them all.'" },
+      ],
+      ask:"What do the worried disciples want to do about the hungry crowd?",
+      options:["Send everyone away to find their own food","Share what little they have","Ask the crowd to wait until morning"],
+      answer:0,
+      hint:"Listen to the 'hear the disciples' clue — they want to send everyone away because they think they can't feed them.",
+      sidequest:null },
+
+    { place:"The Big Problem", tag:"Doing the impossible math",
+      eli:"They did the math and it'd cost a fortune. When it's that big, isn't it smarter to just give up?",
+      spots:[
+        { ico:"🪙", label:"Count the cost", lead:"The disciples figure it would take more than half a year's pay to buy everyone even a bite.",
+          clue:"By their math, it's flat-out impossible. There is nowhere near enough money." },
+        { ico:"🙌", label:"Check their hands", lead:"They look around at what they actually have on hand.",
+          clue:"Almost nothing. The problem feels far bigger than anything they can offer." },
+        { ico:"🤔", label:"Feel the worry", lead:"The mood turns to 'we can't,' 'there's not enough,' 'it can't be done.'",
+          clue:"Worry has a way of counting the problem over and over and never counting what God can do." },
+      ],
+      ask:"What is the disciples' attitude about feeding the crowd?",
+      options:["They're sure it's impossible — there's not nearly enough","They're excited to try","They think the crowd should pay"],
+      answer:0,
+      hint:"Every clue here points the same way — they've decided it can't be done because there's not enough.",
+      sidequest:{ title:"Encourage a discouraged friend", desc:"Someone near you has given up before even trying. Cheer them on to give it a go?",
+        lesson:"You help a friend try instead of quit. Eli learns 'impossible' often just means 'not yet started.'", badge:"helper" } },
+
+    { place:"The Boy's Lunch", tag:"A small gift, freely offered",
+      eli:"Wait — one KID just offered his whole lunch? Five little loaves and two fish, for thousands? That's... actually kind of brave.",
+      spots:[
+        { ico:"🧺", label:"See the little basket", lead:"A boy in the crowd has a small lunch: five loaves of bread and two little fish.",
+          clue:"It's not much at all — barely a meal for one growing kid." },
+        { ico:"💛", label:"Watch him offer it", lead:"Instead of quietly eating it himself, the boy hands his whole lunch over to share.",
+          clue:"He gives everything he has, even though it looks way too small to matter." },
+        { ico:"🙄", label:"Notice the doubt", lead:"A disciple sighs, 'But what is that among so many?'",
+          clue:"To worried eyes, a small gift looks useless. To Jesus, it's exactly enough to start with." },
+      ],
+      ask:"What does the boy do with his small lunch?",
+      options:["Eats it quietly by himself","Offers his whole lunch to be shared","Sells it to the highest bidder"],
+      answer:1,
+      hint:"The 'watch him offer it' clue — he hands over his whole lunch to share, even though it seems too small.",
+      sidequest:null },
+
+    { place:"Give Thanks and Share", tag:"A little becomes a lot",
+      eli:"He just... said thank you, and started sharing it? And it keeps GOING? The baskets aren't running out!",
+      spots:[
+        { ico:"🙏", label:"Hear the thanks", lead:"Jesus takes the little lunch, looks up, and gives thanks to God for it.",
+          clue:"He starts with gratitude for the small thing — not complaint about how little it is." },
+        { ico:"🍞", label:"Watch it multiply", lead:"He breaks the bread and fish and keeps handing it out... and out... and out.",
+          clue:"The little lunch keeps coming. The more they give away, the more there is." },
+        { ico:"😋", label:"See everyone eat", lead:"All across the hillside, thousands of people eat until they're full.",
+          clue:"Every single person gets enough — from one boy's lunch given in love." },
+      ],
+      ask:"What happens as the small lunch is shared out?",
+      options:["It runs out after a few people","There's more than enough — everyone eats their fill","Only the disciples get to eat"],
+      answer:1,
+      hint:"The 'watch it multiply' and 'see everyone eat' clues — the little lunch becomes more than enough for all.",
+      sidequest:null },
+
+    { place:"Twelve Baskets Left", tag:"More than enough",
+      eli:"Twelve whole baskets LEFT OVER? I came in worried there'd never be enough for me. Turns out a little, shared, was enough for everybody.",
+      final:true,
+      teaching:"Five thousand hungry people, one impossible problem, and the disciples' answer was 'send them away — there's not enough.' Then one boy offered his tiny lunch, Jesus gave thanks for it, and as it was shared it became more than enough — with twelve baskets to spare. That's how God provides. You don't need to have a lot before you can help; you just need to offer what you have. Worry is always sure there won't be enough, so it holds on tight and looks away. But a small gift, given with thanks and love, has a way of stretching further than anyone counted on."
+    },
+  ]
+};
+
+
+/* =====================================================================
+   CASE 10 — THE GARDEN · "The Garden and the Serpent"
+   Theme: Honesty & Grace (why we hide — fear and shame — and being found in love).
+   Handled gently for kids: everyone does wrong; the instinct is to hide and blame;
+   but love comes looking, and honesty is the way back. God's "Where are you?" is
+   an invitation to stop hiding, not a trap.
+   Story-moments: The Good Garden → The Sneaky Question → The Choice →
+                  Hiding in the Bushes → Still Loved
+   Unlocks the "The Garden of Eden" scene.
+   ===================================================================== */
+const CASE_EDEN = {
+  id: "eden",
+  title: "The Garden and the Serpent",
+  theme: "Honesty & Grace",
+  badges: {
+    firstSteps: { icon:"👣", name:"First Steps",       desc:"Began the journey" },
+    brave:      { icon:"🍎", name:"Saw the Trick",      desc:"Solved a stop with no hints" },
+    thorough:   { icon:"🔍", name:"Careful Seeker",     desc:"Investigated every spot at a location" },
+    steadfast:  { icon:"🕊️", name:"Came Out of Hiding", desc:"Chose honesty through a detour" },
+    helper:     { icon:"🤝", name:"Kind Helper",        desc:"Completed a side quest" },
+    delivered:  { icon:"💚", name:"Covered in Love",    desc:"Finished the whole case" },
+  },
+  detours: [
+    { place:"The Blame-It Bush",
+      scene:"The moment he's caught, Eli's first move is 'It wasn't me — it was them!' But pointing fingers just spins you round and round the bush and never fixes a single thing.",
+      lesson:"Blaming someone else feels safer for a second, but it keeps the mess exactly where it is. Owning your part is the only way forward. You step back onto the path." },
+    { place:"The Hide-Away Hollow",
+      scene:"Eli figures if he just tucks the mistake away where nobody can see, it'll be like it never happened. But the hollow only gets darker and lonelier the deeper he hides.",
+      lesson:"Hiding from the people who love you doesn't make the wrong disappear — it just makes you feel alone with it. Coming out into the light is a relief. You turn back." },
+  ],
+  stops: [
+    { place:"The Good Garden", tag:"Everything given, one loving rule",
+      eli:"A perfect garden, everything you need, and just one 'please don't'? How hard could following ONE rule be?",
+      spots:[
+        { ico:"🌳", label:"Walk the garden", lead:"The first people live in a beautiful garden where everything they need is provided.",
+          clue:"It's all a gift — food, friendship, and God walking with them in the cool of the day." },
+        { ico:"😊", label:"Feel the trust", lead:"There's nothing to hide and nothing to fear. They're safe, known, and loved.",
+          clue:"Being fully seen and still loved — that's how it was meant to be from the start." },
+        { ico:"🍎", label:"Find the one tree", lead:"There's a single tree they're asked not to eat from — just one loving boundary.",
+          clue:"The rule isn't to be mean; it's like a parent saying 'don't touch the hot stove.' It's for their good." },
+      ],
+      ask:"Why does God give them the one rule about the tree?",
+      options:["To be mean and spoil their fun","Because the boundary is for their good","Because God forgot to explain it"],
+      answer:1,
+      hint:"The 'find the one tree' clue compares it to 'don't touch the hot stove' — a loving boundary, not a mean one.",
+      sidequest:null },
+
+    { place:"The Sneaky Question", tag:"When a lie sounds like a good idea",
+      eli:"The snake didn't say 'break the rule.' He just went 'did God REALLY say that? You're missing out...' Ohh, that's sneaky.",
+      spots:[
+        { ico:"🐍", label:"Hear the serpent", lead:"A crafty serpent slides up and asks, 'Did God really say you can't eat from any tree?'",
+          clue:"He twists the words — God said one tree, but the serpent makes it sound like God is holding out on them." },
+        { ico:"🎣", label:"Spot the hook", lead:"'You won't really be in trouble,' he says. 'You're just missing out on something great.'",
+          clue:"The oldest trick: make the wrong thing look wonderful and the good rule look unfair." },
+        { ico:"👀", label:"Look at the fruit", lead:"Suddenly the forbidden fruit looks shiny, delicious, and impossible to resist.",
+          clue:"A temptation almost always looks better in the moment than it turns out to be." },
+      ],
+      ask:"What is the serpent really doing with his sneaky question?",
+      options:["Honestly asking for directions","Twisting the truth to make wrong look good","Warning them to be careful"],
+      answer:1,
+      hint:"The 'spot the hook' clue names it — he makes the wrong thing look wonderful and the good rule look unfair.",
+      sidequest:{ title:"Warn a friend kindly", desc:"A friend is being talked into something they'll regret. Gently tell them what you see?",
+        lesson:"You help a friend spot a bad idea before they're stuck in it. Eli learns real friends tell the truth kindly.", badge:"helper" } },
+
+    { place:"The Choice", tag:"The one thing they weren't to do",
+      eli:"And... they did it. The one thing. And right away everything felt different — kind of like when I know I've messed up.",
+      spots:[
+        { ico:"🍏", label:"See the moment", lead:"They take the fruit and eat — doing the one thing they were lovingly asked not to do.",
+          clue:"For a second it feels exciting. Then, almost at once, something inside them changes." },
+        { ico:"😳", label:"Feel the 'uh-oh'", lead:"Suddenly they feel exposed and ashamed, like they want to cover up and disappear.",
+          clue:"That heavy, hiding feeling has a name: shame. It's new, and it doesn't feel good at all." },
+        { ico:"🍃", label:"Watch them cover up", lead:"They quickly sew fig leaves together, trying to hide how they feel.",
+          clue:"The very first thing wrongdoing makes us want to do is cover up and hide." },
+      ],
+      ask:"How do the man and woman feel right after they break the one rule?",
+      options:["Proud and happy","Suddenly ashamed and wanting to hide","Bored and sleepy"],
+      answer:1,
+      hint:"The 'feel the uh-oh' clue names the new feeling — shame — that makes them want to cover up and disappear.",
+      sidequest:null },
+
+    { place:"Hiding in the Bushes", tag:"'Where are you?'",
+      eli:"They're hiding in the BUSHES from God. And then blaming each other and the snake. Oof... I do that exact thing.",
+      spots:[
+        { ico:"🌿", label:"Find them hiding", lead:"When they hear God walking in the garden, they hide themselves among the trees.",
+          clue:"They're not hiding because God is scary — they're hiding because they're ashamed of what they did." },
+        { ico:"🗣️", label:"Hear the question", lead:"God calls out gently, 'Where are you?'",
+          clue:"God knows exactly where they are. The question is an invitation: come out, stop hiding, tell me the truth." },
+        { ico:"👉", label:"Catch the blame", lead:"When asked, the man blames the woman, the woman blames the serpent — anyone but themselves.",
+          clue:"'It wasn't me!' Blaming others is almost as old as the first mistake. It never actually helps." },
+      ],
+      ask:"Why do the man and woman hide from God in the bushes?",
+      options:["They're afraid and ashamed of what they did","They're playing a fun game of hide-and-seek","They're too tired to come out"],
+      answer:0,
+      hint:"The 'find them hiding' clue — they hide not because God is scary, but because they're ashamed of what they did.",
+      sidequest:{ title:"Own up alongside a friend", desc:"You and a friend both goofed. Be the first to say 'I did it too'?",
+        lesson:"You own your part instead of pointing fingers. Eli learns that telling the truth takes the weight off everyone.", badge:"helper" } },
+
+    { place:"Still Loved", tag:"Found, and covered in love",
+      eli:"There were consequences — but God didn't stop loving them. He came LOOKING for them, and even made them real clothes. I came in hiding my mistakes. Turns out the way back is to stop hiding.",
+      final:true,
+      teaching:"In the good garden there was one loving rule, and a sneaky voice made breaking it look like a great idea. The moment they did, everything changed: for the first time they felt shame, sewed leaves to cover up, hid in the bushes, and blamed each other. But notice what God did. He came walking through the garden and called, 'Where are you?' — not because he couldn't find them, but to invite them out of hiding. There were real consequences, yet he didn't stop loving them; he even made them proper clothes to cover them, and promised that one day everything broken would be made right. That's the truth under this whole story: everyone does wrong sometimes, and the first thing wrong makes us want to do is hide and blame. But hiding from someone who loves you only leaves you lonely. Being honest is the way back — and love comes looking for you even when you've messed up."
+    },
+  ]
+};
+
+
 const CASES = {
   jesus: CASE_JESUS,
   david: CASE_DAVID,
@@ -829,9 +1038,11 @@ const CASES = {
   noah:  CASE_NOAH,
   daniel: CASE_DANIEL,
   tomb:  CASE_TOMB,
+  loaves: CASE_LOAVES,
+  eden:  CASE_EDEN,
 };
 
-const CASE_ORDER = ["jesus", "david", "moses", "ruth", "paul", "noah", "daniel", "tomb"];
+const CASE_ORDER = ["jesus", "david", "moses", "ruth", "paul", "noah", "daniel", "tomb", "loaves", "eden"];
 
 /* Universal badge earned across any case (engine may reference) */
 const SHARED_RANKS = {
@@ -1063,6 +1274,58 @@ const ROUNDTABLES = {
       "Everyone hits moments that feel hopeless — needing hope isn't weakness, it's being human.",
       "Grown-ups grieve and worry too; you don't have to pretend to be okay to be brave.",
       "Showing up for someone in the dark, before you can fix anything, is one of the most powerful things a person can do.",
+    ],
+  },
+  loaves: { // God Provides
+    kid: [
+      "When did sharing something actually make you happier than keeping it?",
+      "When do you worry there won't be enough — of food, time, or turns?",
+      "What's one small thing you have plenty of that could help someone else?",
+      "Is it hard to share when you don't have very much? Why?",
+      "Who has shared something with you when you really needed it?",
+    ],
+    parent: [
+      "Tell about a time you didn't have much but shared anyway — what happened?",
+      "Was there a time you worried about 'enough' (money, time, food) and were provided for?",
+      "Who was generous to you when you were young, in a way you still remember?",
+      "When has a small gift you gave — or got — turned out to mean far more than its size?",
+    ],
+    together: [
+      "Pick one thing your family has plenty of that you could share with someone this week.",
+      "Is there a person you know who's short on something you could help with?",
+      "Before your next meal, take a moment to give thanks out loud — and mean it, like Jesus did.",
+      "Name a worry about 'not enough' out loud, then one small thing you could offer anyway.",
+    ],
+    notAlone: [
+      "Almost everyone carries a quiet worry about whether there'll be enough — grown-ups included.",
+      "Choosing to share when you're not sure you have enough is brave at any age.",
+      "You never need to be rich or ready to help — offering the little you have is the whole secret.",
+    ],
+  },
+  eden: { // Honesty & Grace
+    kid: [
+      "When you do something wrong, do you want to hide it? Why do you think that is?",
+      "Is it hard to say the words 'I did it'? What makes it hard?",
+      "How do you feel after you finally tell the truth about something?",
+      "Have you ever blamed someone else for something you did? What happened?",
+      "Has someone ever forgiven you when you were sure they'd be mad? How did that feel?",
+    ],
+    parent: [
+      "Tell about a time you hid a mistake as a kid — how did keeping it secret feel?",
+      "Was there a time being honest about a wrong turned out far better than hiding it?",
+      "Who forgave you for something big, and how did that change you?",
+      "When you were young, did you feel safe telling a grown-up hard truths? What made the difference?",
+    ],
+    together: [
+      "Make a family promise: telling the truth — even about a mistake — is always safe here.",
+      "Agree together on what happens when someone owns a mistake: grace first, then making it right.",
+      "Is anyone hiding something right now, feeling alone with it? How could you gently 'come find' each other?",
+      "Practice the words out loud together: 'I did it, and I'm sorry.' They get easier with use.",
+    ],
+    notAlone: [
+      "Hiding and blaming when we mess up is the oldest instinct there is — literally everyone feels it.",
+      "Grown-ups feel shame too, and still want to hide sometimes; you're not the only one.",
+      "Being loved and welcomed back after you've messed up is one of the very best feelings a person can have.",
     ],
   },
 };

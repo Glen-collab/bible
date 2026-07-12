@@ -205,6 +205,7 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
 #stage.ground-cave{background:linear-gradient(#c9b79a 0%,#b09877 45%,#7a6650 72%,#5a4a3a 100%);}
 #stage.ground-sea{background:linear-gradient(#bfe0ef 0%,#dcd0a8 46%,#e8dcbf 58%,#d8c79c 100%);}
 #stage.ground-road{background:linear-gradient(#cfe0e8 0%,#e2d9c0 45%,#cdb98f 66%,#b9a271 100%);}
+#stage.ground-garden{background:linear-gradient(#cdeaf3 0%,#d8efd2 42%,#8fcf78 58%,#4f9c46 100%);}
 .sprite{position:absolute;display:grid;place-items:center;font-size:25px;transition:left .12s,top .12s,width .18s,height .18s;pointer-events:auto;cursor:pointer;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25));z-index:1;}
 .sprite.moving{transition:left .55s cubic-bezier(.4,0,.2,1),top .55s cubic-bezier(.4,0,.2,1);}
 .sprite.selected{outline:2px dashed var(--terra);outline-offset:-2px;border-radius:6px;}

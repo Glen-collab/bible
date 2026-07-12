@@ -37,6 +37,8 @@ const WORKSHOP_ITEMS = {
   boulder:"🪨", jesus:"🧍", king:"🤴",
   // nativity stand-ins (emoji until real art is added)
   cow:"🐄", noah:"🧔",
+  // garden of eden scene pieces
+  tree:"🌳", serpent:"🐍", fruit:"🍎", leaves:"🍃",
   // backdrop objects: placing one becomes the whole scene (manger already above)
   ark:"🚢", tomb:"⚰️",
   // larger illustrated images (loaded from assets/scenes/) usable as placeable
@@ -205,22 +207,34 @@ const WORKSHOPS = {
   feeding5000: {
     id: "feeding5000",
     standalone: true,
+    freeBuild: true,
+    forCase: "loaves",
     title: "The Loaves and Fishes",
     subtitle: "Feeding the Five Thousand",
     grid: { cols: 8, rows: 6 },
     ground: "grass",
+    freeGoal: "Feed the five thousand! Place Jesus with the loaves and fish, spread a great crowd across the hillside to share the meal, and send a dove overhead — build it however you like.",
     items: ["jesus_2fish_2bread","loaves_fish","crowd_eating_fish","jesus","dove","man","female","crowd_listening"],
     aiPreview: [ 'place("jesus_2fish_2bread", 2, 2)', 'place("crowd_eating_fish", 5, 3)', 'place("dove", 4, 0)' ],
-    rungs: [
-      { id:0, label:"1 · Jesus",     goalItem:"jesus_2fish_2bread", target:{col:2,row:2},
-        goal:'Jesus holds two fish and five loaves: place("jesus_2fish_2bread", 2, 2).' },
-      { id:1, label:"2 · The crowd", goalItem:"crowd_eating_fish", target:{col:5,row:3},
-        goal:'A great crowd is fed: place("crowd_eating_fish", 5, 3).' },
-      { id:2, label:"3 · A dove",    goalItem:"dove", target:{col:4,row:0},
-        goal:'Send a dove over the crowd: place("dove", 4, 0).' },
-    ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:5, rows:[0,2]}], dove:true, shimmer:["jesus"], wander:["dove"] }
+  },
+
+  /* ---- Standalone scene: the garden of eden ---- */
+  edenGarden: {
+    id: "edenGarden",
+    standalone: true,
+    freeBuild: true,
+    forCase: "eden",
+    title: "The Garden of Eden",
+    subtitle: "A very good garden",
+    grid: { cols: 8, rows: 6 },
+    ground: "garden",
+    freeGoal: "Grow the good garden! Plant trees, add the one special tree with its fruit, place the first man and woman, let gentle animals roam, and put the sly serpent in the branches — arrange it however you like.",
+    items: ["tree","fruit","serpent","man","female","lion","sheep","deer","dove","leaves"],
+    aiPreview: [ 'place("tree", 4, 1)', 'place("fruit", 4, 1)', 'place("man", 2, 3)', 'place("female", 5, 3)' ],
+    practice: { enabled:true, prompt:"I'll call out where each piece goes." },
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:6, rows:[4,5]}, extras:[{emoji:"🌸", n:5, rows:[3,4]},{emoji:"🦋", n:3, rows:[1,2]}], dove:true, shimmer:["fruit"], wander:["serpent","deer","dove"] }
   },
 
   /* ---- Standalone scene: the sermon on the mount ---- */
