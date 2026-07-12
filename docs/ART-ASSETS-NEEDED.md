@@ -39,8 +39,8 @@ You listed some names — here's the exact filename each one needs to be:
 |-----------|-----------|-------|
 | `Moses` | `moses.png` | lowercase |
 | `apple_tree` | `tree.png` **+** `fruit.png` | the tree and the apple are two separate pieces |
-| `Adam` | *(already `man.png`)* | Adam = the generic `man` figure (art already exists). Want a distinct Adam? See "optional extras." |
-| `Eve` | *(already `female.png`)* | Eve = the generic `female` figure (art already exists). |
+| `Adam` | `adam.png` | Adam has his own piece in the Eden scene now. |
+| `Eve` | `eve.png` | Eve has her own piece in the Eden scene now. |
 | `God` | *(not placed)* | The Eden story tells about God but never places a God figure — intentionally. Nothing to draw. |
 | `red_sea`, `Split_red_sea` | `red_sea.png` | A **new full-stage backdrop** — see "Backgrounds" below. (`Split_red_sea` isn't a name yet.) |
 | `Moses_10_command` | *(not in the game)* | The Ten Commandments aren't a scene yet. Could be a future case — tell me if you want it. |
@@ -116,7 +116,9 @@ so you can knock out one scene at a time.
 | `fruit.png` | 🍎 | the forbidden fruit / apple |
 | `serpent.png` | 🐍 | the sly serpent |
 | `leaves.png` | 🍃 | fig leaves |
-| *(Adam = `man.png` ✅, Eve = `female.png` ✅, plus `lion`/`deer`/`sheep`/`dove`)* | | |
+| `adam.png` | 🧑 | Adam — his own figure in this scene |
+| `eve.png` | 👩 | Eve — her own figure in this scene |
+| *(plus `lion`/`deer`/`sheep`/`dove` from the tables above)* | | |
 
 ---
 
@@ -169,6 +171,9 @@ file over the old name and it upgrades), but nothing's missing:
 `monkey` · `mouse` · `ostrich` · `owl` · `panda` · `rainbow` · `rhino` · `snail` ·
 `squirrel` · `tiger` · `toucan` · `zebra`
 
+> Note: `man.png` and `female.png` are the generic people used across most scenes.
+> Eden now has its **own** `adam` / `eve` pieces (in the "still needed" list above).
+
 ---
 
 ## 5️⃣ Optional extras (defined but not in any scene yet)
@@ -177,13 +182,9 @@ These have emoji and aren't used in a case right now. Only worth drawing if you 
 them for the free-build sandbox or a future scene: `camel` 🐪 · `star` ⭐ · `lamp` 🪔 ·
 `shepherd` 🧎 · `wiseman` 🧙 · `fire` 🔥.
 
-Want a distinct **Adam** and **Eve** (instead of reusing the generic man/woman)? I can
-add `adam` and `eve` as their own pieces — just say the word and save `adam.png` /
-`eve.png`.
-
 ---
 
-## 📋 Quick copy-paste checklist (the 22 sprites still on emoji)
+## 📋 Quick copy-paste checklist (the 24 sprites still on emoji)
 
 ```
 assets/sprites/sheep.png
@@ -208,6 +209,8 @@ assets/sprites/tree.png
 assets/sprites/fruit.png
 assets/sprites/serpent.png
 assets/sprites/leaves.png
+assets/sprites/adam.png
+assets/sprites/eve.png
 ```
 
 Optional backgrounds (in `assets/scenes/`):

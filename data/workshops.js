@@ -38,7 +38,7 @@ const WORKSHOP_ITEMS = {
   // nativity stand-ins (emoji until real art is added)
   cow:"🐄", noah:"🧔",
   // garden of eden scene pieces
-  tree:"🌳", serpent:"🐍", fruit:"🍎", leaves:"🍃",
+  tree:"🌳", serpent:"🐍", fruit:"🍎", leaves:"🍃", adam:"🧑", eve:"👩",
   // backdrop objects: placing one becomes the whole scene (manger already above)
   ark:"🚢", tomb:"⚰️",
   // larger illustrated images (loaded from assets/scenes/) usable as placeable
@@ -230,9 +230,9 @@ const WORKSHOPS = {
     subtitle: "A very good garden",
     grid: { cols: 8, rows: 6 },
     ground: "garden",
-    freeGoal: "Grow the good garden! Plant trees, add the one special tree with its fruit, place the first man and woman, let gentle animals roam, and put the sly serpent in the branches — arrange it however you like.",
-    items: ["tree","fruit","serpent","man","female","lion","sheep","deer","dove","leaves"],
-    aiPreview: [ 'place("tree", 4, 1)', 'place("fruit", 4, 1)', 'place("man", 2, 3)', 'place("female", 5, 3)' ],
+    freeGoal: "Grow the good garden! Plant trees, add the one special tree with its fruit, place Adam and Eve, let gentle animals roam, and put the sly serpent in the branches — arrange it however you like.",
+    items: ["tree","fruit","serpent","adam","eve","lion","sheep","deer","dove","leaves"],
+    aiPreview: [ 'place("tree", 4, 1)', 'place("fruit", 4, 1)', 'place("adam", 2, 3)', 'place("eve", 5, 3)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:6, rows:[4,5]}, extras:[{emoji:"🌸", n:5, rows:[3,4]},{emoji:"🦋", n:3, rows:[1,2]}], dove:true, shimmer:["fruit"], wander:["serpent","deer","dove"] }
   },
