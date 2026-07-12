@@ -71,13 +71,17 @@
     function roam(s) {
       const el = s.el;
       el.classList.add('roam');
-      el.dataset.c = s.col; el.dataset.r = s.row;   // seed from the sprite's real cell
+      // pace SIDE TO SIDE on the row where it was placed, staying within ~2 cells
+      // of that spot — so animals stay put on the deck instead of drifting off.
+      const startC = s.col, startR = s.row;
+      const minC = Math.max(0, startC - 2), maxC = Math.min(COLS - 1, startC + 2);
+      el.dataset.c = startC;
+      el.style.top = (startR * (100 / ROWS)) + '%';
       const t = setInterval(() => {
-        let c = +el.dataset.c, r = +el.dataset.r;
-        c = Math.max(0, Math.min(COLS - 1, c + (Math.random() < .5 ? -1 : 1)));
-        r = Math.max(3, Math.min(ROWS - 1, r + (Math.random() < .5 ? 0 : (Math.random() < .5 ? -1 : 1))));
-        el.dataset.c = c; el.dataset.r = r;
-        el.style.left = (c * (100 / COLS)) + '%'; el.style.top = (r * (100 / ROWS)) + '%';
+        let c = +el.dataset.c + (Math.random() < .5 ? -1 : 1);
+        c = Math.max(minC, Math.min(maxC, c));
+        el.dataset.c = c;
+        el.style.left = (c * (100 / COLS)) + '%';   // row stays fixed
       }, 1300);
       timers.push(t);
     }
