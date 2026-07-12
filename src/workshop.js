@@ -34,7 +34,7 @@
   const DEFAULT_SIZE = {
     boulder: 5,
     man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, jesus: 2, king: 1.5, goliath: 2, david: 1.25,
-    baby_jesus: 1.2, cow: 1.5,
+    baby_jesus: 1.2, cow: 1.5, noah: 1.5,
     crowd_listening: 4.25, daniel_lion_den: 5,
     jesus_tomb: 3, jesus_sermon: 4, jesus_teaching: 3.5, jesus_help_woman: 3.5,
     crowd_eating_fish: 1.5, jesus_2fish_2bread: 1.5, loaves_fish: 4,
@@ -243,6 +243,7 @@
       cell = cells[k] = { name, el, size, col, row };
     }
     el_cell(cells[k].el, cells[k]);
+    cells[k]._cx = col + size / 2; cells[k]._cy = row + size / 2;   // remembered center, for grow-from-center resize
     chime(520 + col * 40);
     return name + ' placed at ' + col + ', ' + row + (size !== 1 ? ', size ' + size : '') + centerNote(col, row, size);
   }
@@ -255,6 +256,7 @@
     s.el.classList.add('moving');
     positionEl(s.el, nc, nr);
     cells[nk] = { name: rec.name, el: s.el, size: rec.size || 1, rot: rec.rot || 0, flipped: rec.flipped || false, col: nc, row: nr };
+    cells[nk]._cx = nc + (rec.size || 1) / 2; cells[nk]._cy = nr + (rec.size || 1) / 2;
     el_cell(s.el, cells[nk]);
   }
   function move(name, a, b) {
@@ -352,11 +354,14 @@
   }
   WS._resize = function (dir) {
     if (!selected || !selected._cell) return;
-    let sz = Math.max(0.25, Math.min(6, (selected._cell.size || 1) + dir * 0.25));
-    selected._cell.size = sz; sizeSprite(selected, sz);
-    $('rzval').textContent = sz.toFixed(2) + '×';
     const c = selected._cell;
-    showCode('place("' + c.name + '", ' + c.col + ', ' + c.row + ', ' + sz + ')' + centerNote(c.col, c.row, sz));
+    const sz = Math.max(0.25, Math.min(6, (c.size || 1) + dir * 0.25));
+    c.size = sz; sizeSprite(selected, sz);
+    // grow from the remembered center so the piece stays put as it changes size
+    selected.style.left = ((c._cx - sz / 2) * 100 / COLS) + '%';
+    selected.style.top = ((c._cy - sz / 2) * 100 / ROWS) + '%';
+    $('rzval').textContent = sz.toFixed(2) + '×';
+    showCode('place("' + c.name + '", ' + c.col + ', ' + c.row + ', ' + sz + ')  // center at grid ' + numStr(c._cx - 0.5) + ', ' + numStr(c._cy - 0.5));
     print('> place("' + c.name + '", ' + c.col + ', ' + c.row + ', ' + sz + ')', 'echo');
     chime(500 + sz * 120);
   };

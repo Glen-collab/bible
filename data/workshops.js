@@ -34,7 +34,7 @@ const WORKSHOP_ITEMS = {
   // resurrection scene pieces
   boulder:"🪨", jesus:"🧍", king:"🤴",
   // nativity stand-ins (emoji until real art is added)
-  cow:"🐄",
+  cow:"🐄", noah:"🧔",
   // backdrop objects: placing one becomes the whole scene (manger already above)
   ark:"🚢", tomb:"⚰️",
   // larger illustrated images (loaded from assets/scenes/) usable as placeable
@@ -200,8 +200,8 @@ const WORKSHOPS = {
     grid: { cols: 8, rows: 6 },
     background: "noahs_ark",                        // the ark art sits behind the grid; animals board the deck
     freeBuild: true,
-    freeGoal: 'Fill the ark! Bring the animals aboard — two by two if you like — with place("elephant", 3, 3). Add as many as you want, then tap the 🦉 button below to bring it to life.',
-    items: ["elephant","giraffe","lion","zebra","tiger","panda","monkey","kangaroo","owl","mouse","butterfly","rainbow","dove"],
+    freeGoal: 'Fill the ark! Start with Noah — place("noah", 3, 3) — then bring the animals aboard, two by two if you like. Add as many as you want, then tap the 🦉 button below to bring it to life.',
+    items: ["noah","elephant","giraffe","lion","zebra","tiger","panda","monkey","kangaroo","owl","mouse","butterfly","rainbow","dove"],
     aiPreview: [ 'place("elephant", 1, 4)', 'place("elephant", 2, 4)', 'place("giraffe", 4, 3)', 'place("dove", 6, 1)' ],
     rungs: [
       { id:0, label:"1 · First aboard", goalItem:"elephant", target:{col:1,row:4},
