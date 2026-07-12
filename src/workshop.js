@@ -35,6 +35,7 @@
     boulder: 5,
     man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, jesus: 2, king: 1.5, goliath: 2.25, david: 1.25,
     baby_jesus: 1.2, cow: 1.5, noah: 1.5, armies: 2.5, chariot: 1.8, horse: 1.25,
+    moses: 1.5, water: 2, staff: 1.2, wheat: 1, light: 2,
     crowd_listening: 4.25, daniel_lion_den: 5,
     jesus_tomb: 3, jesus_sermon: 4, jesus_teaching: 3.5, jesus_help_woman: 3.5,
     crowd_eating_fish: 1.5, jesus_2fish_2bread: 1.5, loaves_fish: 4,

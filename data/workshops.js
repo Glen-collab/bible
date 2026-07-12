@@ -32,6 +32,7 @@ const WORKSHOP_ITEMS = {
   // figures for the iconic-scene rethemes
   david:"🧒", goliath:"🧌", mary:"🧕", joseph:"🧔", man:"🧑", female:"👩", baby_jesus:"👶",
   armies:"⚔️", chariot:"🛞", horse:"🐴",
+  water:"🌊", staff:"🦯", moses:"🧔", light:"⚡", wheat:"🌾",
   // resurrection scene pieces
   boulder:"🪨", jesus:"🧍", king:"🤴",
   // nativity stand-ins (emoji until real art is added)
@@ -81,25 +82,17 @@ const WORKSHOPS = {
   desertJourney: {
     id: "desertJourney",
     forCase: "moses",
-    title: "Light the Desert Road",
-    subtitle: "Same Truth, New Scribes",
+    standalone: true,
+    freeBuild: true,
+    title: "Parting the Red Sea",
+    subtitle: "The Long Road to Freedom",
     grid: { cols: 8, rows: 6 },
-    items: ["palm","well","fire","camel","sheep","star","lamp","dove","ox"],
-    aiPreview: [ 'place("palm", 1, 2)', 'place("well", 3, 4)', 'place("fire", 6, 1)', 'place("camel", 1, 4)' ],
-    rungs: [
-      { id:0, label:"1 · Oasis",     goalItem:"palm",  target:{col:1,row:2},
-        goal:'A resting place in the desert. Type place("palm", 1, 2).' },
-      { id:1, label:"2 · Water",     goalItem:"well",  target:{col:3,row:4},
-        goal:'Every journey needs water. Add a well: place("well", 3, 4).' },
-      { id:2, label:"3 · The fire",  goalItem:"fire",  target:{col:6,row:1},
-        goal:'A pillar of fire to lead by night: place("fire", 6, 1).' },
-      { id:3, label:"4 · The camel", goalItem:"camel", target:{col:1,row:4},
-        goal:'Bring a camel to the caravan: place("camel", 1, 4).' },
-      { id:4, label:"5 · Move on",   goalMove:{item:"camel",dir:"right"},
-        goal:'Lead the caravan across the desert! move("camel", "right").' },
-    ],
-    practice: { enabled:true, prompt:"Set up camp! I'll call out where each thing goes." },
-    finale: { sky:"night", twinkle:10, grass:{emoji:"🌴", n:4, rows:[2,4]}, dove:true, shimmer:["star","lamp"], wander:["camel","sheep","ox","donkey"] }
+    ground: "sea",
+    freeGoal: 'Part the Red Sea! Place Moses and his staff, raise walls of water on each side, lead the people across the dry path, and put Pharaoh\'s chariots behind. Then tap the 🦉 button to bring it to life.',
+    items: ["moses","staff","water","man","female","sheep","chariot","horse","dove"],
+    aiPreview: [ 'place("moses", 0, 3)', 'place("water", 4, 1)', 'place("water", 4, 5)' ],
+    practice: { enabled:true, prompt:"I'll call out where each piece goes." },
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌊", n:5, rows:[0,1]}, extras:[{emoji:"🐟", n:3, rows:[0,1]}], dove:true, shimmer:["moses","staff"], wander:["man","female","sheep","horse"] }
   },
 
   /* ---- Workshop for CASE 4 (Ruth): build the harvest home ---- */
