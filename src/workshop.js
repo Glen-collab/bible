@@ -70,27 +70,23 @@
   }
 
   let CFG, ITEMS, COLS, ROWS, opts;
-  // cells: "col,row" -> { name, el }.  Keying by CELL (not by name) lets the
-  // same item appear in several places at once — a real flock — while move()
-  // still works because it finds a sprite by name.
-  let cells, showGrid, rung, mode, score, target, actx;
+  // sprites: a flat LIST of placed pieces { name, el, col, row, size, rot, flipped, _cx, _cy }.
+  // A list (not one-per-cell) lets pieces STACK and overlap freely — placing one never
+  // deletes another. A flock is just several sprites with the same name.
+  let sprites, showGrid, rung, mode, score, target, actx;
 
   WS.play = function (config, options) {
     CFG = config;
     opts = options || {};
     ITEMS = window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS;
     COLS = CFG.grid.cols; ROWS = CFG.grid.rows;
-    cells = {}; showGrid = true; rung = 0; mode = 'guided'; score = 0; target = null;
+    sprites = []; showGrid = true; rung = 0; mode = 'guided'; score = 0; target = null;
     backdropEl = null; backdropName = null; railMsg = null;
     render();
   };
 
-  const keyOf = (c, r) => c + ',' + r;
-  function findByName(name) {
-    for (const k in cells) if (cells[k].name === name) { const p = k.split(','); return { k, el: cells[k].el, col: +p[0], row: +p[1] }; }
-    return null;
-  }
-  const itemAt = (name, c, r) => { const s = cells[keyOf(c, r)]; return !!s && s.name === name; };
+  function findByName(name) { return sprites.find((s) => s.name === name) || null; }
+  const itemAt = (name, c, r) => sprites.some((s) => s.name === name && s.col === c && s.row === r);
 
   /* ---- build a check() for a rung from its data shape ---- */
   function rungCheck(r) {
@@ -176,6 +172,8 @@
     stage.style.backgroundSize = `${100 / COLS}% ${100 / ROWS}%`;
     // optional preset scene background (e.g. the ark) — pieces get placed on top of it
     if (CFG.background) setBackdrop(CFG.background);
+    // optional simple CSS landscape so pieces stand on ground instead of floating
+    if (CFG.ground) stage.classList.add('ground-' + CFG.ground);
     $('rulerTop').style.gridTemplateColumns = `22px repeat(${COLS},1fr)`;
     $('rulerLeft').style.gridTemplateRows = `repeat(${ROWS},1fr)`;
 
@@ -227,37 +225,24 @@
     if (typeof col !== 'number' || typeof row !== 'number') throw { kind: 'numbers' };
     if (col < 0 || col >= COLS || row < 0 || row >= ROWS) throw { kind: 'range', col, row };
     size = (typeof size === 'number' && size > 0) ? Math.max(0.25, Math.min(6, size)) : (DEFAULT_SIZE[name] || 1);
-    const k = keyOf(col, row);
-    let cell = cells[k];
-    if (cell) {
-      cell.name = name; cell.size = size; paintSprite(cell.el, name); sizeSprite(cell.el, size); positionEl(cell.el, col, row, size);
-      cell.el.classList.remove('celebrate'); void cell.el.offsetWidth; cell.el.classList.add('celebrate');
-    } else {
-      const el = document.createElement('div');
-      el.className = 'sprite celebrate';
-      sizeSprite(el, size);
-      paintSprite(el, name);
-      positionEl(el, col, row, size);
-      el.onclick = () => selectSprite(el);   // tap a piece to resize it
-      $('stage').appendChild(el);
-      cell = cells[k] = { name, el, size, col, row };
-    }
-    el_cell(cells[k].el, cells[k]);
-    cells[k]._cx = col + size / 2; cells[k]._cy = row + size / 2;   // remembered center, for grow-from-center resize
+    const el = document.createElement('div');
+    el.className = 'sprite celebrate';
+    sizeSprite(el, size);
+    paintSprite(el, name);
+    positionEl(el, col, row, size);
+    el.onclick = () => selectSprite(el);   // tap a piece to select/resize it
+    $('stage').appendChild(el);
+    const rec = { name, el, col, row, size, rot: 0, flipped: false, _cx: col + size / 2, _cy: row + size / 2 };
+    sprites.push(rec); el._cell = rec;      // a new piece each time — overlapping is fine, nothing is replaced
     chime(520 + col * 40);
     return name + ' placed at ' + col + ', ' + row + (size !== 1 ? ', size ' + size : '') + centerNote(col, row, size);
   }
   function el_cell(el, rec) { el._cell = rec; }
-  function reposition(s, nc, nr) {
-    const rec = cells[s.k] || {};
-    delete cells[s.k];
-    const nk = keyOf(nc, nr);
-    if (cells[nk] && cells[nk].el !== s.el) { cells[nk].el.remove(); } // clear whatever it lands on
-    s.el.classList.add('moving');
-    positionEl(s.el, nc, nr);
-    cells[nk] = { name: rec.name, el: s.el, size: rec.size || 1, rot: rec.rot || 0, flipped: rec.flipped || false, col: nc, row: nr };
-    cells[nk]._cx = nc + (rec.size || 1) / 2; cells[nk]._cy = nr + (rec.size || 1) / 2;
-    el_cell(s.el, cells[nk]);
+  function moveRec(rec, nc, nr) {   // relocate a piece; never removes whatever it lands on
+    rec.col = nc; rec.row = nr;
+    rec.el.classList.add('moving');
+    positionEl(rec.el, nc, nr, rec.size);
+    rec._cx = nc + (rec.size || 1) / 2; rec._cy = nr + (rec.size || 1) / 2;
   }
   function move(name, a, b) {
     const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
@@ -269,17 +254,16 @@
         const dH = Math.abs(a - home.col) + Math.abs(b - home.row), dO = Math.abs(a - open.col) + Math.abs(b - open.row);
         dest = dO < dH ? open : home;
       } else { dest = (a === 'left') ? open : home; }
-      reposition(s, dest.col, dest.row); sweepChime();
+      moveRec(s, dest.col, dest.row); sweepChime();
       railMsg = railHint(dest === open, name);
-      const sz = (cells[keyOf(dest.col, dest.row)] || {}).size || 1;
-      return name + (dest === open ? ' rolls away — the tomb is open!' : ' rolls back — sealed.') + centerNote(dest.col, dest.row, sz);
+      return name + (dest === open ? ' rolls away — the tomb is open!' : ' rolls back — sealed.') + centerNote(dest.col, dest.row, s.size);
     }
     // move("name", col, row) -> go straight to that square
     if (typeof a === 'number' && typeof b === 'number') {
       const nc = Math.max(0, Math.min(COLS - 1, Math.round(a)));
       const nr = Math.max(0, Math.min(ROWS - 1, Math.round(b)));
-      reposition(s, nc, nr); sweepChime();
-      return name + ' moves to ' + nc + ', ' + nr + centerNote(nc, nr, (cells[keyOf(nc, nr)] || {}).size || 1);
+      moveRec(s, nc, nr); sweepChime();
+      return name + ' moves to ' + nc + ', ' + nr + centerNote(nc, nr, s.size);
     }
     // move("name", dir) or move("name", dir, steps)
     const dir = a;
@@ -288,16 +272,18 @@
     const steps = (typeof b === 'number' && b > 0) ? b : (COLS + ROWS); // no count given -> slide to the edge
     const nc = Math.max(0, Math.min(COLS - 1, s.col + d[0] * steps));
     const nr = Math.max(0, Math.min(ROWS - 1, s.row + d[1] * steps));
-    reposition(s, nc, nr); sweepChime();
-    return name + ' moves ' + dir + (typeof b === 'number' ? ' ' + b : '') + centerNote(nc, nr, (cells[keyOf(nc, nr)] || {}).size || 1);
+    moveRec(s, nc, nr); sweepChime();
+    return name + ' moves ' + dir + (typeof b === 'number' ? ' ' + b : '') + centerNote(nc, nr, s.size);
   }
 
-  function findKeyOfEl(el) { for (const k in cells) if (cells[k].el === el) return k; return null; }
+  function removeRec(rec) {
+    const i = sprites.indexOf(rec); if (i >= 0) sprites.splice(i, 1);
+    rec.el.remove(); if (selected === rec.el) WS._deselect();
+  }
   function remove(name) {
     if (BACKDROPS[name] && backdropName === BACKDROPS[name]) { clearBackdrop(); return name + ' removed from the scene'; }
     const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
-    delete cells[s.k]; s.el.remove();
-    if (selected === s.el) WS._deselect();
+    removeRec(s);
     return name + ' removed';
   }
   function applyTransform(el, rec) {
@@ -307,14 +293,14 @@
   }
   function flip(name) {
     const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
-    const rec = cells[s.k]; rec.flipped = !rec.flipped; applyTransform(s.el, rec);
-    return name + (rec.flipped ? ' flipped' : ' unflipped');
+    s.flipped = !s.flipped; applyTransform(s.el, s);
+    return name + (s.flipped ? ' flipped' : ' unflipped');
   }
   function rotate(name, deg) {
     const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
     if (typeof deg !== 'number') deg = 90;
-    const rec = cells[s.k]; rec.rot = (rec.rot || 0) + deg; applyTransform(s.el, rec);
-    return name + ' rotated to ' + (((rec.rot % 360) + 360) % 360) + '°';
+    s.rot = (s.rot || 0) + deg; applyTransform(s.el, s);
+    return name + ' rotated to ' + (((s.rot % 360) + 360) % 360) + '°';
   }
 
   /* ---- tap-a-piece to resize it (＋ / −) or delete it ---- */
@@ -373,10 +359,8 @@
   WS._deleteSelected = function () {
     if (!selected || !selected._cell) return;
     const nm = selected._cell.name;
-    const k = findKeyOfEl(selected); if (k) delete cells[k];
-    selected.remove();
+    removeRec(selected._cell);
     print('> remove("' + nm + '")', 'echo'); print('✓ ' + nm + ' removed', 'ok');
-    WS._deselect();
     chime(300);
   };
   WS._flipSelected = function () {
@@ -397,10 +381,9 @@
     const nc = Math.max(0, Math.min(COLS - 1, c.col + dx));
     const nr = Math.max(0, Math.min(ROWS - 1, c.row + dy));
     if (nc === c.col && nr === c.row) return;
-    reposition({ k: findKeyOfEl(selected), el: selected, col: c.col, row: c.row }, nc, nr);
-    const rec = selected._cell;   // reposition re-points selected._cell to the new cell
-    showCode('move("' + rec.name + '", ' + nc + ', ' + nr + ')' + centerNote(nc, nr, rec.size || 1));
-    print('> move("' + rec.name + '", ' + nc + ', ' + nr + ')', 'echo');
+    moveRec(c, nc, nr);
+    showCode('move("' + c.name + '", ' + nc + ', ' + nr + ')' + centerNote(nc, nr, c.size || 1));
+    print('> move("' + c.name + '", ' + nc + ', ' + nr + ')', 'echo');
     chime(480);
   };
 
@@ -597,7 +580,7 @@
     const fb = $('finalebar'); if (fb) fb.style.display = 'none';
     return window.FootstepsFinale.run({
       stage: $('stage'), out: $('termout'), ada: $('tutorbody'),
-      cells: cells, COLS: COLS, ROWS: ROWS, ITEMS: ITEMS, config: CFG.finale,
+      sprites: sprites, COLS: COLS, ROWS: ROWS, ITEMS: ITEMS, config: CFG.finale,
       onDone: finaleDone,
     });
   };

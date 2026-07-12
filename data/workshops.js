@@ -251,6 +251,7 @@ const WORKSHOPS = {
     title: "Daniel in the Lions' Den",
     subtitle: "Shut the Lions' Mouths",
     grid: { cols: 8, rows: 6 },
+    ground: "cave",
     items: ["daniel_lion_den","lion","king","angel","man","dove"],
     aiPreview: [ 'place("daniel_lion_den", 3, 0)', 'place("king", 6, 4)', 'place("dove", 4, 0)' ],
     rungs: [
@@ -272,7 +273,8 @@ const WORKSHOPS = {
     title: "The Loaves and Fishes",
     subtitle: "Feeding the Five Thousand",
     grid: { cols: 8, rows: 6 },
-    items: ["jesus_2fish_2bread","loaves_fish","crowd_eating_fish","jesus","dove","man","female"],
+    ground: "grass",
+    items: ["jesus_2fish_2bread","loaves_fish","crowd_eating_fish","jesus","dove","man","female","crowd_listening"],
     aiPreview: [ 'place("jesus_2fish_2bread", 2, 2)', 'place("crowd_eating_fish", 5, 3)', 'place("dove", 4, 0)' ],
     rungs: [
       { id:0, label:"1 · Jesus",     goalItem:"jesus_2fish_2bread", target:{col:2,row:2},
@@ -293,6 +295,7 @@ const WORKSHOPS = {
     title: "The Sermon on the Mount",
     subtitle: "Blessed are...",
     grid: { cols: 8, rows: 6 },
+    ground: "hill",
     items: ["jesus_teaching","crowd_listening","jesus","dove","man","female"],
     aiPreview: [ 'place("jesus_teaching", 2, 2)', 'place("crowd_listening", 5, 3)', 'place("dove", 4, 0)' ],
     rungs: [

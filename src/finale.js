@@ -24,17 +24,19 @@
 
   F.run = async function (ctx) {
     F.stop();
-    const { stage, out, ada, cells, COLS, ROWS, ITEMS } = ctx;
+    const { stage, out, ada, sprites, COLS, ROWS, ITEMS } = ctx;
+    const scene = sprites || [];
     const cfg = ctx.config || { sky: 'night', twinkle: 8, grass: { emoji: '🌿', n: 6, rows: [4, 5] }, dove: true, shimmer: ['star', 'lamp'], wander: ['donkey', 'sheep', 'ox', 'camel', 'dove'] };
     let linesRun = 0;
 
-    // ---- occupancy: kid cells + decor we add ----
+    // ---- occupancy: placed pieces + decor we add ----
     const decorKey = new Set();
     const keyOf = (c, r) => c + ',' + r;
-    const taken = (c, r) => (keyOf(c, r) in cells) || decorKey.has(keyOf(c, r));
+    const occupied = new Set(scene.map((s) => keyOf(s.col, s.row)));
+    const taken = (c, r) => occupied.has(keyOf(c, r)) || decorKey.has(keyOf(c, r));
 
-    // ---- placed scene, parsed from the workshop's cells ----
-    const placed = Object.keys(cells).map((k) => { const p = k.split(','); return { name: cells[k].name, el: cells[k].el, col: +p[0], row: +p[1] }; });
+    // ---- placed scene (the workshop's piece list) ----
+    const placed = scene.map((s) => ({ name: s.name, el: s.el, col: s.col, row: s.row }));
     const has = (name) => placed.some((s) => s.name === name);
     const wanderEls = placed.filter((s) => (cfg.wander || []).indexOf(s.name) >= 0);
 

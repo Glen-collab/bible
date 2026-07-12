@@ -198,6 +198,11 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
 .stage-wrap{background:linear-gradient(#bfe0ef,#dce7d6 60%,#e8dcbf);border-radius:8px;overflow:hidden;}
 #stage{position:relative;width:100%;overflow:hidden;}
 #stage.grid{background-image:linear-gradient(rgba(58,44,26,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(58,44,26,.16) 1px,transparent 1px);}
+/* simple CSS landscapes (no art needed) so pieces stand on ground */
+#stage.ground-grass{background:linear-gradient(#bfe0ef 0%,#cfe6d6 50%,#9fce74 60%,#6ea850 100%);}
+#stage.ground-sand{background:linear-gradient(#e9dcb8 0%,#f1e6c6 48%,#ddc17f 64%,#c9a862 100%);}
+#stage.ground-hill{background:linear-gradient(#bfe0ef 0%,#d3e8dd 45%,#8fc069 58%,#5f9a46 100%);}
+#stage.ground-cave{background:linear-gradient(#c9b79a 0%,#b09877 45%,#7a6650 72%,#5a4a3a 100%);}
 .sprite{position:absolute;display:grid;place-items:center;font-size:25px;transition:left .12s,top .12s,width .18s,height .18s;pointer-events:auto;cursor:pointer;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25));z-index:1;}
 .sprite.moving{transition:left .55s cubic-bezier(.4,0,.2,1),top .55s cubic-bezier(.4,0,.2,1);}
 .sprite.selected{outline:2px dashed var(--terra);outline-offset:-2px;border-radius:6px;}
