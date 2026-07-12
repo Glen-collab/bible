@@ -33,8 +33,8 @@
   // next to single figures. Kids can still override with place(name, c, r, size).
   const DEFAULT_SIZE = {
     boulder: 5,
-    man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, jesus: 2, king: 1.5, goliath: 2, david: 1.25,
-    baby_jesus: 1.2, cow: 1.5, noah: 1.5,
+    man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, jesus: 2, king: 1.5, goliath: 2.25, david: 1.25,
+    baby_jesus: 1.2, cow: 1.5, noah: 1.5, armies: 2.5, chariot: 1.8, horse: 1.25,
     crowd_listening: 4.25, daniel_lion_den: 5,
     jesus_tomb: 3, jesus_sermon: 4, jesus_teaching: 3.5, jesus_help_woman: 3.5,
     crowd_eating_fish: 1.5, jesus_2fish_2bread: 1.5, loaves_fish: 4,
@@ -201,8 +201,8 @@
     // italicize the noun after "the"/"Build the" for a little flourish, else plain
     return t.replace(/\b(the [^,]+)$/i, '<em>$1</em>');
   }
-  function firstItem() { const r = CFG.rungs.find(x => x.goalItem); return r ? r.goalItem : Object.keys(ITEMS)[0]; }
-  function firstCommand() { const r = CFG.rungs[0]; return r.goalItem && r.target ? `place("${r.goalItem}", ${r.target.col}, ${r.target.row})` : `place("${firstItem()}", 3, 4)`; }
+  function firstItem() { const r = (CFG.rungs || []).find(x => x.goalItem); if (r) return r.goalItem; return (CFG.items && CFG.items[0]) || Object.keys(ITEMS)[0]; }
+  function firstCommand() { const r = (CFG.rungs || [])[0]; return (r && r.goalItem && r.target) ? `place("${r.goalItem}", ${r.target.col}, ${r.target.row})` : `place("${firstItem()}", 3, 3)`; }
 
   /* ---- the real functions the kid's JS calls ---- */
   function positionEl(el, col, row) {

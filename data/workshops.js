@@ -31,6 +31,7 @@ const WORKSHOP_ITEMS = {
   owl:"🦉", rainbow:"🌈",
   // figures for the iconic-scene rethemes
   david:"🧒", goliath:"🧌", mary:"🧕", joseph:"🧔", man:"🧑", female:"👩", baby_jesus:"👶",
+  armies:"⚔️", chariot:"🛞", horse:"🐴",
   // resurrection scene pieces
   boulder:"🪨", jesus:"🧍", king:"🤴",
   // nativity stand-ins (emoji until real art is added)
@@ -55,28 +56,24 @@ const WORKSHOPS = {
   shepherdField: {
     id: "shepherdField",
     forCase: "david",
-    title: "Build the Shepherd's Field",
-    subtitle: "Same Truth, New Scribes",
+    standalone: true,
+    freeBuild: true,
+    title: "David and Goliath",
+    subtitle: "The Valley of Elah",
     grid: { cols: 8, rows: 6 },
-    aiPreview: [ 'place("sheep", 2, 4)', 'place("sheep", 4, 4)', 'place("shepherd", 3, 3)', 'place("star", 6, 0)' ],
-    rungs: [
-      { id:0, label:"1 · Sheep",    goalItem:"sheep",    target:{col:2,row:4},
-        goal:'Place a sheep in the field: place("sheep", 2, 4).' },
-      { id:1, label:"2 · Shepherd", goalItem:"shepherd", target:{col:3,row:3},
-        goal:'Add the shepherd watching over them: place("shepherd", 3, 3).' },
-      { id:2, label:"3 · More sheep", goalItem:"sheep",  target:{col:5,row:4},
-        goal:'A flock needs more than one. Place another sheep: place("sheep", 5, 4).' },
-    ],
-    practice: { enabled:true, prompt:"Fill the field! I'll call out where each animal goes." },
+    ground: "grass",
+    freeGoal: 'Set up the showdown! Place David — place("david", 1, 3) — and the giant Goliath, the two armies on the hills, plus horses and chariots. Then tap the 🦉 button to bring it to life.',
+    items: ["david","goliath","armies","horse","chariot","sheep","dove"],
+    aiPreview: [ 'place("david", 1, 3)', 'place("goliath", 6, 3)', 'place("armies", 3, 1)' ],
+    practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: {
-      sky: "night",
-      twinkle: 9,
-      grass: { emoji:"🌿", n:8, rows:[4,5] },
-      extras: [ { emoji:"🌾", n:4, rows:[5,5] } ],
-      fire: [1,5],                                 // a campfire for the shepherd
+      sky: "day",
+      twinkle: 0,
+      grass: { emoji:"🌿", n:6, rows:[4,5] },
+      extras: [ { emoji:"🪨", n:3, rows:[4,5] } ],   // five smooth stones in the brook
       dove: true,
-      shimmer: ["star","lamp"],
-      wander: ["sheep","shepherd","ox"]
+      shimmer: ["david"],
+      wander: ["horse","sheep","david"]
     }
   },
 
