@@ -1029,6 +1029,111 @@ const CASE_EDEN = {
 };
 
 
+/* =====================================================================
+   CASE 11 — THE SERMON · "The Sermon on the Mount"
+   Theme: How to Live (the upside-down kingdom — and doing it, not just hearing it).
+   Eli's flaw: thinks the way to win is the world's way — be first, get even,
+   look impressive, worry about everything.
+   Story-moments: Up the Mountainside → Be a Light → Love Even Your Enemies →
+                  Don't Worry, Treat Others Right → Build on the Rock
+   Unlocks the "The Sermon on the Mount" scene.  Completes the set of 11.
+   ===================================================================== */
+const CASE_SERMON = {
+  id: "sermon",
+  title: "The Sermon on the Mount",
+  theme: "How to Live",
+  badges: {
+    firstSteps: { icon:"👣", name:"First Steps",       desc:"Began the journey" },
+    brave:      { icon:"🕯️", name:"Bright Lamp",        desc:"Solved a stop with no hints" },
+    thorough:   { icon:"🔍", name:"Careful Seeker",     desc:"Investigated every spot at a location" },
+    steadfast:  { icon:"🕊️", name:"Chose the Better Way", desc:"Took the kingdom way through a detour" },
+    helper:     { icon:"🤝", name:"Kind Helper",        desc:"Completed a side quest" },
+    delivered:  { icon:"🪨", name:"Built on Rock",       desc:"Finished the whole case" },
+  },
+  detours: [
+    { place:"The Get-Even Gully",
+      scene:"Someone's unkind, and Eli's sure the answer is to be twice as unkind right back. But trading meanness just rolls further and further downhill, and nobody ever climbs back up that way.",
+      lesson:"Getting even feels good for a heartbeat, then leaves everyone worse off. Kindness is the only thing that actually breaks the cycle. You climb back to the path." },
+    { place:"The Show-Off Summit",
+      scene:"Eli figures the whole point of doing good is so everybody sees how great he is. But performing for applause is a peak that's never quite high enough — there's always someone clapping louder somewhere else.",
+      lesson:"Good done to be seen leaves you empty; good done in love fills you up. You come down off the show-off summit and rejoin the climb." },
+  ],
+  stops: [
+    { place:"Up the Mountainside", tag:"An upside-down happy list",
+      eli:"Everybody climbed this mountain to hear him. And the first thing Jesus says about who's truly happy is... backwards from everything I thought.",
+      spots:[
+        { ico:"⛰️", label:"Join the crowd", lead:"A huge crowd climbs the hillside and sits to hear Jesus teach.",
+          clue:"He's about to explain the best way to live — and it surprises everyone." },
+        { ico:"💙", label:"Hear who's blessed", lead:"Jesus says the truly happy ones are the humble, the gentle, the merciful, the peacemakers.",
+          clue:"Not the richest, loudest, or most powerful — the kind and humble are the ones who are truly blessed." },
+        { ico:"🔄", label:"Feel it flip", lead:"It's the opposite of what the world usually says makes you a winner.",
+          clue:"In God's kingdom, the way up is down: being humble and kind, not pushing to be first." },
+      ],
+      ask:"According to Jesus, who is truly blessed and happy?",
+      options:["The richest and most powerful","The humble, kind, and peacemakers","The loudest and most famous"],
+      answer:1,
+      hint:"The 'hear who's blessed' clue lists them — the humble, gentle, merciful, and peacemakers, not the powerful.",
+      sidequest:null },
+
+    { place:"Be a Light", tag:"Shine to help, not to show off",
+      eli:"He says I'm like a lamp? And you don't light a lamp just to hide it — but also not just to show off how bright you are. Hmm.",
+      spots:[
+        { ico:"🕯️", label:"See the lamp", lead:"Jesus says, 'You are the light of the world. No one lights a lamp and hides it under a bowl.'",
+          clue:"A light is meant to be used — to help people see, not to be tucked away." },
+        { ico:"✨", label:"Let it shine", lead:"'Let your light shine so people see the good you do.'",
+          clue:"Your kindness can help others find their way — like a lamp on a stand lighting the whole room." },
+        { ico:"🙏", label:"Catch the reason", lead:"The point isn't 'look how great I am' — it's so others are helped and give thanks to God.",
+          clue:"Good deeds are a light for others' sake, not a spotlight for your own." },
+      ],
+      ask:"Why does Jesus say to let your light shine?",
+      options:["So everyone admires how great you are","So others are helped and thankful to God","So you can win prizes"],
+      answer:1,
+      hint:"The 'catch the reason' clue — the light shines to help others and point to God, not to spotlight yourself.",
+      sidequest:{ title:"Do a secret good deed", desc:"Help someone today without letting them know it was you. Just because it's kind?",
+        lesson:"You do good with no one watching and no credit. Eli learns kindness feels best when it isn't for applause.", badge:"helper" } },
+
+    { place:"Love Even Your Enemies", tag:"The hardest, bravest teaching",
+      eli:"Wait — love people who are MEAN to me? Be kind to someone who was unkind first? That's the hardest thing he's said yet.",
+      spots:[
+        { ico:"💢", label:"Hear the world's way", lead:"Everyone knows the usual rule: love your friends and get back at your enemies.",
+          clue:"It feels natural to be nice to nice people and mean to mean people." },
+        { ico:"💗", label:"Hear Jesus' way", lead:"Jesus says something brand new: 'Love your enemies. Be kind to those who are unkind. Pray for them.'",
+          clue:"Anyone can love their friends — it takes real courage to be kind to someone who wasn't kind to you." },
+        { ico:"🕊️", label:"See what it does", lead:"Meeting unkindness with kindness is how the cycle of getting-even finally stops.",
+          clue:"You can't fight meanness with more meanness — only kindness actually ends it." },
+      ],
+      ask:"What does Jesus say to do when someone is unkind to you?",
+      options:["Get even so they learn their lesson","Love them and be kind back","Ignore them forever"],
+      answer:1,
+      hint:"The 'hear Jesus' way' clue — love your enemies and be kind even to those who were unkind to you.",
+      sidequest:{ title:"Surprise a grump with kindness", desc:"Someone was short or grouchy with you. Answer with unexpected kindness instead?",
+        lesson:"You break the meanness cycle with one kind move. Eli feels how much braver kindness is than getting even.", badge:"helper" } },
+
+    { place:"Don't Worry, Treat Others Right", tag:"One simple golden rule",
+      eli:"Look at the birds, look at the flowers — God takes care of them, so quit worrying? And treat others how I'd want to be treated? Okay, THAT one I can remember.",
+      spots:[
+        { ico:"🐦", label:"Watch the birds", lead:"Jesus points to the birds — they don't panic about food, and God feeds them.",
+          clue:"If God cares for little birds and wildflowers, he surely cares about you. Worrying adds nothing." },
+        { ico:"🌼", label:"See the flowers", lead:"'Even a king wasn't dressed as beautifully as these wildflowers,' he says.",
+          clue:"Worry never once made a hard day better — trust does. Take today as it comes." },
+        { ico:"🤝", label:"Learn the golden rule", lead:"'Treat others the way you would want to be treated.'",
+          clue:"One simple rule to carry everywhere: before you act, ask how you'd want to be treated." },
+      ],
+      ask:"What simple rule does Jesus give for how to treat other people?",
+      options:["Treat others how you'd want to be treated","Treat others however they treat you","Only be nice to your friends"],
+      answer:0,
+      hint:"The 'learn the golden rule' clue says it plainly — treat others the way you would want to be treated.",
+      sidequest:null },
+
+    { place:"Build on the Rock", tag:"Hearing it isn't enough — do it",
+      eli:"Two builders, same storm. The one who actually DID what he heard? His house stood. I came in thinking winning was the world's way. Turns out the strong life is built by living this stuff, not just nodding at it.",
+      final:true,
+      teaching:"Jesus ended his hillside teaching with a picture. Two people build houses; the storm hits both. The wise one heard his words and actually did them — like building on solid rock, so the house stood firm. The foolish one heard the very same words but ignored them — like building on sand, and the house fell. That's the whole point of how to live: it's not enough just to hear good teaching and agree it's nice. The humble-happy list, being a light for others, loving even your enemies, trusting instead of worrying, treating people the way you'd want to be treated — these only make your life strong when you actually live them. Hearing is easy. Doing is what builds a life that stands when the storms come."
+    },
+  ]
+};
+
+
 const CASES = {
   jesus: CASE_JESUS,
   david: CASE_DAVID,
@@ -1040,9 +1145,10 @@ const CASES = {
   tomb:  CASE_TOMB,
   loaves: CASE_LOAVES,
   eden:  CASE_EDEN,
+  sermon: CASE_SERMON,
 };
 
-const CASE_ORDER = ["jesus", "david", "moses", "ruth", "paul", "noah", "daniel", "tomb", "loaves", "eden"];
+const CASE_ORDER = ["jesus", "david", "moses", "ruth", "paul", "noah", "daniel", "tomb", "loaves", "eden", "sermon"];
 
 /* Universal badge earned across any case (engine may reference) */
 const SHARED_RANKS = {
@@ -1326,6 +1432,32 @@ const ROUNDTABLES = {
       "Hiding and blaming when we mess up is the oldest instinct there is — literally everyone feels it.",
       "Grown-ups feel shame too, and still want to hide sometimes; you're not the only one.",
       "Being loved and welcomed back after you've messed up is one of the very best feelings a person can have.",
+    ],
+  },
+  sermon: { // How to Live
+    kid: [
+      "What do you think makes someone truly happy — having lots of stuff, or something else?",
+      "When is it really hard to be kind to someone who was mean to you?",
+      "What's a good thing you could do that nobody would ever know about?",
+      "Do you treat others the way you'd want to be treated — even when it's hard?",
+      "What do you worry about? Does worrying about it ever actually help?",
+    ],
+    parent: [
+      "Who lived out quiet, everyday goodness in a way that shaped who you are?",
+      "Tell about a time you were kind to someone who didn't deserve it — what happened?",
+      "What's something you used to worry about a lot that never actually came true?",
+      "When did doing the right thing quietly matter more than being noticed for it?",
+    ],
+    together: [
+      "Pick one secret good deed each of you will do this week — no telling, no credit.",
+      "Think of one 'hard to like' person you could be kind to or pray for this week.",
+      "Name one worry out loud, then practice handing it over instead of carrying it.",
+      "Make the golden rule your family motto this week: treat others how you'd want to be treated.",
+    ],
+    notAlone: [
+      "Almost nobody finds 'love your enemies' easy — it's meant to stretch grown-ups too.",
+      "Everyone worries, even knowing it doesn't help; you're in very good company.",
+      "Doing good quietly, with no one clapping, is rare and beautiful — and it's the real thing.",
     ],
   },
 };

@@ -241,20 +241,15 @@ const WORKSHOPS = {
   sermonMount: {
     id: "sermonMount",
     standalone: true,
+    freeBuild: true,
+    forCase: "sermon",
     title: "The Sermon on the Mount",
     subtitle: "Blessed are...",
     grid: { cols: 8, rows: 6 },
     ground: "hill",
+    freeGoal: "Gather the hillside crowd! Place Jesus teaching, spread the listening crowd across the slope, add people who came to hear, and let a dove settle overhead — build it however you like.",
     items: ["jesus_teaching","crowd_listening","jesus","dove","man","female"],
     aiPreview: [ 'place("jesus_teaching", 2, 2)', 'place("crowd_listening", 5, 3)', 'place("dove", 4, 0)' ],
-    rungs: [
-      { id:0, label:"1 · The Teacher", goalItem:"jesus_teaching", target:{col:2,row:2},
-        goal:'Jesus teaches on the hillside: place("jesus_teaching", 2, 2).' },
-      { id:1, label:"2 · The crowd",   goalItem:"crowd_listening", target:{col:5,row:3},
-        goal:'The crowd gathers to listen: place("crowd_listening", 5, 3).' },
-      { id:2, label:"3 · A dove",      goalItem:"dove", target:{col:4,row:0},
-        goal:'A dove settles over them: place("dove", 4, 0).' },
-    ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:6, rows:[4,5]}, extras:[{emoji:"✨", n:4, rows:[0,2]}], dove:true, shimmer:[], wander:["dove"] }
   },
