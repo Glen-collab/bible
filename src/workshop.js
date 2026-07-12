@@ -162,6 +162,7 @@
         <div id="termout"><span class="sys">// The computer is ready. Type a command and press Run.</span></div>
         <div class="inputline"><span class="prompt">&gt;</span><input id="cmd" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder='place("${firstItem()}", 3, 4)'><button class="runbtn" onclick="FootstepsWorkshop._run()">Run</button></div>
       </div>
+      <div id="finalebar"></div>
       <div class="tutor" id="tutor">
         <div class="t-head"><div class="t-face">🦉</div><div><div class="t-name">Ada <span>· your code helper</span></div></div></div>
         <div class="t-body" id="tutorbody"></div>
@@ -183,9 +184,15 @@
       const rt = $('railtip'); rt.style.display = 'block';
       rt.innerHTML = '🦉 <b>Ada:</b> the stone rolls on a track — <code>move("' + CFG.rail.item + '", "left")</code> opens the tomb, <code>move("' + CFG.rail.item + '", "right")</code> seals it.';
     }
-    tutorSay(CFG.rungs[0].goal
-      ? `Let's start! Type <code>${escapeHtml(CFG.rungs[0].command || firstCommand())}</code> and press Run. The two numbers are <b>column</b> (across ↔) and <b>row</b> (down ↕). Once a piece is on the stage, <b>tap it</b> to make it bigger or smaller.`
-      : `Let's build the scene! Follow the goal above.`);
+    // always-available "bring the scene to life" — place freely, then run it whenever
+    if (CFG.finale && window.FootstepsFinale) {
+      $('finalebar').innerHTML = '<button class="btn olive" onclick="FootstepsWorkshop._finale()">🦉 Bring the scene to life — watch the code run</button>';
+    }
+    tutorSay(CFG.freeBuild
+      ? `Fill the scene! Type <code>${escapeHtml(firstCommand())}</code> (or tap <b>📦 Objects</b>), place as many as you like in any order, then tap <b>🦉 Bring the scene to life</b>. Tap any piece to move or resize it.`
+      : (CFG.rungs[0].goal
+        ? `Let's start! Type <code>${escapeHtml(CFG.rungs[0].command || firstCommand())}</code> and press Run. The two numbers are <b>column</b> (across ↔) and <b>row</b> (down ↕). Once a piece is on the stage, <b>tap it</b> to make it bigger or smaller.`
+        : `Let's build the scene! Follow the goal above.`));
     const cmd = $('cmd');
     cmd.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); WS._run(); } });
     cmd.focus();
@@ -460,7 +467,14 @@
   };
 
   function renderRungs() {
-    const r = $('rungs'); r.innerHTML = '';
+    const r = $('rungs');
+    if (CFG.freeBuild) {   // no numbered steps — place anything, then bring it to life
+      r.style.display = 'none';
+      $('goal').innerHTML = `<div class="g-lab">Free build</div><div class="g-txt">${linkifyCode(CFG.freeGoal || 'Place whatever you like — one or many, in any order — then tap the owl button to bring it to life.')}</div>`;
+      return;
+    }
+    r.style.display = '';
+    r.innerHTML = '';
     CFG.rungs.forEach((x, i) => {
       const d = document.createElement('span');
       d.className = 'rung ' + (i < rung ? 'done' : i === rung ? 'here' : '');
@@ -527,6 +541,11 @@
     if (threw === null) {
       print('✓ ' + (result || 'done'), 'ok'); cmd.value = '';
       if (mode === 'practice') { railMsg = null; checkPractice(); return; }
+      if (CFG.freeBuild) {
+        if (railMsg) { tutorSay(railMsg); railMsg = null; }
+        else tutorSay(`Nice — that ran! Add as many as you like, then tap <b>🦉 Bring the scene to life</b>.`);
+        return;
+      }
       if (rungCheck(CFG.rungs[rung])()) onRungComplete();
       else if (railMsg) tutorSay(railMsg);
       else tutorSay(`Nice — that ran! ${nudge()}`);
@@ -560,12 +579,9 @@
     $('dym').innerHTML = '';
     const nw = $('nextwrap');
     if (!last) { nw.innerHTML = `<button class="btn" onclick="FootstepsWorkshop._advance()">Next step →</button>`; return; }
-    // last rung done — offer the finale (the "wow"), then practice / map
+    // last guided step done — the finale button is already always-visible below the console
     let html = '';
-    if (CFG.finale && window.FootstepsFinale) {
-      tutorSay(`⭐ <b>You built the whole scene!</b> Want to see what your code can really do?`);
-      html += `<button class="btn" onclick="FootstepsWorkshop._finale()">🦉 Bring the scene to life</button>`;
-    }
+    if (CFG.finale && window.FootstepsFinale) tutorSay(`⭐ <b>You finished the steps!</b> Add anything else you like, then tap <b>🦉 Bring the scene to life</b> below to watch your code run.`);
     if (CFG.practice && CFG.practice.enabled) html += `<button class="btn olive" onclick="FootstepsWorkshop._practice()">Practice on your own →</button>`;
     html += `<button class="btn ghost" onclick="FootstepsWorkshop._exit()">Back to the map</button>`;
     nw.innerHTML = html;
@@ -573,6 +589,7 @@
   WS._finale = function () {
     if (window.FootstepsFinale) window.FootstepsFinale.stop();
     $('nextwrap').innerHTML = '';
+    const fb = $('finalebar'); if (fb) fb.style.display = 'none';
     return window.FootstepsFinale.run({
       stage: $('stage'), out: $('termout'), ada: $('tutorbody'),
       cells: cells, COLS: COLS, ROWS: ROWS, ITEMS: ITEMS, config: CFG.finale,
@@ -580,13 +597,13 @@
     });
   };
   function finaleDone() {
+    const fb = $('finalebar'); if (fb) fb.style.display = 'block';
     let html = '';
     if (CFG.practice && CFG.practice.enabled) html += `<button class="btn olive" onclick="FootstepsWorkshop._practice()">Practice on your own →</button>`;
-    html += `<button class="btn" onclick="FootstepsWorkshop._finale()">↻ Play the finale again</button>`;
     html += `<button class="btn ghost" onclick="FootstepsWorkshop._exit()">Back to the map</button>`;
     $('nextwrap').innerHTML = html;
   }
-  WS._advance = function () { rung++; $('nextwrap').innerHTML = ''; renderRungs(); tutorSay(linkifyCode(CFG.rungs[rung].goal)); $('cmd').focus(); };
+  WS._advance = function () { if (CFG.freeBuild) return; rung++; $('nextwrap').innerHTML = ''; renderRungs(); tutorSay(linkifyCode(CFG.rungs[rung].goal)); $('cmd').focus(); };
 
   /* ---- free practice mode ---- */
   WS._practice = function () {

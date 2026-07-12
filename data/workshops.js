@@ -199,6 +199,8 @@ const WORKSHOPS = {
     subtitle: "Two by Two",
     grid: { cols: 8, rows: 6 },
     background: "noahs_ark",                        // the ark art sits behind the grid; animals board the deck
+    freeBuild: true,
+    freeGoal: 'Fill the ark! Bring the animals aboard — two by two if you like — with place("elephant", 3, 3). Add as many as you want, then tap the 🦉 button below to bring it to life.',
     items: ["elephant","giraffe","lion","zebra","tiger","panda","monkey","kangaroo","owl","mouse","butterfly","rainbow","dove"],
     aiPreview: [ 'place("elephant", 1, 4)', 'place("elephant", 2, 4)', 'place("giraffe", 4, 3)', 'place("dove", 6, 1)' ],
     rungs: [
@@ -312,6 +314,8 @@ const WORKSHOPS = {
     title: "The Manger Scene",
     subtitle: "Away in a Manger",
     grid: { cols: 8, rows: 6 },
+    freeBuild: true,
+    freeGoal: 'Build the manger scene! Start with place("manger") for the stable, then add baby Jesus, Mary, Joseph, an angel, and the animals wherever you like. Then bring it to life.',
     items: ["manger","baby_jesus","mary","joseph","angel","donkey","cow","sheep","baby_deer","dove","mouse","owl"],
     aiPreview: [ 'place("manger")', 'place("baby_jesus", 4, 3)', 'place("mary", 3, 3)', 'place("joseph", 5, 3)' ],
     rungs: [
