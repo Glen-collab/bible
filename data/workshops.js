@@ -40,7 +40,7 @@ const WORKSHOP_ITEMS = {
   // garden of eden scene pieces
   tree:"🌳", serpent:"🐍", fruit:"🍎", leaves:"🍃", adam:"🧑", eve:"👩",
   // backdrop objects: placing one becomes the whole scene (manger already above)
-  ark:"🚢", tomb:"⚰️",
+  ark:"🚢", tomb:"⚰️", red_sea:"🌊", red_sea_split:"🌊",
   // larger illustrated images (loaded from assets/scenes/) usable as placeable
   // pieces too — scale them up with place(name, col, row, size) or the ＋ button
   jesus_tomb:"⚰️", crowd_listening:"👥", crowd_eating_fish:"🍽️",
@@ -90,9 +90,9 @@ const WORKSHOPS = {
     subtitle: "The Long Road to Freedom",
     grid: { cols: 8, rows: 6 },
     ground: "sea",
-    freeGoal: 'Part the Red Sea! Place Moses and his staff, raise walls of water on each side, lead the people across the dry path, and put Pharaoh\'s chariots behind. Then tap the 🦉 button to bring it to life.',
-    items: ["moses","staff","water","man","female","sheep","chariot","horse","dove"],
-    aiPreview: [ 'place("moses", 0, 3)', 'place("water", 4, 1)', 'place("water", 4, 5)' ],
+    freeGoal: 'Part the Red Sea! Start with the sea — place("red_sea") — then place Moses and his staff. When you are ready for the miracle, place("red_sea_split") and the waters open. Lead the people across the dry path and put Pharaoh\'s chariots behind. Then tap the 🦉 button to bring it to life.',
+    items: ["red_sea","red_sea_split","moses","staff","water","man","female","sheep","chariot","horse","dove"],
+    aiPreview: [ 'place("red_sea")', 'place("moses", 0, 3)', 'place("red_sea_split")' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{emoji:"🌊", n:5, rows:[0,1]}, extras:[{emoji:"🐟", n:3, rows:[0,1]}], dove:true, shimmer:["moses","staff"], wander:["man","female","sheep","horse"] }
   },

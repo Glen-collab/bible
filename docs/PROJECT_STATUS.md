@@ -111,8 +111,11 @@ Standalone workshops on the home screen (also become case rewards as their cases
 - **Per-piece sizing:** `SPRITE_SCALE` (fill within a cell) + `DEFAULT_SIZE` (how many cells a piece
   spans, e.g. crowds 4.25, boulder 5, figures 1.5). Tune visually with `tools/sprite-calibrator.html`
   (slider per sprite → "Copy scale map" → paste back to bake in). Desktop copy points at the live site.
-- **Stand-in emoji pieces awaiting real PNGs:** `jesus` (🧍), `king` (🤴), `cow` (🐄), plus `donkey`/`sheep`
+- **Stand-in emoji pieces awaiting real PNGs:** `jesus` (🧍), `cow` (🐄), plus `donkey`/`sheep`
   (nativity). Name a file after the item, drop it in `assets/sprites/`, done.
+- **Backdrops** are the exception — a scene PNG needs one line in `BACKDROPS` (workshop.js) to
+  become a `place("name")` command. The Red Sea uses two (`red_sea` closed → `red_sea_split`
+  parted); placing one replaces the other, so the sea opens on the kid's own command.
 
 ## Deploy & verify
 
@@ -135,7 +138,8 @@ sandbox, the complete command set, backdrops/rails/D-pad/center-comments, the ar
 - 🐟 **Loaves & Fishes** — God provides → Feeding the 5,000
 - ⛰️ **Sermon on the Mount** — how to live → the Sermon
 
-**Art to finish:** `jesus.png`, `king.png`, `donkey.png`, `cow.png`, `sheep.png` (all auto-upgrade on drop-in).
+**Art to finish:** `jesus.png`, `donkey.png`, `cow.png`, `sheep.png` (all auto-upgrade on drop-in).
+Full list + exact filenames: `docs/ART-ASSETS-NEEDED.md`.
 
 **How to add a case:** `CASE_X` in cases.js + add to `CASES`/`CASE_ORDER` + a `ROUNDTABLES` entry +
 `CASE_EMOJI` in app.js + set the scene workshop's `forCase` (keep `standalone:true`) + update the

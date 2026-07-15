@@ -44,7 +44,12 @@
   const SCENE_BASE = 'assets/scenes/';
   // "Backdrop" items: placing one sets the whole scene behind the grid (instead of
   // dropping a small piece), and everything else places on top. item name -> scene file.
-  const BACKDROPS = { manger: 'manger', ark: 'noahs_ark', tomb: 'jesus_tomb' };
+  const BACKDROPS = {
+    manger: 'manger', ark: 'noahs_ark', tomb: 'jesus_tomb',
+    // The Red Sea has two states: closed, then opened. Placing one replaces the
+    // other, so the sea "parts" when the kid swaps the backdrop.
+    red_sea: 'red_sea', red_sea_split: 'red_sea_split',
+  };
   let backdropEl = null, backdropName = null;
   function setBackdrop(file) {
     if (!backdropEl) {
