@@ -93,11 +93,13 @@ const WORKSHOPS = {
     subtitle: "The Long Road to Freedom",
     grid: { cols: 8, rows: 6 },
     ground: "sea",
-    freeGoal: 'Part the Red Sea! Start with the sea — place("red_sea") — then place Moses and his staff. When you are ready for the miracle, place("red_sea_split") and the waters open. Lead the people across the dry path and put Pharaoh\'s chariots behind. And for what came after the crossing, there is place("moses_tablets") — Moses down from the mountain with the ten commandments. Then tap the 🦉 button to bring it to life.',
-    items: ["red_sea","red_sea_split","moses","moses_tablets","staff","water","man","female","sheep","chariot","horse","dove"],
+    freeGoal: 'Part the Red Sea! Start with the sea — place("red_sea") — then place Moses and his staff. When you are ready for the miracle, place("red_sea_split") and the waters open. Now bring the whole nation through: place("crowd_listening") behind Moses and he is leading his people across the dry path. Put Pharaoh\'s chariots behind them. And for what came after the crossing, there is place("moses_tablets") — Moses down from the mountain with the ten commandments. Then tap the 🦉 button to bring it to life.',
+    items: ["red_sea","red_sea_split","moses","moses_tablets","crowd_listening","staff","water","man","female","sheep","chariot","horse","dove"],
     aiPreview: [ 'place("red_sea")', 'place("moses", 0, 3)', 'place("red_sea_split")' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"🌊", n:5, rows:[0,1]}, extras:[{emoji:"🐟", n:3, rows:[0,1]}], dove:true, shimmer:["moses","staff","moses_tablets"], wander:["man","female","sheep","horse"] }
+    // No scattered 🌊/🐟 here: the red_sea backdrops already paint the water, and emoji
+    // on top of them just float in the sky.
+    finale: { sky:"day", twinkle:0, grass:null, extras:[], dove:true, shimmer:["moses","staff","moses_tablets"], wander:["man","female","sheep","horse"] }
   },
 
   /* ---- Workshop for CASE 4 (Ruth): build the harvest home ---- */

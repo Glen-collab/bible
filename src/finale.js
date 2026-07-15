@@ -64,7 +64,9 @@
       }
     }
     const setTwinkles = (n) => setGroup(twinkleEls, '✨', n, 0, 1, 'twinkle');
-    const grassCfg = cfg.grass || { emoji: '🌿', n: 6, rows: [4, 5] };
+    // grass: null means the scene deliberately wants no scattered scenery — a painted
+    // backdrop already fills it. Only an ABSENT key falls back to the default grass.
+    const grassCfg = cfg.grass === undefined ? { emoji: '🌿', n: 6, rows: [4, 5] } : cfg.grass;
     const setGrass = (n) => setGroup(grassEls, grassCfg.emoji, n, grassCfg.rows[0], grassCfg.rows[1], 'scenery');
 
     function nightfall() { stage.classList.add('night'); }
