@@ -33,6 +33,9 @@ const WORKSHOP_ITEMS = {
   david:"🧒", goliath:"🧌", mary:"🧕", joseph:"🧔", man:"🧑", female:"👩", baby_jesus:"👶",
   armies:"⚔️", chariot:"🛞", horse:"🐴",
   water:"🌊", staff:"🦯", moses:"🧔", light:"⚡", wheat:"🌾",
+  // second poses of David and Moses — the same person at a different moment of
+  // his story, so they are their own pieces rather than replacing the first art
+  david_harp:"🎵", moses_tablets:"📜",
   // resurrection scene pieces
   boulder:"🪨", jesus:"🧍", king:"🤴",
   // nativity stand-ins (emoji until real art is added)
@@ -65,8 +68,8 @@ const WORKSHOPS = {
     subtitle: "The Valley of Elah",
     grid: { cols: 8, rows: 6 },
     ground: "grass",
-    freeGoal: 'Set up the showdown! Place David — place("david", 1, 3) — and the giant Goliath, the two armies on the hills, plus horses and chariots. Then tap the 🦉 button to bring it to life.',
-    items: ["david","goliath","armies","horse","chariot","sheep","dove"],
+    freeGoal: 'Set up the showdown! Place David — place("david", 1, 3) — and the giant Goliath, the two armies on the hills, plus horses and chariots. There is a quiet David too — place("david_harp") — the shepherd boy on his rock, before any of this. Then tap the 🦉 button to bring it to life.',
+    items: ["david","david_harp","goliath","armies","horse","chariot","sheep","dove"],
     aiPreview: [ 'place("david", 1, 3)', 'place("goliath", 6, 3)', 'place("armies", 3, 1)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: {
@@ -75,7 +78,7 @@ const WORKSHOPS = {
       grass: { emoji:"🌿", n:6, rows:[4,5] },
       extras: [ { emoji:"🪨", n:3, rows:[4,5] } ],   // five smooth stones in the brook
       dove: true,
-      shimmer: ["david"],
+      shimmer: ["david","david_harp"],   // david_harp never wanders — he is sitting on a rock
       wander: ["horse","sheep","david"]
     }
   },
@@ -90,11 +93,11 @@ const WORKSHOPS = {
     subtitle: "The Long Road to Freedom",
     grid: { cols: 8, rows: 6 },
     ground: "sea",
-    freeGoal: 'Part the Red Sea! Start with the sea — place("red_sea") — then place Moses and his staff. When you are ready for the miracle, place("red_sea_split") and the waters open. Lead the people across the dry path and put Pharaoh\'s chariots behind. Then tap the 🦉 button to bring it to life.',
-    items: ["red_sea","red_sea_split","moses","staff","water","man","female","sheep","chariot","horse","dove"],
+    freeGoal: 'Part the Red Sea! Start with the sea — place("red_sea") — then place Moses and his staff. When you are ready for the miracle, place("red_sea_split") and the waters open. Lead the people across the dry path and put Pharaoh\'s chariots behind. And for what came after the crossing, there is place("moses_tablets") — Moses down from the mountain with the ten commandments. Then tap the 🦉 button to bring it to life.',
+    items: ["red_sea","red_sea_split","moses","moses_tablets","staff","water","man","female","sheep","chariot","horse","dove"],
     aiPreview: [ 'place("red_sea")', 'place("moses", 0, 3)', 'place("red_sea_split")' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"🌊", n:5, rows:[0,1]}, extras:[{emoji:"🐟", n:3, rows:[0,1]}], dove:true, shimmer:["moses","staff"], wander:["man","female","sheep","horse"] }
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌊", n:5, rows:[0,1]}, extras:[{emoji:"🐟", n:3, rows:[0,1]}], dove:true, shimmer:["moses","staff","moses_tablets"], wander:["man","female","sheep","horse"] }
   },
 
   /* ---- Workshop for CASE 4 (Ruth): build the harvest home ---- */

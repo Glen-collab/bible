@@ -26,6 +26,7 @@
     flamingo:0.68, monkey:0.70, deer:0.72, ostrich:0.75, kangaroo:0.78, panda:0.80, rainbow:0.90,
     lion:0.95, zebra:0.95, tiger:0.98, gorilla:1.00, camel:1.00, ox:1.00, hippo:1.05, rhino:1.05, elephant:1.15, giraffe:1.20,
     goliath:1.15, joseph:1.05, mary:0.95, david:0.90, man:0.90, female:0.90,
+    david_harp:0.90, moses_tablets:0.95,
     boulder:0.85,
   };
   // Default number of cells a piece spans when no size is given. Big illustrated
@@ -36,6 +37,7 @@
     man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, jesus: 2, king: 1.5, goliath: 2.25, david: 1.25,
     baby_jesus: 1.2, cow: 1.5, noah: 1.5, armies: 2.5, chariot: 1.8, horse: 1.25,
     moses: 1.5, water: 2, staff: 1.2, wheat: 1, light: 2,
+    david_harp: 1.25, moses_tablets: 1.5,   // same spans as david / moses
     tree: 2.5, serpent: 1.5, fruit: 0.75, leaves: 1, adam: 1.5, eve: 1.5,
     crowd_listening: 4.25, daniel_lion_den: 5,
     jesus_tomb: 3, jesus_sermon: 4, jesus_teaching: 3.5, jesus_help_woman: 3.5,

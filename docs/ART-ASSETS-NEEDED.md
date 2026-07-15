@@ -53,8 +53,8 @@ You listed some names — here's the exact filename each one needs to be:
 | `Eve` | `eve.png` | Eve has her own piece in the Eden scene now. |
 | `God` | *(not placed)* | The Eden story tells about God but never places a God figure — intentionally. Nothing to draw. |
 | `red_sea`, `Split_red_sea` | `red_sea.png` **+** `red_sea_split.png` | ✅ **Both are in.** You drew the sea closed *and* the sea parted, so they're now two backdrops: `place("red_sea")` shows the water, `place("red_sea_split")` opens it. |
-| `Moses_10_command` | *(not in the game)* | The Ten Commandments aren't a scene yet. Could be a future case — tell me if you want it. |
-| `david_harp` | *(not in the game)* | David has one piece, `david.png` (with the sling). A harp-playing David would need a new scene — tell me if you want one. |
+| `Moses_10_command` | `moses_tablets.png` | ✅ **In.** It's Moses *holding* the tablets, so it's named for the man, not the stones — `place("moses_tablets")` in the Red Sea workshop. |
+| `david_harp` | `david_harp.png` | ✅ **In.** `place("david_harp")` in the David & Goliath workshop. |
 | `jesus_risen_light` | `jesus.png` | The risen Jesus in the tomb scene is the `jesus` piece. Draw him glowing and it'll shine in all his scenes. |
 | `cow`, `donkey`, `sheep` | `cow.png`, `donkey.png`, `sheep.png` | all needed — see the table below |
 | `eden`, `sermon_mount` | `eden.png`, `sermon_mount.png` | **new full-stage backdrops** — see "Backgrounds" |
@@ -79,14 +79,14 @@ so you can knock out one scene at a time.
 | `well.png` | 🪣 | The Barley Field |
 
 ### ⚔️ Case: David and Goliath *(Valley of Elah)*
-*(david, goliath, armies, chariot all have art ✅ — nothing left here)*
+*(david, david_harp, goliath, armies, chariot all have art ✅ — nothing left here)*
 
 ### 🌊 Case: Parting the Red Sea *(Moses)*
 | Filename | Now shows | Note |
 |----------|-----------|------|
 | `staff.png` | 🦯 | Moses's staff / rod |
 | `water.png` | 🌊 | the standing walls of water — the kid raises these themselves |
-| *(moses already has art ✅, and both Red Sea backdrops are wired ✅)* | | |
+| *(moses + moses_tablets already have art ✅, and both Red Sea backdrops are wired ✅)* | | |
 
 ### 🌾 Case: The Barley Field *(Ruth)*
 | Filename | Now shows | Note |
@@ -176,10 +176,15 @@ file over the old name and it upgrades), but nothing's missing:
 ## 4️⃣ Sprites already done ✅ (don't redo these)
 
 `angel` · `armies` · `baby_deer` · `baby_jesus` · `boulder` · `butterfly` · `chariot` ·
-`david` · `deer` · `dove` · `elephant` · `female` *(=Eve)* · `flamingo` · `giraffe` ·
-`goliath` · `gorilla` · `hippo` · `joseph` · `kangaroo` · `king` · `lion` ·
-`man` *(=Adam)* · `mary` · `monkey` · `moses` · `mouse` · `ostrich` · `owl` · `panda` ·
-`rainbow` · `rhino` · `snail` · `squirrel` · `tiger` · `toucan` · `zebra`
+`david` · `david_harp` · `deer` · `dove` · `elephant` · `female` *(=Eve)* · `flamingo` ·
+`giraffe` · `goliath` · `gorilla` · `hippo` · `joseph` · `kangaroo` · `king` · `lion` ·
+`man` *(=Adam)* · `mary` · `monkey` · `moses` · `moses_tablets` · `mouse` · `ostrich` ·
+`owl` · `panda` · `rainbow` · `rhino` · `snail` · `squirrel` · `tiger` · `toucan` · `zebra`
+
+> **Two figures have a second pose:** `david` (with the sling) and `david_harp` (the
+> shepherd boy on his rock); `moses` (staff raised at the sea) and `moses_tablets`
+> (down from the mountain with the commandments). Same person, different moment — both
+> are placeable, so a kid can build either scene.
 
 > Note: `man.png` and `female.png` are the generic people used across most scenes.
 > Eden now has its **own** `adam` / `eve` pieces (in the "still needed" list above).
