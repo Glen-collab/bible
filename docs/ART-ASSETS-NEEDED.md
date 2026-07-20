@@ -1,8 +1,13 @@
 # 🎨 Footsteps of the Teacher — Art Asset List
 
-> **▶️ START HERE TOMORROW:** You need **20 sprite images** (→ `assets/sprites/`) and,
-> optionally, **5 background scenes** (→ `assets/scenes/`). The exact copy-paste
-> filename lists are at the very bottom (§📋). Save each file with the **exact
+> **▶️ START HERE TOMORROW:** You need **13 sprite images** (→ `assets/sprites/`) and,
+> optionally, **3 background scenes** (→ `assets/scenes/`). The exact copy-paste
+> filename lists are at the very bottom (§📋).
+>
+> **✅ 2026-07-20 batch is in:** cow, sheep, donkey, camel, horse, adam, eve, serpent,
+> the whole Eden story set (forbidden_tree, cherub, adam_eve_lion, the eating poses,
+> adam_eve_shame), and the wise men — plus two backdrops, `desert` and
+> `garden_of_eden`. All loading live. Save each file with the **exact
 > lowercase name**, drop it in the folder, commit + push — it appears in the game
 > automatically. When you've got a batch in, ping me and I'll confirm they're loading
 > (and wire the `place("...")` command for any background scenes you made).
@@ -69,14 +74,11 @@ so you can knock out one scene at a time.
 ### 🐑 Common animals & objects (used in several scenes — highest value)
 | Filename | Now shows | Used in |
 |----------|-----------|---------|
-| `sheep.png` | 🐑 | David · Red Sea · Barley Field · Manger · Eden |
-| `donkey.png` | 🫏 | The Manger |
-| `cow.png` | 🐄 | The Manger |
 | `ox.png` | 🐂 | The Barley Field |
-| `horse.png` | 🐴 | David · Red Sea · Damascus Road |
 | `house.png` | 🏠 | Barley Field · Damascus Road |
 | `palm.png` | 🌴 | The Damascus Road |
 | `well.png` | 🪣 | The Barley Field |
+| *(sheep, donkey, cow, horse, camel all have art ✅)* | | |
 
 ### ⚔️ Case: David and Goliath *(Valley of Elah)*
 *(david, david_harp, goliath, armies, chariot all have art ✅ — nothing left here)*
@@ -113,15 +115,20 @@ so you can knock out one scene at a time.
 |----------|-----------|------|
 | `jesus.png` | 🧍 | Jesus — appears in the tomb (risen), the feeding, and the sermon. Draw him glowing/risen and he'll shine in all three. |
 
-### 🌳 Case: The Garden and the Serpent *(Eden)* — brand-new scene
+### 🌳 Case: The Garden and the Serpent *(Eden)* — the richest scene now
+The whole Genesis 2–3 story is placeable. **Done ✅:** `adam`, `eve`, `serpent`,
+`forbidden_tree` (the special tree, fruit + serpent already in its branches),
+`cherub` (the angel with the flaming sword who guards the way — Gen 3:24), and the
+story poses `adam_eve_lion` (at peace with the animals), `eve_picking_forbiddenfruit`,
+`eve_eating_fruit`, `adam_eat_forbiddenfruit`, `adam_eve_eating_fruit`, and
+`adam_eve_shame` (the sorrowful walk out). Backdrop `garden_of_eden.png` ✅ is wired
+(`place("eden")` or `place("garden_of_eden")`).
+
 | Filename | Now shows | Note |
 |----------|-----------|------|
-| `tree.png` | 🌳 | trees of the garden (incl. the special tree) |
-| `fruit.png` | 🍎 | the forbidden fruit / apple |
-| `serpent.png` | 🐍 | the sly serpent |
-| `leaves.png` | 🍃 | fig leaves |
-| `adam.png` | 🧑 | Adam — his own figure in this scene |
-| `eve.png` | 👩 | Eve — her own figure in this scene |
+| `tree.png` | 🌳 | plain garden trees *(optional — `forbidden_tree` already covers the special one)* |
+| `fruit.png` | 🍎 | a loose apple *(optional — the tree already has fruit on it)* |
+| `leaves.png` | 🍃 | fig leaves *(optional)* |
 | *(plus `lion`/`deer`/`sheep`/`dove` from the tables above)* | | |
 
 ---
@@ -137,11 +144,14 @@ whole ark appears). Save these in **`assets/scenes/`**.
 - `jesus_tomb.png` — the tomb *(command: `place("tomb")`)*
 - `red_sea.png` — the sea, still closed *(command: `place("red_sea")`)*
 - `red_sea_split.png` — the sea parted, dry path through *(command: `place("red_sea_split")`)*
+- `desert.png` — dry valley / desert, reusable *(command: `place("desert")`; auto-set in David's scene)*
+- `garden_of_eden.png` — the lush garden *(command: `place("eden")` or `place("garden_of_eden")`; auto-set in Eden)*
 
 > **The two Red Seas are a pair.** Placing one replaces the other, so in the Moses
 > workshop the kid sets the closed sea, places Moses and his staff, and then types
 > `place("red_sea_split")` — and the water opens. The miracle happens by their own line
-> of code.
+> of code. *(The scattered 🌊/🐟 that used to speckle the finale are gone — the painted
+> backdrop is the water.)*
 
 ### 🆕 New backgrounds you asked about — draw the art and I'll wire the command:
 Save the file, then tell me and I'll add the one-word command so kids can drop it in.
@@ -150,12 +160,14 @@ backdrop just makes it richer.)
 
 | Filename (save in `assets/scenes/`) | Scene it would set | Command I'd add |
 |-------------------------------------|--------------------|-----------------|
-| `eden.png` | The Garden of Eden — lush garden, river, the special tree | `place("eden")` |
 | `sermon_mount.png` | The Sermon on the Mount — green hillside overlooking the lake | `place("sermon_mount")` |
-| `valley_elah.png` | David & Goliath — the valley with two hills | `place("valley_elah")` |
 | `barley_field.png` | Ruth — golden barley field at harvest | `place("barley_field")` |
 | `damascus_road.png` | Paul — the dusty road with a burst of light | `place("damascus_road")` |
-| `lions_den.png` | Daniel — the stone pit *(optional; `daniel_lion_den.png` already covers this)* | `place("lions_den")` |
+
+> `eden` is done ✅ (`garden_of_eden.png`), and **David's valley is covered by
+> `desert.png`** — the same desert backdrop is reusable for any dry-land story, so
+> `valley_elah` isn't needed as its own file. Daniel's den already has
+> `daniel_lion_den.png`.
 
 > Want any of these to also be a background? Just make the `.png` and I'll flip on the
 > command in a two-minute change.
@@ -175,11 +187,15 @@ file over the old name and it upgrades), but nothing's missing:
 
 ## 4️⃣ Sprites already done ✅ (don't redo these)
 
-`angel` · `armies` · `baby_deer` · `baby_jesus` · `boulder` · `butterfly` · `chariot` ·
-`david` · `david_harp` · `deer` · `dove` · `elephant` · `female` *(=Eve)* · `flamingo` ·
-`giraffe` · `goliath` · `gorilla` · `hippo` · `joseph` · `kangaroo` · `king` · `lion` ·
-`man` *(=Adam)* · `mary` · `monkey` · `moses` · `moses_tablets` · `mouse` · `ostrich` ·
-`owl` · `panda` · `rainbow` · `rhino` · `snail` · `squirrel` · `tiger` · `toucan` · `zebra`
+`adam` · `adam_eat_forbiddenfruit` · `adam_eve_eating_fruit` · `adam_eve_lion` ·
+`adam_eve_shame` · `angel` · `armies` · `baby_deer` · `baby_jesus` · `boulder` ·
+`butterfly` · `camel` · `cherub` · `chariot` · `cow` · `david` · `david_harp` · `deer` ·
+`donkey` · `dove` · `elephant` · `eve` · `eve_eating_fruit` ·
+`eve_picking_forbiddenfruit` · `female` · `flamingo` · `forbidden_tree` · `giraffe` ·
+`goliath` · `gorilla` · `hippo` · `horse` · `joseph` · `kangaroo` · `king` · `lion` ·
+`man` · `mary` · `monkey` · `moses` · `moses_tablets` · `mouse` · `ostrich` · `owl` ·
+`panda` · `rainbow` · `rhino` · `serpent` · `sheep` · `snail` · `squirrel` · `tiger` ·
+`toucan` · `wisemen` · `zebra`
 
 > **Two figures have a second pose:** `david` (with the sling) and `david_harp` (the
 > shepherd boy on his rock); `moses` (staff raised at the sea) and `moses_tablets`
@@ -187,53 +203,45 @@ file over the old name and it upgrades), but nothing's missing:
 > are placeable, so a kid can build either scene.
 
 > Note: `man.png` and `female.png` are the generic people used across most scenes.
-> Eden now has its **own** `adam` / `eve` pieces (in the "still needed" list above).
+> Eden now has its **own** `adam` / `eve` art (done ✅), so those are no longer generic.
 
 ---
 
 ## 5️⃣ Optional extras (defined but not in any scene yet)
 
 These have emoji and aren't used in a case right now. Only worth drawing if you want
-them for the free-build sandbox or a future scene: `camel` 🐪 · `star` ⭐ · `lamp` 🪔 ·
-`shepherd` 🧎 · `wiseman` 🧙 · `fire` 🔥.
+them for the free-build sandbox or a future scene: `star` ⭐ · `lamp` 🪔 ·
+`shepherd` 🧎 · `fire` 🔥.
 
 ---
 
-## 📋 Quick copy-paste checklist (the 20 sprites still on emoji)
+## 📋 Quick copy-paste checklist (the 13 sprites still on emoji)
 
 ```
-assets/sprites/sheep.png
-assets/sprites/donkey.png
-assets/sprites/cow.png
+assets/sprites/jesus.png
+assets/sprites/noah.png
+assets/sprites/staff.png
+assets/sprites/water.png
 assets/sprites/ox.png
-assets/sprites/horse.png
 assets/sprites/house.png
 assets/sprites/palm.png
 assets/sprites/well.png
-assets/sprites/staff.png
-assets/sprites/water.png
 assets/sprites/wheat.png
 assets/sprites/light.png
-assets/sprites/noah.png
-assets/sprites/jesus.png
 assets/sprites/tree.png
 assets/sprites/fruit.png
-assets/sprites/serpent.png
 assets/sprites/leaves.png
-assets/sprites/adam.png
-assets/sprites/eve.png
 ```
 
 Optional backgrounds (in `assets/scenes/`):
 ```
-assets/scenes/eden.png
 assets/scenes/sermon_mount.png
-assets/scenes/valley_elah.png
 assets/scenes/barley_field.png
 assets/scenes/damascus_road.png
 ```
 
 ### 🏆 Best next batch
-`jesus.png` is the highest-value single sprite — he's a stand-in emoji in **three**
-scenes (the tomb, the feeding, the sermon). After that, the four nativity animals
-(`sheep`, `donkey`, `cow`, plus `horse`) light up the most scenes at once.
+`jesus.png` is now the single highest-value sprite left — he's a stand-in emoji in
+**three** scenes (the tomb, the feeding, the sermon). One drawing lights up all three.
+After that, `noah` (the ark) and Moses's `staff` + `water` finish the two scenes that
+are already backdrop-complete.

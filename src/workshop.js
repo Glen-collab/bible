@@ -38,7 +38,12 @@
     baby_jesus: 1.2, cow: 1.5, noah: 1.5, armies: 2.5, chariot: 1.8, horse: 1.25,
     moses: 1.5, water: 2, staff: 1.2, wheat: 1, light: 2,
     david_harp: 1.25, moses_tablets: 1.5,   // same spans as david / moses
+    wisemen: 2.5, camel: 1.5,               // the three magi are drawn side by side
     tree: 2.5, serpent: 1.5, fruit: 0.75, leaves: 1, adam: 1.5, eve: 1.5,
+    forbidden_tree: 2.5, cherub: 1.5,
+    // Eden story poses — two figures (sometimes with a lion or a bush), so wider
+    adam_eve_lion: 2.25, adam_eve_shame: 2, adam_eve_eating_fruit: 2,
+    eve_picking_forbiddenfruit: 2.5, eve_eating_fruit: 1.5, adam_eat_forbiddenfruit: 1.5,
     crowd_listening: 4.25, daniel_lion_den: 5,
     jesus_tomb: 3, jesus_sermon: 4, jesus_teaching: 3.5, jesus_help_woman: 3.5,
     crowd_eating_fish: 1.5, jesus_2fish_2bread: 1.5, loaves_fish: 4,
@@ -51,6 +56,9 @@
     // The Red Sea has two states: closed, then opened. Placing one replaces the
     // other, so the sea "parts" when the kid swaps the backdrop.
     red_sea: 'red_sea', red_sea_split: 'red_sea_split',
+    // reusable painted scenes: desert (David's valley, and any dry-land story) and
+    // the garden of Eden. `eden` is a short alias for the same garden file.
+    desert: 'desert', garden_of_eden: 'garden_of_eden', eden: 'garden_of_eden',
   };
   let backdropEl = null, backdropName = null;
   function setBackdrop(file) {

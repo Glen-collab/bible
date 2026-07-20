@@ -138,8 +138,11 @@ sandbox, the complete command set, backdrops/rails/D-pad/center-comments, the ar
 - 🐟 **Loaves & Fishes** — God provides → Feeding the 5,000
 - ⛰️ **Sermon on the Mount** — how to live → the Sermon
 
-**Art to finish:** `jesus.png`, `donkey.png`, `cow.png`, `sheep.png` (all auto-upgrade on drop-in).
-Full list + exact filenames: `docs/ART-ASSETS-NEEDED.md`.
+**Art to finish:** `jesus.png` is the top one (three scenes), then `noah`, `staff`, `water`
+(all auto-upgrade on drop-in). Full list + exact filenames: `docs/ART-ASSETS-NEEDED.md`.
+The 2026-07-20 batch added the nativity animals, the wise men, the full Eden story set
+(forbidden_tree, cherub, adam/eve + eating/shame poses), and two backdrops
+(`desert`, `garden_of_eden`).
 
 **How to add a case:** `CASE_X` in cases.js + add to `CASES`/`CASE_ORDER` + a `ROUNDTABLES` entry +
 `CASE_EMOJI` in app.js + set the scene workshop's `forCase` (keep `standalone:true`) + update the

@@ -40,10 +40,19 @@ const WORKSHOP_ITEMS = {
   boulder:"🪨", jesus:"🧍", king:"🤴",
   // nativity stand-ins (emoji until real art is added)
   cow:"🐄", noah:"🧔",
+  // the magi and their camel (nativity)
+  wisemen:"🧙",
   // garden of eden scene pieces
   tree:"🌳", serpent:"🐍", fruit:"🍎", leaves:"🍃", adam:"🧑", eve:"👩",
+  forbidden_tree:"🌳", cherub:"👼",
+  // Eden STORY poses — Adam & Eve at each moment of Genesis 2–3, so a kid can
+  // build the whole arc: at peace with the animals, the temptation, the eating,
+  // and the sorrowful leaving.
+  adam_eve_lion:"🦁", eve_picking_forbiddenfruit:"🍎", eve_eating_fruit:"🍎",
+  adam_eat_forbiddenfruit:"🍎", adam_eve_eating_fruit:"🍎", adam_eve_shame:"😔",
   // backdrop objects: placing one becomes the whole scene (manger already above)
   ark:"🚢", tomb:"⚰️", red_sea:"🌊", red_sea_split:"🌊",
+  desert:"🏜️", garden_of_eden:"🌳", eden:"🌳",
   // larger illustrated images (loaded from assets/scenes/) usable as placeable
   // pieces too — scale them up with place(name, col, row, size) or the ＋ button
   jesus_tomb:"⚰️", crowd_listening:"👥", crowd_eating_fish:"🍽️",
@@ -68,8 +77,9 @@ const WORKSHOPS = {
     subtitle: "The Valley of Elah",
     grid: { cols: 8, rows: 6 },
     ground: "grass",
-    freeGoal: 'Set up the showdown! Place David — place("david", 1, 3) — and the giant Goliath, the two armies on the hills, plus horses and chariots. There is a quiet David too — place("david_harp") — the shepherd boy on his rock, before any of this. Then tap the 🦉 button to bring it to life.',
-    items: ["david","david_harp","goliath","armies","horse","chariot","sheep","dove"],
+    background: "desert",                            // the dry valley of Elah fills the scene
+    freeGoal: 'Set up the showdown! The desert valley of Elah is already here. Place David — place("david", 1, 3) — and the giant Goliath, the two armies on the hills, plus horses and chariots. There is a quiet David too — place("david_harp") — the shepherd boy on his rock, before any of this. Then tap the 🦉 button to bring it to life.',
+    items: ["david","david_harp","goliath","armies","horse","chariot","sheep","desert","dove"],
     aiPreview: [ 'place("david", 1, 3)', 'place("goliath", 6, 3)', 'place("armies", 3, 1)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: {
@@ -235,11 +245,12 @@ const WORKSHOPS = {
     subtitle: "A very good garden",
     grid: { cols: 8, rows: 6 },
     ground: "garden",
-    freeGoal: "Grow the good garden! Plant trees, add the one special tree with its fruit, place Adam and Eve, let gentle animals roam, and put the sly serpent in the branches — arrange it however you like.",
-    items: ["tree","fruit","serpent","adam","eve","lion","sheep","deer","dove","leaves"],
-    aiPreview: [ 'place("tree", 4, 1)', 'place("fruit", 4, 1)', 'place("adam", 2, 3)', 'place("eve", 5, 3)' ],
+    background: "garden_of_eden",                    // the lush garden fills the scene
+    freeGoal: "Grow the good garden! It is already all around you. Place the one special tree — place(\"forbidden_tree\", 4, 1) — with the sly serpent waiting in its branches. Put Adam and Eve in the garden, at peace with the animals — try place(\"adam_eve_lion\", 3, 3). The whole story is here, one piece at a time: Eve reaching for the fruit, the quiet walk out of the garden — place(\"adam_eve_shame\") — and the angel who guards the way afterward, place(\"cherub\", 7, 1). Build any part you like, then tap the 🦉 button to bring it to life.",
+    items: ["forbidden_tree","tree","fruit","serpent","adam","eve","adam_eve_lion","lion","sheep","deer","dove","leaves","eve_picking_forbiddenfruit","eve_eating_fruit","adam_eat_forbiddenfruit","adam_eve_eating_fruit","adam_eve_shame","cherub"],
+    aiPreview: [ 'place("forbidden_tree", 4, 1)', 'place("adam", 2, 3)', 'place("eve", 6, 3)', 'place("serpent", 4, 2)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:6, rows:[4,5]}, extras:[{emoji:"🌸", n:5, rows:[3,4]},{emoji:"🦋", n:3, rows:[1,2]}], dove:true, shimmer:["fruit"], wander:["serpent","deer","dove"] }
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:4, rows:[4,5]}, extras:[{emoji:"🌸", n:5, rows:[3,4]},{emoji:"🦋", n:3, rows:[1,2]}], dove:true, shimmer:["forbidden_tree","fruit","cherub"], wander:["serpent","deer","dove"] }
   },
 
   /* ---- Standalone scene: the sermon on the mount ---- */
@@ -268,8 +279,8 @@ const WORKSHOPS = {
     subtitle: "Away in a Manger",
     grid: { cols: 8, rows: 6 },
     freeBuild: true,
-    freeGoal: 'Build the manger scene! Start with place("manger") for the stable, then add baby Jesus, Mary, Joseph, an angel, and the animals wherever you like. Then bring it to life.',
-    items: ["manger","baby_jesus","mary","joseph","angel","donkey","cow","sheep","baby_deer","dove","mouse","owl"],
+    freeGoal: 'Build the manger scene! Start with place("manger") for the stable, then add baby Jesus, Mary, Joseph, an angel, and the animals wherever you like. The wise men came from far away following the star — add them with place("wisemen", 6, 4) and their camel. Then bring it to life.',
+    items: ["manger","baby_jesus","mary","joseph","angel","wisemen","camel","donkey","cow","sheep","baby_deer","dove","mouse","owl"],
     aiPreview: [ 'place("manger")', 'place("baby_jesus", 4, 3)', 'place("mary", 3, 3)', 'place("joseph", 5, 3)' ],
     rungs: [
       { id:0, label:"1 · The stable", goalItem:"manger",
@@ -282,7 +293,7 @@ const WORKSHOPS = {
         goal:'Hang an angel above the stable: place("angel", 4, 0).' },
     ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"night", twinkle:12, grass:{emoji:"🌿", n:3, rows:[5,5]}, extras:[{emoji:"⭐", n:1, rows:[0,0]}], dove:true, shimmer:["baby_jesus","angel"], wander:["donkey","sheep","cow","baby_deer","dove","mouse"] }
+    finale: { sky:"night", twinkle:12, grass:{emoji:"🌿", n:3, rows:[5,5]}, extras:[{emoji:"⭐", n:1, rows:[0,0]}], dove:true, shimmer:["baby_jesus","angel"], wander:["donkey","sheep","cow","baby_deer","dove","mouse","camel"] }
   },
 
 };
