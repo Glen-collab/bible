@@ -39,6 +39,7 @@
     moses: 1.5, water: 2, staff: 1.2, wheat: 1, light: 2,
     david_harp: 1.25, moses_tablets: 1.5,   // same spans as david / moses
     wisemen: 2.5, camel: 1.5,               // the three magi are drawn side by side
+    saul_damascus: 2, jesus_damascus: 1.75, // Saul fallen in the light; risen Jesus
     tree: 2.5, serpent: 1.5, fruit: 0.75, leaves: 1, adam: 1.5, eve: 1.5,
     forbidden_tree: 2.5, cherub: 1.5,
     // Eden story poses — two figures (sometimes with a lion or a bush), so wider
@@ -59,6 +60,7 @@
     // reusable painted scenes: desert (David's valley, and any dry-land story) and
     // the garden of Eden. `eden` is a short alias for the same garden file.
     desert: 'desert', garden_of_eden: 'garden_of_eden', eden: 'garden_of_eden',
+    road_damascus: 'road_damascus',
   };
   let backdropEl = null, backdropName = null;
   function setBackdrop(file) {

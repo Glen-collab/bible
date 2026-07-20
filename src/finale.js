@@ -41,18 +41,29 @@
     const wanderEls = placed.filter((s) => (cfg.wander || []).indexOf(s.name) >= 0);
 
     // ---- decor sprite helpers ----
-    function decor(emoji, c, r, cls) {
+    function decor(token, c, r, cls, sprite) {
       const el = document.createElement('div');
       el.className = 'sprite ' + (cls || '');
       el.style.width = (100 / COLS) + '%'; el.style.height = (100 / ROWS) + '%';
       el.style.left = (c * (100 / COLS)) + '%'; el.style.top = (r * (100 / ROWS)) + '%';
-      el.textContent = emoji; el.dataset.k = keyOf(c, r);
+      if (sprite) {
+        // scatter a real PNG instead of an emoji (e.g. barley strands along a road).
+        const img = document.createElement('img');
+        img.className = 'spr-img'; img.alt = '';
+        img.style.width = '100%'; img.style.height = '100%';
+        img.onerror = function () { el.textContent = '🌾'; };   // last-ditch fallback
+        img.src = 'assets/sprites/' + token + '.png';
+        el.appendChild(img);
+      } else {
+        el.textContent = token;
+      }
+      el.dataset.k = keyOf(c, r);
       stage.appendChild(el); decorKey.add(keyOf(c, r));
       return el;
     }
     let twinkleEls = [], grassEls = [];
     function clearGroup(arr) { arr.forEach((e) => { decorKey.delete(e.dataset.k); e.remove(); }); arr.length = 0; }
-    function setGroup(arr, emoji, n, rowMin, rowMax, cls) {
+    function setGroup(arr, emoji, n, rowMin, rowMax, cls, sprite) {
       clearGroup(arr);
       let made = 0, tries = 0;
       while (made < n && tries < 160) {
@@ -60,14 +71,16 @@
         const c = Math.floor(Math.random() * COLS);
         const r = rowMin + Math.floor(Math.random() * (rowMax - rowMin + 1));
         if (taken(c, r)) continue;
-        arr.push(decor(emoji, c, r, cls)); made++;
+        arr.push(decor(emoji, c, r, cls, sprite)); made++;
       }
     }
     const setTwinkles = (n) => setGroup(twinkleEls, '✨', n, 0, 1, 'twinkle');
     // grass: null means the scene deliberately wants no scattered scenery — a painted
     // backdrop already fills it. Only an ABSENT key falls back to the default grass.
     const grassCfg = cfg.grass === undefined ? { emoji: '🌿', n: 6, rows: [4, 5] } : cfg.grass;
-    const setGrass = (n) => setGroup(grassEls, grassCfg.emoji, n, grassCfg.rows[0], grassCfg.rows[1], 'scenery');
+    // a scatter can be an emoji (grassCfg.emoji) or a real sprite (grassCfg.sprite).
+    const grassToken = grassCfg && (grassCfg.sprite || grassCfg.emoji);
+    const setGrass = (n) => setGroup(grassEls, grassToken, n, grassCfg.rows[0], grassCfg.rows[1], 'scenery', !!(grassCfg && grassCfg.sprite));
 
     function nightfall() { stage.classList.add('night'); }
     function shimmer(name) { const s = placed.find((x) => x.name === name); if (s) s.el.classList.add('shimmer'); }
@@ -127,12 +140,13 @@
       '<code>twinkle(' + cfg.twinkle + ')</code> makes that many stars sparkle. <b>Tap this line</b>, change the number with − and +, and press <b>Run</b>!',
       { value: cfg.twinkle, min: 1, max: 30, code: (n) => 'twinkle(' + n + ');   // stars wake up across the sky', run: setTwinkles, cheer: (n) => 'Now the sky has exactly <b>' + n + '</b> twinkling stars. ✨ Try another number!' });
 
-    if (grassCfg && grassCfg.n) await step('scatter("' + grassCfg.emoji + '", ' + grassCfg.n + ');  // scenery fills in', () => setGrass(grassCfg.n), 950,
+    if (grassCfg && grassCfg.n) await step('scatter("' + grassToken + '", ' + grassCfg.n + ');  // scenery fills in', () => setGrass(grassCfg.n), 950,
       '<code>scatter</code> sprinkles that many into the scene, picking spots for you. <b>Tap this line</b> to grow it yourself.',
-      { value: grassCfg.n, min: 1, max: 22, code: (n) => 'scatter("' + grassCfg.emoji + '", ' + n + ');  // scenery fills in', run: setGrass, cheer: (n) => 'Now the scene has <b>' + n + '</b> — watch it change up and down. You just edited and ran real code. 🌿' });
+      { value: grassCfg.n, min: 1, max: 22, code: (n) => 'scatter("' + grassToken + '", ' + n + ');  // scenery fills in', run: setGrass, cheer: (n) => 'Now the scene has <b>' + n + '</b> — watch it change up and down. You just edited and ran real code. 🌾' });
 
     for (const ex of (cfg.extras || [])) {
-      await step('scatter("' + ex.emoji + '", ' + ex.n + ');', () => setGroup([], ex.emoji, ex.n, ex.rows[0], ex.rows[1], 'scenery'), 700,
+      const exToken = ex.sprite || ex.emoji;
+      await step('scatter("' + exToken + '", ' + ex.n + ');', () => setGroup([], exToken, ex.n, ex.rows[0], ex.rows[1], 'scenery', !!ex.sprite), 700,
         'The same <code>scatter</code> command again with new numbers — reusing a command is how coders build a lot, fast.');
     }
 

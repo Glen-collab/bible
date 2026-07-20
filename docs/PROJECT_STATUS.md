@@ -138,11 +138,14 @@ sandbox, the complete command set, backdrops/rails/D-pad/center-comments, the ar
 - 🐟 **Loaves & Fishes** — God provides → Feeding the 5,000
 - ⛰️ **Sermon on the Mount** — how to live → the Sermon
 
-**Art to finish:** `jesus.png` is the top one (three scenes), then `noah`, `staff`, `water`
-(all auto-upgrade on drop-in). Full list + exact filenames: `docs/ART-ASSETS-NEEDED.md`.
-The 2026-07-20 batch added the nativity animals, the wise men, the full Eden story set
-(forbidden_tree, cherub, adam/eve + eating/shame poses), and two backdrops
-(`desert`, `garden_of_eden`).
+**Art to finish (2026-07-20):** only 11 emoji pieces left, and **6 of 11 scenes are 100%
+real art**. Top remaining: `noah`, Moses's `staff` + `water` (each finishes a scene); the
+rest are small props (`ox`, `well`, `house`, `palm`) and optional Eden extras (`tree`,
+`fruit`, `leaves`). Full list: `docs/ART-ASSETS-NEEDED.md`.
+The 2026-07-20 batch added the nativity animals + wise men, the full Eden story set, the
+Damascus Road (Saul + risen `jesus` + road), and backdrops `desert` / `garden_of_eden` /
+`road_damascus`. The risen `jesus` is now one canonical piece across tomb/feeding/sermon/road.
+Finale scatter now supports real sprites (`grass:{sprite:"wheat",…}`), not just emoji.
 
 **How to add a case:** `CASE_X` in cases.js + add to `CASES`/`CASE_ORDER` + a `ROUNDTABLES` entry +
 `CASE_EMOJI` in app.js + set the scene workshop's `forCase` (keep `standalone:true`) + update the
