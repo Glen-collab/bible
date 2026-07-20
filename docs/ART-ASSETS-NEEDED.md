@@ -1,16 +1,17 @@
 # 🎨 Footsteps of the Teacher — Art Asset List
 
-> **▶️ START HERE TOMORROW:** Only **11 sprite images** (→ `assets/sprites/`) and,
-> optionally, **2 background scenes** (→ `assets/scenes/`) are left. The exact
-> copy-paste filename lists are at the very bottom (§📋).
+> **▶️ THE ART IS DONE.** Every one of the 11 scenes is real art. There is nothing you
+> need to draw. `staff`, `water` (Moses) and `fruit`, `leaves` (Eden) were intentionally
+> dropped — they're already covered by other art (the parted-sea backdrop is the water,
+> Moses holds his own staff, the forbidden tree has fruit, Adam & Eve wear fig leaves).
+> The only emoji left in any scene is the Damascus `light` ⚡, and `saul_damascus` already
+> has the light beam built in — so it's optional too.
 >
-> **✅ 2026-07-20 batch is in:** cow, sheep, donkey, camel, horse, adam, eve, serpent,
-> the whole Eden story set, the wise men, the Damascus Road (Saul + risen Jesus + road),
-> and **`jesus`** (the risen Jesus now serves the tomb, feeding, and sermon too) — plus
-> backdrops `desert`, `garden_of_eden`, and `road_damascus`. All loading live.
->
-> **6 of the 11 scenes are now 100% real art.** What's left is the small props table
-> below — no more people, animals, or main figures are missing. Save each file with the **exact
+> **✅ 2026-07-20 (all in & live):** the nativity animals + wise men, the full Eden story
+> set, the Damascus Road (Saul + risen `jesus` + road + donkey/horse), `noah`, `ox`,
+> `palm`, `well`, `house`, the olive `tree`, and barley — plus backdrops `desert`,
+> `garden_of_eden`, `road_damascus`, `barley_field`, and one mountain that serves both
+> `mount_sinai` (Moses) and `sermon_mount` (Jesus). Save each file with the **exact
 > lowercase name**, drop it in the folder, commit + push — it appears in the game
 > automatically. When you've got a batch in, ping me and I'll confirm they're loading
 > (and wire the `place("...")` command for any background scenes you made).
@@ -69,37 +70,20 @@ You listed some names — here's the exact filename each one needs to be:
 
 ---
 
-## 1️⃣ Sprites still needed (these currently show an emoji)
+## 1️⃣ Sprites still needed — none ✅
 
-Save all of these in **`assets/sprites/`**. Grouped by the case/scene they appear in
-so you can knock out one scene at a time.
+Every scene's pieces have real art. This section used to list the missing sprites;
+they're all drawn now. Kept below for the record are the two cases people ask about:
 
-### 🐑 Common animals & objects (used in several scenes — highest value)
-| Filename | Now shows | Used in |
-|----------|-----------|---------|
-| `ox.png` | 🐂 | The Barley Field |
-| `house.png` | 🏠 | Barley Field · Damascus Road |
-| `palm.png` | 🌴 | The Damascus Road |
-| `well.png` | 🪣 | The Barley Field |
-| *(sheep, donkey, cow, horse, camel all have art ✅)* | | |
+### 🌊 Case: Parting the Red Sea *(Moses)* — done ✅
+`moses`, `moses_tablets`, `crowd_listening` have art; both Red Sea backdrops and the
+`mount_sinai` backdrop are wired. `staff` and `water` were **intentionally dropped** —
+Moses holds his own staff, and the `red_sea_split` backdrop is the water.
 
-### ⚔️ Case: David and Goliath *(Valley of Elah)*
-*(david, david_harp, goliath, armies, chariot all have art ✅ — nothing left here)*
+### 🌾 Case: The Barley Field *(Ruth)* — done ✅
+`wheat` (the barley), `ox`, `well`, `house`, `sheep`, plus the `barley_field` backdrop.
 
-### 🌊 Case: Parting the Red Sea *(Moses)*
-| Filename | Now shows | Note |
-|----------|-----------|------|
-| `staff.png` | 🦯 | Moses's staff / rod |
-| `water.png` | 🌊 | the standing walls of water — the kid raises these themselves |
-| *(moses + moses_tablets already have art ✅, and both Red Sea backdrops are wired ✅)* | | |
-
-### 🌾 Case: The Barley Field *(Ruth)*
-| Filename | Now shows | Note |
-|----------|-----------|------|
-| `wheat.png` | 🌾 | sheaves of barley |
-| *(also uses `ox`, `well`, `house`, `sheep` from the common table above)* | | |
-
-### ⚡ Case: The Damascus Road *(Paul)* — mostly done ✅
+### ⚡ Case: The Damascus Road *(Paul)* — done ✅
 Real art in: `saul_damascus` (Saul struck down, the light beam built in), `jesus`
 (the risen Jesus appearing), `road_damascus` (the backdrop), plus `horse`, `donkey`,
 `wheat`. Still emoji, all optional: `light` ⚡ (the beam is already in `saul_damascus`),
@@ -149,22 +133,19 @@ whole ark appears). Save these in **`assets/scenes/`**.
 - `desert.png` — dry valley / desert, reusable *(command: `place("desert")`; auto-set in David's scene)*
 - `garden_of_eden.png` — the lush garden *(command: `place("eden")` or `place("garden_of_eden")`; auto-set in Eden)*
 - `road_damascus.png` — the winding road through the hills *(command: `place("road_damascus")`; auto-set in Paul's scene)*
+- `barley_field.png` — Ruth's golden field at harvest *(command: `place("barley_field")`; auto-set in Ruth's scene)*
+- `mount_sinai_sermon_mount.png` — a mountaintop over a lake, **shared by two scenes**: `place("mount_sinai")` (Moses / commandments) and `place("sermon_mount")` (Jesus's sermon; auto-set there)
 
 > **The two Red Seas are a pair.** Placing one replaces the other, so in the Moses
-> workshop the kid sets the closed sea, places Moses and his staff, and then types
+> workshop the kid sets the closed sea, places Moses, and then types
 > `place("red_sea_split")` — and the water opens. The miracle happens by their own line
 > of code. *(The scattered 🌊/🐟 that used to speckle the finale are gone — the painted
 > backdrop is the water.)*
 
-### 🆕 New backgrounds you asked about — draw the art and I'll wire the command:
-Save the file, then tell me and I'll add the one-word command so kids can drop it in.
-(These are *optional* — every scene already works with the ground + pieces; a painted
-backdrop just makes it richer.)
-
-| Filename (save in `assets/scenes/`) | Scene it would set | Command I'd add |
-|-------------------------------------|--------------------|-----------------|
-| `sermon_mount.png` | The Sermon on the Mount — green hillside overlooking the lake | `place("sermon_mount")` |
-| `barley_field.png` | Ruth — golden barley field at harvest | `place("barley_field")` |
+### 🆕 New backgrounds — all done ✅
+Every backdrop that was on the wish list is now drawn and wired. If you ever want a
+*dedicated* Sermon-on-the-Mount backdrop instead of the shared mountain, save
+`assets/scenes/sermon_mount.png` and it overrides automatically — but it's optional.
 
 > Done ✅: `eden` (`garden_of_eden.png`), Paul's road (`road_damascus.png`), and
 > **David's valley is covered by `desert.png`** — reusable for any dry-land story, so
@@ -194,10 +175,11 @@ file over the old name and it upgrades), but nothing's missing:
 `butterfly` · `camel` · `cherub` · `chariot` · `cow` · `david` · `david_harp` · `deer` ·
 `donkey` · `dove` · `elephant` · `eve` · `eve_eating_fruit` ·
 `eve_picking_forbiddenfruit` · `female` · `flamingo` · `forbidden_tree` · `giraffe` ·
-`goliath` · `gorilla` · `hippo` · `horse` · `jesus` *(risen)* · `joseph` · `kangaroo` ·
-`king` · `lion` · `man` · `mary` · `monkey` · `moses` · `moses_tablets` · `mouse` ·
-`ostrich` · `owl` · `panda` · `rainbow` · `rhino` · `saul_damascus` · `serpent` · `sheep` ·
-`snail` · `squirrel` · `tiger` · `toucan` · `wheat` *(barley)* · `wisemen` · `zebra`
+`goliath` · `gorilla` · `hippo` · `horse` · `house` · `jesus` *(risen)* · `joseph` ·
+`kangaroo` · `king` · `lion` · `man` · `mary` · `monkey` · `moses` · `moses_tablets` ·
+`mouse` · `noah` · `ostrich` · `owl` · `ox` · `palm` · `panda` · `rainbow` · `rhino` ·
+`saul_damascus` · `serpent` · `sheep` · `snail` · `squirrel` · `tiger` · `toucan` ·
+`tree` *(olive)* · `well` · `wheat` *(barley)* · `wisemen` · `zebra`
 
 > **Two figures have a second pose:** `david` (with the sling) and `david_harp` (the
 > shepherd boy on his rock); `moses` (staff raised at the sea) and `moses_tablets`
@@ -217,40 +199,17 @@ them for the free-build sandbox or a future scene: `star` ⭐ · `lamp` 🪔 ·
 
 ---
 
-## 📋 Quick copy-paste checklist (the 11 sprites still on emoji)
+## 📋 Nothing left to draw ✅
 
-Grouped by the scene that still shows an emoji, most-useful first:
+All 11 scenes are real art. `staff`/`water` (Moses) and `fruit`/`leaves` (Eden) were
+pulled from the palettes on purpose — the parted-sea backdrop is the water, Moses holds
+his staff, the forbidden tree has fruit, and Adam & Eve wear fig leaves. Their emoji
+definitions still exist for the free-build sandbox; they just no longer clutter a scene.
 
-```
-# Moses / Red Sea — finishes the scene
-assets/sprites/staff.png     # Moses's rod
-assets/sprites/water.png     # the walls of water (kid raises these)
+The only in-scene emoji is the Damascus `light` ⚡ (optional — `saul_damascus` already
+has the beam). Drop an `assets/sprites/light.png` someday if you want it; otherwise
+you're finished.
 
-# Garden of Eden — finishes the scene
-assets/sprites/tree.png      # plain garden trees (optional — forbidden_tree covers the special one)
-assets/sprites/fruit.png     # a loose apple (optional — the tree already has fruit)
-assets/sprites/leaves.png    # fig leaves (optional)
-
-# Barley Field (Ruth)
-assets/sprites/ox.png
-assets/sprites/well.png
-assets/sprites/house.png     # also used on the Damascus road
-
-# Damascus Road (mostly done — these are extras)
-assets/sprites/palm.png
-assets/sprites/light.png     # optional now: saul_damascus already has the light beam
-
-# Noah
-assets/sprites/noah.png      # the only missing figure — the ark + animals are done
-```
-
-Optional backgrounds (in `assets/scenes/`):
-```
-assets/scenes/barley_field.png   # Ruth — golden field at harvest
-assets/scenes/sermon_mount.png   # hillside over the lake
-```
-
-### 🏆 Best next batch
-`noah.png` and Moses's `staff` + `water` each *finish* a scene. After that it's just
-small props (`ox`, `well`, `house`, `palm`) and the truly-optional Eden extras
-(`tree`, `fruit`, `leaves`) — the forbidden tree already carries the Eden scene.
+Backdrops, for reference — all wired and live:
+`manger` · `ark` · `tomb` · `red_sea` / `red_sea_split` · `desert` · `garden_of_eden`
+(`eden`) · `road_damascus` · `barley_field` · `mount_sinai` = `sermon_mount` (shared).
