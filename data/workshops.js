@@ -145,10 +145,10 @@ const WORKSHOPS = {
     ground: "road",
     background: "road_damascus",                     // the winding road through the hills
     freeGoal: 'Set the road to Damascus! The winding road is already here. Place Saul struck to the ground by the light — place("saul_damascus", 2, 4) — and the risen Jesus appearing above him — place("jesus", 5, 1). Add his horse and a donkey on the road, and sprinkle a little barley on the hillside. Then tap the 🦉 button to bring it to life.',
-    items: ["saul_damascus","jesus","man","light","horse","donkey","wheat","palm","house","road_damascus","dove"],
+    items: ["saul_damascus","jesus","man","horse","donkey","wheat","palm","house","road_damascus","dove"],
     aiPreview: [ 'place("road_damascus")', 'place("saul_damascus", 2, 4)', 'place("jesus", 5, 1)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:{sprite:"wheat", n:5, rows:[4,5]}, extras:[{emoji:"⚡", n:3, rows:[0,2]}], dove:true, shimmer:["jesus","saul_damascus","light"], wander:["horse","donkey"] }
+    finale: { sky:"day", twinkle:0, grass:{sprite:"wheat", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:5, rows:[0,2]}], dove:true, shimmer:["jesus","saul_damascus"], wander:["horse","donkey"] }
   },
 
   /* ---- Standalone scene (no full case yet): Noah's Ark ---- */

@@ -1,11 +1,15 @@
 # 🎨 Footsteps of the Teacher — Art Asset List
 
-> **▶️ THE ART IS DONE.** Every one of the 11 scenes is real art. There is nothing you
-> need to draw. `staff`, `water` (Moses) and `fruit`, `leaves` (Eden) were intentionally
-> dropped — they're already covered by other art (the parted-sea backdrop is the water,
-> Moses holds his own staff, the forbidden tree has fruit, Adam & Eve wear fig leaves).
-> The only emoji left in any scene is the Damascus `light` ⚡, and `saul_damascus` already
-> has the light beam built in — so it's optional too.
+> **▶️ THE ART IS DONE — all 11 scenes are 100% real art, nothing left to draw.**
+> `staff`, `water` (Moses), `fruit`, `leaves` (Eden), and the Damascus `light` were
+> intentionally dropped — each is already covered by other art (the parted-sea backdrop
+> is the water, Moses holds his own staff, the forbidden tree has fruit, Adam & Eve wear
+> fig leaves, and `saul_damascus` has the light beam built in).
+>
+> **Note on file sizes:** the big art was compressed for fast mobile loading (e.g. the
+> well went 2.7 MB → 41 KB, the house 3.4 MB → 171 KB) — no visible quality loss. Your
+> **high-res masters stay untouched in `Desktop/bible_sprites`**; only the copies in the
+> repo are shrunk. If you replace any art, drop the new file in and I'll re-compress.
 >
 > **✅ 2026-07-20 (all in & live):** the nativity animals + wise men, the full Eden story
 > set, the Damascus Road (Saul + risen `jesus` + road + donkey/horse), `noah`, `ox`,
