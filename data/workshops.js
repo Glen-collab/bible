@@ -39,7 +39,7 @@ const WORKSHOP_ITEMS = {
   // his story, so they are their own pieces rather than replacing the first art
   david_harp:"🎵", moses_tablets:"📜",
   // resurrection scene pieces
-  boulder:"🪨", jesus:"🧍", king:"🤴",
+  boulder:"🪨", jesus:"🧍", king:"🤴", daniel:"🧑",
   // nativity stand-ins (emoji until real art is added)
   cow:"🐄", noah:"🧔",
   // the magi and their camel (nativity)
@@ -216,9 +216,10 @@ const WORKSHOPS = {
     subtitle: "Shut the Lions' Mouths",
     grid: { cols: 8, rows: 6 },
     ground: "cave",
-    freeGoal: "Build the lions' den! Place Daniel and the lions, add the king who came at dawn, an angel, and a dove of peace — arrange it however you like.",
-    items: ["daniel_lion_den","lion","king","angel","man","dove"],
-    aiPreview: [ 'place("daniel_lion_den", 3, 0)', 'place("king", 6, 4)', 'place("dove", 4, 0)' ],
+    background: "desert",                             // the den sits out in the desert
+    freeGoal: "Build the lions' den! The desert is already here. Set the den — place(\"daniel_lion_den\", 3, 0) — then place Daniel himself — place(\"daniel\", 2, 4) — add the lions, the king who came at dawn, an angel, and a dove of peace. Arrange it however you like.",
+    items: ["desert","daniel_lion_den","daniel","lion","king","angel","dove"],
+    aiPreview: [ 'place("daniel_lion_den", 3, 0)', 'place("daniel", 2, 4)', 'place("king", 6, 4)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:4, rows:[4,5]}, extras:[{emoji:"✨", n:5, rows:[0,2]}], dove:true, shimmer:["angel"], wander:["dove","lion"] }
   },

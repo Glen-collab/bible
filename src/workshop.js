@@ -25,7 +25,7 @@
     mouse:0.40, snail:0.42, butterfly:0.50, squirrel:0.55, toucan:0.55, baby_deer:0.60, owl:0.62, dove:0.60,
     flamingo:0.68, monkey:0.70, deer:0.72, ostrich:0.75, kangaroo:0.78, panda:0.80, rainbow:0.90,
     lion:0.95, zebra:0.95, tiger:0.98, gorilla:1.00, camel:1.00, ox:1.00, hippo:1.05, rhino:1.05, elephant:1.15, giraffe:1.20,
-    goliath:1.15, joseph:1.05, mary:0.95, david:0.90, man:0.90, female:0.90,
+    goliath:1.15, joseph:1.05, mary:0.95, david:0.90, man:0.90, female:0.90, daniel:0.90,
     david_harp:0.90, moses_tablets:0.95,
     boulder:0.85,
   };
@@ -34,7 +34,7 @@
   // next to single figures. Kids can still override with place(name, c, r, size).
   const DEFAULT_SIZE = {
     boulder: 5,
-    man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, jesus: 2, king: 1.5, goliath: 2.25, david: 1.25,
+    man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, jesus: 2, king: 1.5, goliath: 2.25, david: 1.25, daniel: 1.5,
     baby_jesus: 1.2, cow: 1.5, noah: 1.5, armies: 2.5, chariot: 1.8, horse: 1.25,
     moses: 1.5, water: 2, staff: 1.2, wheat: 1, light: 2,
     david_harp: 1.25, moses_tablets: 1.5,   // same spans as david / moses
