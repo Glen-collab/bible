@@ -285,8 +285,8 @@ const WORKSHOPS = {
     subtitle: "Away in a Manger",
     grid: { cols: 8, rows: 6 },
     freeBuild: true,
-    freeGoal: 'Build the manger scene! Start with place("manger") for the stable, then add baby Jesus, Mary, Joseph, an angel, and the animals wherever you like. The wise men came from far away following the star — add them with place("wisemen", 6, 4) and their camel. Then bring it to life.',
-    items: ["manger","baby_jesus","mary","joseph","angel","wisemen","camel","donkey","cow","sheep","baby_deer","dove","mouse","owl"],
+    freeGoal: 'Build the manger scene! Start with place("manger") for the stable — or set it outside under the desert sky with place("desert") — then add baby Jesus, Mary, Joseph, an angel, and the animals wherever you like. The wise men came from far away following the star — add them with place("wisemen", 6, 4) and their camel. Then bring it to life and watch night fall.',
+    items: ["manger","desert","baby_jesus","mary","joseph","angel","wisemen","camel","donkey","cow","sheep","baby_deer","dove","mouse","owl"],
     aiPreview: [ 'place("manger")', 'place("baby_jesus", 4, 3)', 'place("mary", 3, 3)', 'place("joseph", 5, 3)' ],
     rungs: [
       { id:0, label:"1 · The stable", goalItem:"manger",

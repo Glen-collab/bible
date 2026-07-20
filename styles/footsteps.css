@@ -210,7 +210,7 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
 .sprite.moving{transition:left .55s cubic-bezier(.4,0,.2,1),top .55s cubic-bezier(.4,0,.2,1);}
 .sprite.selected{outline:2px dashed var(--terra);outline-offset:-2px;border-radius:6px;}
 .sprite .spr-img{width:92%;height:92%;object-fit:contain;display:block;pointer-events:none;}
-.stage-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;}
+.stage-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;transition:filter 1.2s ease;}
 .resizebar{display:none;flex-direction:column;gap:8px;margin-top:8px;padding:8px 12px;background:linear-gradient(180deg,#fdf8ec,#f6ecd4);border:1px solid var(--parch-deep);border-radius:12px;font-size:13px;}
 .resizebar .rz-row{display:flex;align-items:center;gap:9px;}
 .resizebar .rz-dpad{display:flex;align-items:center;gap:9px;}
@@ -276,6 +276,9 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
    ===================================================================== */
 #stage{transition:background 2.2s ease;}
 #stage.night{background:linear-gradient(#1c2a4a,#33415f 55%,#5a5136)!important;}
+/* Nightfall also dims any full backdrop image (desert, manger, mountain…) so the
+   whole scene — not just the sky behind gaps — turns to evening when kids run the code. */
+#stage.night .stage-bg{filter:brightness(.5) saturate(.9);}
 .sprite.roam{transition:left 1s ease,top 1s ease;}
 .sprite.scenery{font-size:19px;opacity:.92;}
 .sprite.shimmer{animation:shimmer 1.4s ease-in-out infinite;}
