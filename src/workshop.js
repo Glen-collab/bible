@@ -34,11 +34,11 @@
   // next to single figures. Kids can still override with place(name, c, r, size).
   const DEFAULT_SIZE = {
     boulder: 5,
-    man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, jesus: 2, king: 1.5, goliath: 2.25, david: 1.25, daniel: 1.5,
+    man: 1.5, female: 1.5, angel: 1.5, mary: 1.25, joseph: 1.25, jesus: 2, king: 1.5, goliath: 2.25, david: 1.25, daniel: 1.5,
     baby: 1.2, cow: 1.5, noah: 1.5, armies: 2.5, chariot: 1.8, horse: 1.25,
     moses: 1.5, water: 2, staff: 1.2, wheat: 1, light: 2,
     harp: 1.25, tablets: 1.5,   // same spans as david / moses
-    wisemen: 2.5, camel: 1.5,               // the three magi are drawn side by side
+    wisemen: 3.5, camel: 1.5,               // the three magi are drawn side by side
     saul: 2,                                // Saul fallen in the light
     palm: 2, house: 2, well: 1.5, ox: 1.5,  // props and buildings
     tree: 2.5, serpent: 1.5, fruit: 0.75, leaves: 1, adam: 1.5, eve: 1.5,
