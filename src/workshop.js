@@ -22,11 +22,11 @@
   // How much of its cell each sprite fills (a mouse ≠ an elephant). Tune with
   // tools/sprite-calibrator.html; default 0.85. Only affects real-art sprites.
   const SPRITE_SCALE = {
-    mouse:0.40, snail:0.42, butterfly:0.50, squirrel:0.55, toucan:0.55, baby_deer:0.60, owl:0.62, dove:0.60,
+    mouse:0.40, snail:0.42, butterfly:0.50, squirrel:0.55, toucan:0.55, fawn:0.60, owl:0.62, dove:0.60,
     flamingo:0.68, monkey:0.70, deer:0.72, ostrich:0.75, kangaroo:0.78, panda:0.80, rainbow:0.90,
     lion:0.95, zebra:0.95, tiger:0.98, gorilla:1.00, camel:1.00, ox:1.00, hippo:1.05, rhino:1.05, elephant:1.15, giraffe:1.20,
     goliath:1.15, joseph:1.05, mary:0.95, david:0.90, man:0.90, female:0.90, daniel:0.90,
-    david_harp:0.90, moses_tablets:0.95,
+    harp:0.90, tablets:0.95,
     boulder:0.85,
   };
   // Default number of cells a piece spans when no size is given. Big illustrated
@@ -35,35 +35,35 @@
   const DEFAULT_SIZE = {
     boulder: 5,
     man: 1.5, female: 1.5, angel: 1.5, mary: 1.5, joseph: 1.5, jesus: 2, king: 1.5, goliath: 2.25, david: 1.25, daniel: 1.5,
-    baby_jesus: 1.2, cow: 1.5, noah: 1.5, armies: 2.5, chariot: 1.8, horse: 1.25,
+    baby: 1.2, cow: 1.5, noah: 1.5, armies: 2.5, chariot: 1.8, horse: 1.25,
     moses: 1.5, water: 2, staff: 1.2, wheat: 1, light: 2,
-    david_harp: 1.25, moses_tablets: 1.5,   // same spans as david / moses
+    harp: 1.25, tablets: 1.5,   // same spans as david / moses
     wisemen: 2.5, camel: 1.5,               // the three magi are drawn side by side
-    saul_damascus: 2, jesus_damascus: 1.75, // Saul fallen in the light; risen Jesus
+    saul: 2,                                // Saul fallen in the light
     palm: 2, house: 2, well: 1.5, ox: 1.5,  // props and buildings
     tree: 2.5, serpent: 1.5, fruit: 0.75, leaves: 1, adam: 1.5, eve: 1.5,
-    forbidden_tree: 2.5, cherub: 1.5,
+    appletree: 2.5, cherub: 1.5,
     // Eden story poses — two figures (sometimes with a lion or a bush), so wider
-    adam_eve_lion: 2.25, adam_eve_shame: 2, adam_eve_eating_fruit: 2,
-    eve_picking_forbiddenfruit: 2.5, eve_eating_fruit: 1.5, adam_eat_forbiddenfruit: 1.5,
-    crowd_listening: 4.25, daniel_lion_den: 5,
-    jesus_tomb: 3, jesus_sermon: 4, jesus_teaching: 3.5, jesus_help_woman: 3.5,
-    crowd_eating_fish: 1.5, jesus_2fish_2bread: 1.5, loaves_fish: 4,
+    peace: 2.25, leave: 2, share: 2,
+    reach: 2.5, taste: 1.5, bite: 1.5,
+    crowd: 4.25, den: 5,
+    tomb: 3, sermon: 4, teaching: 3.5, healing: 3.5,
+    feast: 1.5, fishbread: 1.5, loaves: 4,
   };
   const SCENE_BASE = 'assets/scenes/';
   // "Backdrop" items: placing one sets the whole scene behind the grid (instead of
   // dropping a small piece), and everything else places on top. item name -> scene file.
   const BACKDROPS = {
-    manger: 'manger', ark: 'noahs_ark', tomb: 'jesus_tomb',
+    manger: 'manger', ark: 'ark', tomb: 'tomb',
     // The Red Sea has two states: closed, then opened. Placing one replaces the
     // other, so the sea "parts" when the kid swaps the backdrop.
-    red_sea: 'red_sea', red_sea_split: 'red_sea_split',
-    // reusable painted scenes: desert (David's valley, and any dry-land story) and
-    // the garden of Eden. `eden` is a short alias for the same garden file.
-    desert: 'desert', garden_of_eden: 'garden_of_eden', eden: 'garden_of_eden',
-    road_damascus: 'road_damascus', barley_field: 'barley_field',
+    sea: 'sea', split: 'split',
+    // reusable painted scenes: desert (David's valley + any dry-land story), the
+    // garden of Eden, the Damascus road, and Ruth's barley field.
+    desert: 'desert', eden: 'eden',
+    road: 'road', field: 'field',
     // one mountain backdrop serves two scenes: Moses at Sinai and Jesus's sermon.
-    mount_sinai: 'mount_sinai_sermon_mount', sermon_mount: 'mount_sinai_sermon_mount',
+    sinai: 'mount', mount: 'mount',
   };
   let backdropEl = null, backdropName = null;
   function setBackdrop(file) {

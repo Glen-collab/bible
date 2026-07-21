@@ -87,8 +87,8 @@ Standalone workshops on the home screen (also become case rewards as their cases
 | 🌈 Fill the Ark | ark backdrop + animal sprites | reward of the **Noah** case |
 | 🌅 Roll the Stone Away | tomb backdrop, boulder on a **rail**, jesus reveal | boulder sealed (2,1) / open (0,1); Ada coaches open/close |
 | 🦁 Daniel in the Lions' Den | den illustration + **king** stand-in + dove | case: TODO |
-| 🐟 The Loaves and Fishes | jesus_2fish_2bread + crowd + dove | case: TODO |
-| ⛰️ The Sermon on the Mount | jesus_teaching + crowd + dove | case: TODO |
+| 🐟 The Loaves and Fishes | fishbread + crowd + dove | case: TODO |
+| ⛰️ The Sermon on the Mount | teaching + crowd + dove | case: TODO |
 | 👶 The Manger Scene | manger backdrop + holy family + animals | maps to Jesus case |
 
 ## Sandbox commands (real JavaScript)
@@ -114,7 +114,7 @@ Standalone workshops on the home screen (also become case rewards as their cases
 - **Stand-in emoji pieces awaiting real PNGs:** `jesus` (🧍), `cow` (🐄), plus `donkey`/`sheep`
   (nativity). Name a file after the item, drop it in `assets/sprites/`, done.
 - **Backdrops** are the exception — a scene PNG needs one line in `BACKDROPS` (workshop.js) to
-  become a `place("name")` command. The Red Sea uses two (`red_sea` closed → `red_sea_split`
+  become a `place("name")` command. The Red Sea uses two (`sea` closed → `split`
   parted); placing one replaces the other, so the sea opens on the kid's own command.
 
 ## Deploy & verify
@@ -140,13 +140,13 @@ sandbox, the complete command set, backdrops/rails/D-pad/center-comments, the ar
 
 **Art status (2026-07-20): DONE.** All 11 scenes are real art. `staff`/`water` (Moses) and
 `fruit`/`leaves` (Eden) were intentionally dropped — covered by other art (parted-sea
-backdrop = water, Moses holds his staff, forbidden_tree has fruit, Adam/Eve wear leaves).
+backdrop = water, Moses holds his staff, appletree has fruit, Adam/Eve wear leaves).
 Only in-scene emoji left is the optional Damascus `light` ⚡. Full breakdown:
 `docs/ART-ASSETS-NEEDED.md`.
 The 2026-07-20 work added the nativity animals + wise men, the full Eden story set, the
 Damascus Road (Saul + risen `jesus` + road), `noah`/`ox`/`palm`/`well`/`house`/olive `tree`/barley,
-and backdrops `desert` / `garden_of_eden` / `road_damascus` / `barley_field` / a shared
-`mount_sinai`=`sermon_mount` mountain. The risen `jesus` is one canonical piece across
+and backdrops `desert` / `eden` / `road` / `field` / a shared
+`sinai`=`mount` mountain. The risen `jesus` is one canonical piece across
 tomb/feeding/sermon/road. Finale scatter now supports real sprites (`grass:{sprite:"wheat",…}`).
 
 **How to add a case:** `CASE_X` in cases.js + add to `CASES`/`CASE_ORDER` + a `ROUNDTABLES` entry +
