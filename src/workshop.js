@@ -65,16 +65,39 @@
     // one mountain backdrop serves two scenes: Moses at Sinai and Jesus's sermon.
     sinai: 'mount', mount: 'mount',
   };
-  let backdropEl = null, backdropName = null;
-  function setBackdrop(file) {
-    if (!backdropEl) {
-      backdropEl = document.createElement('img');
-      backdropEl.className = 'stage-bg'; backdropEl.alt = '';
-      $('stage').appendChild(backdropEl);   // .stage-bg has z-index:0 so it stays behind sprites
+  // Backdrops come in two kinds. LANDSCAPES fill the whole scene (desert, eden, sea…).
+  // STRUCTURES are transparent buildings that sit IN a landscape (the stable, the ark,
+  // the tomb, the den) — so they layer ON TOP of a landscape instead of replacing it.
+  // Two separate <img> layers: landscape (z-index 0) behind, structure (z-index 1)
+  // in front of it but still behind the pieces (z-index 2).
+  const STRUCTURES = new Set(['manger', 'ark', 'tomb', 'den']);
+  let backdropEl = null, backdropName = null;     // the landscape layer
+  let structEl = null, structName = null;         // the structure layer
+  function setBackdrop(file, isStruct) {
+    if (isStruct) {
+      if (!structEl) {
+        structEl = document.createElement('img');
+        structEl.className = 'stage-bg stage-struct'; structEl.alt = '';
+        $('stage').appendChild(structEl);
+      }
+      structEl.src = SCENE_BASE + file + '.png'; structName = file;
+    } else {
+      if (!backdropEl) {
+        backdropEl = document.createElement('img');
+        backdropEl.className = 'stage-bg'; backdropEl.alt = '';
+        $('stage').appendChild(backdropEl);   // .stage-bg has z-index:0 so it stays behind everything
+      }
+      backdropEl.src = SCENE_BASE + file + '.png'; backdropName = file;
     }
-    backdropEl.src = SCENE_BASE + file + '.png'; backdropName = file;
   }
-  function clearBackdrop() { if (backdropEl) { backdropEl.remove(); backdropEl = null; } backdropName = null; }
+  function clearBackdrop(isStruct) {
+    if (isStruct) { if (structEl) { structEl.remove(); structEl = null; } structName = null; }
+    else { if (backdropEl) { backdropEl.remove(); backdropEl = null; } backdropName = null; }
+  }
+  // does an item's scene file currently sit on either layer?
+  function backdropShowing(name) {
+    return backdropName === BACKDROPS[name] || structName === BACKDROPS[name];
+  }
   function paintSprite(el, name) {
     const emoji = (window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS[name]) || '';
     el.textContent = '';
@@ -103,7 +126,7 @@
     ITEMS = window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS;
     COLS = CFG.grid.cols; ROWS = CFG.grid.rows;
     sprites = []; showGrid = true; rung = 0; mode = 'guided'; score = 0; target = null;
-    backdropEl = null; backdropName = null; railMsg = null;
+    backdropEl = null; backdropName = null; structEl = null; structName = null; railMsg = null;
     render();
   };
 
@@ -112,7 +135,7 @@
 
   /* ---- build a check() for a rung from its data shape ---- */
   function rungCheck(r) {
-    if (r.goalItem && BACKDROPS[r.goalItem]) return () => backdropName === BACKDROPS[r.goalItem];
+    if (r.goalItem && BACKDROPS[r.goalItem]) return () => backdropShowing(r.goalItem);
     if (r.goalMove) {
       const { item, dir } = r.goalMove;
       return () => {
@@ -242,7 +265,7 @@
   function place(name, col, row, size) {
     if (typeof name !== 'string') throw { kind: 'quotes' };
     if (!(name in ITEMS)) throw { kind: 'unknownItem', got: name };
-    if (BACKDROPS[name]) { setBackdrop(BACKDROPS[name]); chime(440); return name + ' set as the scene'; }
+    if (BACKDROPS[name]) { setBackdrop(BACKDROPS[name], STRUCTURES.has(name)); chime(440); return name + ' set as the scene'; }
     if (CFG.rail && CFG.rail.item === name) { col = CFG.rail.home.col; row = CFG.rail.home.row; railMsg = railHint(false, name); }  // railed piece snaps home (sealed)
     if (typeof col !== 'number' || typeof row !== 'number') throw { kind: 'numbers' };
     if (col < 0 || col >= COLS || row < 0 || row >= ROWS) throw { kind: 'range', col, row };
@@ -303,7 +326,7 @@
     rec.el.remove(); if (selected === rec.el) WS._deselect();
   }
   function remove(name) {
-    if (BACKDROPS[name] && backdropName === BACKDROPS[name]) { clearBackdrop(); return name + ' removed from the scene'; }
+    if (BACKDROPS[name] && backdropShowing(name)) { clearBackdrop(STRUCTURES.has(name)); return name + ' removed from the scene'; }
     const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
     removeRec(s);
     return name + ' removed';

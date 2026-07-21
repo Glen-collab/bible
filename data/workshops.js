@@ -106,9 +106,10 @@ const WORKSHOPS = {
     subtitle: "The Long Road to Freedom",
     grid: { cols: 8, rows: 6 },
     ground: "sea",
-    freeGoal: 'Part the Red Sea! Start with the sea — place("sea") — then place Moses, staff raised. When you are ready for the miracle, place("split") and the waters open. Now bring the whole nation through: place("crowd") behind Moses and he is leading his people across the dry path. Put Pharaoh\'s chariots behind them. And for what came after the crossing, switch the scene to the mountain — place("sinai") — and add place("tablets"), Moses down from Sinai with the ten commandments. Then tap the 🦉 button to bring it to life.',
+    background: "sea",                               // the sea is already there, still closed
+    freeGoal: 'Part the Red Sea! The sea is already here. Place Moses, staff raised. When you are ready for the miracle, place("split") and the waters open. Now bring the whole nation through: place("crowd") behind Moses and he is leading his people across the dry path. Put Pharaoh\'s chariots behind them. And for what came after the crossing, switch the scene to the mountain — place("sinai") — and add place("tablets"), Moses down from Sinai with the ten commandments. Then tap the 🦉 button to bring it to life.',
     items: ["sea","split","sinai","moses","tablets","crowd","man","female","sheep","chariot","horse","dove"],
-    aiPreview: [ 'place("sea")', 'place("moses", 0, 3)', 'place("split")' ],
+    aiPreview: [ 'place("moses", 0, 3)', 'place("split")', 'place("crowd", 5, 3)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     // No scattered 🌊/🐟 here: the sea backdrops already paint the water, and emoji
     // on top of them just float in the sky.
@@ -188,13 +189,14 @@ const WORKSHOPS = {
     title: "Roll the Stone Away",
     subtitle: "He is not here",
     grid: { cols: 8, rows: 6 },
+    background: "eden",                               // the tomb was in a garden (John 19:41)
     items: ["tomb","boulder","jesus","angel","man","female","crowd","dove"],
     // the stone is on a track: it always sits at "home" (sealed) and rolls to "open"
     rail: { item:"boulder", home:{col:2,row:1}, open:{col:0,row:1} },
     aiPreview: [ 'place("tomb")', 'place("boulder", 2, 1)', 'move("boulder", "left")', 'place("jesus", 4, 3)' ],
     rungs: [
       { id:0, label:"1 · The tomb", goalItem:"tomb",
-        goal:'Set the tomb as your scene: place("tomb"). It fills the whole stage.' },
+        goal:'The tomb was set in a garden. Place the tomb: place("tomb").' },
       { id:1, label:"2 · Seal it",  goalItem:"boulder", target:{col:2,row:1},
         goal:'Roll the great stone over the door: place("boulder"). It sits right at the entrance.' },
       { id:2, label:"3 · Roll it away", goalMove:{item:"boulder",dir:"left"},
@@ -234,7 +236,8 @@ const WORKSHOPS = {
     subtitle: "Feeding the Five Thousand",
     grid: { cols: 8, rows: 6 },
     ground: "grass",
-    freeGoal: "Feed the five thousand! Place Jesus with the loaves and fish, spread a great crowd across the hillside to share the meal, and send a dove overhead — build it however you like.",
+    background: "mount",                              // the hillside above the Sea of Galilee
+    freeGoal: "Feed the five thousand! The green hillside above the lake is already here. Place Jesus with the loaves and fish, spread a great crowd across the slope to share the meal, and send a dove overhead — build it however you like.",
     items: ["fishbread","loaves","feast","jesus","dove","man","female","crowd"],
     aiPreview: [ 'place("fishbread", 2, 2)', 'place("feast", 5, 3)', 'place("dove", 4, 0)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
@@ -286,7 +289,8 @@ const WORKSHOPS = {
     subtitle: "Away in a Manger",
     grid: { cols: 8, rows: 6 },
     freeBuild: true,
-    freeGoal: 'Build the manger scene! Start with place("manger") for the stable — or set it outside under the desert sky with place("desert") — then add baby Jesus, Mary, Joseph, an angel, and the animals wherever you like. The wise men came from far away following the star — add them with place("wisemen", 6, 4) and their camel. Then bring it to life and watch night fall.',
+    background: "desert",                             // the stable stands in the desert
+    freeGoal: 'Build the manger scene! The desert is already here — add the stable with place("manger"), and it stands right in the desert. Then add baby Jesus, Mary, Joseph, an angel, and the animals wherever you like. The wise men came from far away following the star — add them with place("wisemen", 6, 4) and their camel. Then bring it to life and watch night fall.',
     items: ["manger","desert","baby","mary","joseph","angel","wisemen","camel","donkey","cow","sheep","fawn","dove","mouse","owl"],
     aiPreview: [ 'place("manger")', 'place("baby", 4, 3)', 'place("mary", 3, 3)', 'place("joseph", 5, 3)' ],
     rungs: [

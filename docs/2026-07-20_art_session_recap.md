@@ -132,6 +132,20 @@ emoji. It can now sprinkle a real sprite via `grass:{sprite:"wheat", n:6, rows:[
 sprinkle the actual barley art. Backward compatible — emoji scatters are unchanged.
 *(src/finale.js: `decor()` / `setGroup()` gained a sprite mode.)*
 
+**Two backdrop layers (landscape + structure).** Backdrops now come in two kinds:
+**landscapes** that fill the scene (`desert`, `eden`, `field`, `sea`, `split`, `road`,
+`mount`, `sinai`) and transparent **structures** that sit *in* a landscape (`manger`,
+`ark`, `tomb`, `den`). A structure layers on top of the landscape instead of replacing
+it — so the stable stands in the desert, the tomb sits in the garden. Z-order:
+landscape (0) → structure (1) → placed pieces (2). A scene's `background:` sets the
+landscape; the structure is placed on top. *(src/workshop.js `STRUCTURES` set + two
+backdrop layers; styles/footsteps.css `.stage-struct`.)* This fixed the manger, where
+`place("manger")` used to wipe out the desert.
+
+Scene backgrounds now auto-load: Red Sea starts with `sea`, Loaves & Fishes with `mount`,
+the Empty Tomb with `eden` (the tomb was in a garden — John 19:41), the Manger with
+`desert`.
+
 **Nightfall dims the backdrop.** `sky:"night"` used to only swap the stage's background
 gradient, which a full backdrop image sits on top of and hides — so a painted scene
 stayed bright at "night." Now `#stage.night .stage-bg` dims the backdrop image itself
