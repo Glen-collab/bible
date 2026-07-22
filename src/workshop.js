@@ -36,6 +36,10 @@
     boulder: 5,
     man: 1.5, female: 1.5, angel: 1.5, mary: 1.25, joseph: 1.25, jesus: 2, king: 1.5, goliath: 2.25, david: 1.25, daniel: 1.5,
     baby: 1.2, cow: 1.5, noah: 1.5, armies: 2.5, chariot: 1.8, horse: 1.25,
+    noah_openarms: 1.5, noahkneel: 1.5,
+    // ark animal pairs — two side by side, so wider
+    elephants: 3, camels: 2.75, giraffes: 2.5, lions: 2.5, zebras: 2.5, bears: 2.25,
+    deer: 2, lambs: 2, doves: 1.75, ducks: 1.5, parrots: 1.5, bunnies: 1.3,
     israelites: 3, philistines: 3, rocks: 1.2,   // the two armies span the hillsides
     moses: 1.5, water: 2, staff: 1.2, wheat: 1, light: 2,
     harp: 1.25, tablets: 1.5,   // same spans as david / moses

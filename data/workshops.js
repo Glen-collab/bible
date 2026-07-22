@@ -44,6 +44,10 @@ const WORKSHOP_ITEMS = {
   boulder:"🪨", jesus:"🧍", king:"🤴", daniel:"🧑",
   // nativity stand-ins (emoji until real art is added)
   cow:"🐄", noah:"🧔",
+  // Noah's ark — animals two by two (each sprite is a pair), + Noah poses
+  noah_openarms:"🧔", noahkneel:"🧎",
+  bears:"🐻", bunnies:"🐰", camels:"🐪", ducks:"🦆", elephants:"🐘",
+  giraffes:"🦒", lions:"🦁", parrots:"🦜", zebras:"🦓", lambs:"🐑", doves:"🕊️",
   // the magi and their camel (nativity)
   wisemen:"🧙",
   // garden of eden scene pieces
@@ -164,23 +168,21 @@ const WORKSHOPS = {
     grid: { cols: 8, rows: 6 },
     background: "ark",                        // the ark art sits behind the grid; animals board the deck
     freeBuild: true,
-    freeGoal: 'Fill the ark! Start with Noah — place("noah", 3, 3) — then bring the animals aboard, two by two if you like. Add as many as you want, then tap the 🦉 button below to bring it to life.',
-    items: ["noah","elephant","giraffe","lion","zebra","tiger","panda","monkey","kangaroo","owl","mouse","butterfly","rainbow","dove"],
-    aiPreview: [ 'place("elephant", 1, 4)', 'place("elephant", 2, 4)', 'place("giraffe", 4, 3)', 'place("dove", 6, 1)' ],
+    freeGoal: 'Fill the ark! Start with Noah — place("noah", 3, 3) — then bring the animals aboard two by two. Each pair boards together: place("elephants", 1, 4), place("lions", 4, 4), place("giraffes", 6, 3). Add as many pairs as you like — bears, camels, zebras, ducks, bunnies, parrots, deer, lambs. The dove and raven will search for dry land — place("doves", 6, 1). Then tap the 🦉 button to bring it to life.',
+    items: ["noah","noahkneel","noah_openarms","elephants","giraffes","lions","zebras","bears","camels","deer","lambs","bunnies","ducks","parrots","doves","rainbow","dove"],
+    aiPreview: [ 'place("elephants", 1, 4)', 'place("giraffes", 5, 3)', 'place("doves", 6, 1)' ],
     rungs: [
-      { id:0, label:"1 · First aboard", goalItem:"elephant", target:{col:1,row:4},
-        goal:'Bring the first animal aboard: place("elephant", 1, 4).' },
-      { id:1, label:"2 · Two by two",   goalItem:"elephant", target:{col:2,row:4},
-        goal:'Two by two! Bring its pair: place("elephant", 2, 4).' },
-      { id:2, label:"3 · A tall one",   goalItem:"giraffe",  target:{col:4,row:3},
-        goal:'Now a giraffe: place("giraffe", 4, 3).' },
-      { id:3, label:"4 · The smallest", goalItem:"mouse",    target:{col:5,row:5},
-        goal:'Even the smallest creature has a place: place("mouse", 5, 5).' },
-      { id:4, label:"5 · The dove",     goalItem:"dove",     target:{col:6,row:1},
-        goal:'The dove will search for dry land: place("dove", 6, 1).' },
+      { id:0, label:"1 · First aboard", goalItem:"elephants", target:{col:1,row:4},
+        goal:'Bring the first pair aboard — they come two by two: place("elephants", 1, 4).' },
+      { id:1, label:"2 · The tall ones", goalItem:"giraffes", target:{col:5,row:3},
+        goal:'Now the tall pair: place("giraffes", 5, 3).' },
+      { id:2, label:"3 · The lions",    goalItem:"lions",    target:{col:3,row:4},
+        goal:'The lions board together: place("lions", 3, 4).' },
+      { id:3, label:"4 · Dove & raven", goalItem:"doves",    target:{col:6,row:1},
+        goal:'The dove and raven will search for dry land: place("doves", 6, 1).' },
     ],
-    practice: { enabled:true, prompt:"Fill the ark! I'll call out which animal goes where." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"💧", n:8, rows:[0,2]}, extras:[{emoji:"🌈", n:1, rows:[0,0]}], dove:true, shimmer:[], wander:["elephant","giraffe","lion","zebra","tiger","panda","monkey","kangaroo","mouse","butterfly"] }
+    practice: { enabled:true, prompt:"Fill the ark! I'll call out which pair goes where." },
+    finale: { sky:"day", twinkle:0, grass:{emoji:"💧", n:8, rows:[0,2]}, extras:[{emoji:"🌈", n:1, rows:[0,0]}], dove:true, shimmer:[], wander:["elephants","giraffes","lions","zebras","bears","camels","deer"] }
   },
 
   /* ---- Standalone scene: the empty tomb (roll the stone away) ---- */
