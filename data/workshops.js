@@ -48,7 +48,7 @@ const WORKSHOP_ITEMS = {
   wisemen:"🧙",
   // garden of eden scene pieces
   tree:"🌳", serpent:"🐍", fruit:"🍎", leaves:"🍃", adam:"🧑", eve:"👩",
-  appletree:"🌳", cherub:"👼",
+  appletree:"🌳", cherub:"👼", flowerbush:"🌷", plant:"🌱",
   // Eden STORY poses — Adam & Eve at each moment of Genesis 2–3, so a kid can
   // build the whole arc: at peace with the animals, the temptation, the eating,
   // and the sorrowful leaving.
@@ -257,11 +257,11 @@ const WORKSHOPS = {
     grid: { cols: 8, rows: 6 },
     ground: "garden",
     background: "eden",                    // the lush garden fills the scene
-    freeGoal: "Grow the good garden! It is already all around you. Place the one special tree — place(\"appletree\", 4, 1) — with the sly serpent waiting in its branches. Put Adam and Eve in the garden, at peace with the animals — try place(\"peace\", 3, 3). The whole story is here, one piece at a time: Eve reaching for the fruit, the quiet walk out of the garden — place(\"leave\") — and the angel who guards the way afterward, place(\"cherub\", 7, 1). Build any part you like, then tap the 🦉 button to bring it to life.",
-    items: ["appletree","tree","serpent","adam","eve","peace","lion","sheep","deer","dove","reach","taste","bite","share","leave","cherub"],
+    freeGoal: "Grow the good garden! It is already all around you. Place the one special tree — place(\"appletree\", 4, 1) — with the sly serpent in its branches. Put Adam and Eve in the garden, and add flowering bushes and little plants wherever you like — place(\"flowerbush\", 2, 4). The angel who guards the way is here too — place(\"cherub\", 7, 1). Then tap the 🦉 button to bring it to life.",
+    items: ["appletree","serpent","adam","eve","cherub","flowerbush","plant","tree","lion","sheep","deer","dove","peace","reach","taste","bite","share","leave"],
     aiPreview: [ 'place("appletree", 4, 1)', 'place("adam", 2, 3)', 'place("eve", 6, 3)', 'place("serpent", 4, 2)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:4, rows:[4,5]}, extras:[{emoji:"🌸", n:5, rows:[3,4]},{emoji:"🦋", n:3, rows:[1,2]}], dove:true, shimmer:["appletree","cherub"], wander:["serpent","deer","dove"] }
+    finale: { sky:"day", twinkle:0, grass:{sprite:"plant", n:5, rows:[4,5]}, extras:[{sprite:"flowerbush", n:4, rows:[3,4]},{emoji:"🦋", n:3, rows:[1,2]}], dove:true, shimmer:["appletree","cherub"], wander:["serpent","deer","dove"] }
   },
 
   /* ---- Standalone scene: the sermon on the mount ---- */
