@@ -36,7 +36,7 @@ const WORKSHOP_ITEMS = {
   israelites:"🛡️", philistines:"⚔️", rocks:"🪨",
   water:"🌊", staff:"🦯", moses:"🧔", light:"⚡", wheat:"🌾",
   // the road to Damascus: Saul struck down by the light, the risen Jesus appears
-  saul:"🧑", road:"🛤️",
+  saul:"🧑", road:"🛤️", saul_fallen:"🧎", damascus:"🏛️",
   // second poses of David and Moses — the same person at a different moment of
   // his story, so they are their own pieces rather than replacing the first art
   harp:"🎵", tablets:"📜",
@@ -146,12 +146,12 @@ const WORKSHOPS = {
     subtitle: "The Heart That Changed",
     grid: { cols: 8, rows: 6 },
     ground: "road",
-    background: "road",                     // the winding road through the hills
-    freeGoal: 'Set the road to Damascus! The winding road is already here. Place Saul struck to the ground by the light — place("saul", 2, 4) — and the risen Jesus appearing above him — place("jesus", 5, 1). Add his horse and a donkey on the road, and sprinkle a little barley on the hillside. Then tap the 🦉 button to bring it to life.',
-    items: ["saul","jesus","man","horse","donkey","wheat","palm","house","road","dove"],
-    aiPreview: [ 'place("road")', 'place("saul", 2, 4)', 'place("jesus", 5, 1)' ],
+    background: "road",                     // the dusty road to Damascus
+    freeGoal: 'Set the road to Damascus! The road is already here. Place Saul struck to the ground — place("saul_fallen", 2, 4) — with the light bursting from heaven above him — place("light", 3, 1). The risen Jesus appears — place("jesus", 5, 1). His horse waits nearby, and the city of Damascus lies ahead — place("damascus", 6, 1). Then tap the 🦉 button to bring it to life.',
+    items: ["road","saul_fallen","light","jesus","damascus","horse","saul","palm","donkey","dove"],
+    aiPreview: [ 'place("saul_fallen", 2, 4)', 'place("light", 3, 1)', 'place("jesus", 5, 1)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:{sprite:"wheat", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:5, rows:[0,2]}], dove:true, shimmer:["jesus","saul"], wander:["horse","donkey"] }
+    finale: { sky:"day", twinkle:0, grass:null, extras:[{emoji:"✨", n:6, rows:[0,2]}], dove:true, shimmer:["jesus","saul_fallen","light"], wander:["horse","donkey"] }
   },
 
   /* ---- Standalone scene (no full case yet): Noah's Ark ---- */

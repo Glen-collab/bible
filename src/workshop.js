@@ -40,7 +40,7 @@
     moses: 1.5, water: 2, staff: 1.2, wheat: 1, light: 2,
     harp: 1.25, tablets: 1.5,   // same spans as david / moses
     wisemen: 3.5, camel: 1.5,               // the three magi are drawn side by side
-    saul: 2,                                // Saul fallen in the light
+    saul: 1.75, saul_fallen: 2.5, damascus: 3,   // Paul standing / struck down; the city
     palm: 2, house: 2, well: 1.5, ox: 1.5,  // props and buildings
     tree: 2.5, serpent: 1.5, fruit: 0.75, leaves: 1, adam: 1.5, eve: 1.5,
     appletree: 2.5, cherub: 1.5,
