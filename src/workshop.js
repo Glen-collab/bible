@@ -36,6 +36,7 @@
     boulder: 5,
     man: 1.5, female: 1.5, angel: 1.5, mary: 1.25, joseph: 1.25, jesus: 2, king: 1.5, goliath: 2.25, david: 1.25, daniel: 1.5,
     baby: 1.2, cow: 1.5, noah: 1.5, armies: 2.5, chariot: 1.8, horse: 1.25,
+    israelites: 3, philistines: 3, rocks: 1.2,   // the two armies span the hillsides
     moses: 1.5, water: 2, staff: 1.2, wheat: 1, light: 2,
     harp: 1.25, tablets: 1.5,   // same spans as david / moses
     wisemen: 3.5, camel: 1.5,               // the three magi are drawn side by side
@@ -60,7 +61,7 @@
     sea: 'sea', split: 'split',
     // reusable painted scenes: desert (David's valley + any dry-land story), the
     // garden of Eden, the Damascus road, and Ruth's barley field.
-    desert: 'desert', eden: 'eden',
+    desert: 'desert', eden: 'eden', valley: 'valley',
     road: 'road', field: 'field',
     // one mountain backdrop serves two scenes: Moses at Sinai and Jesus's sermon.
     sinai: 'mount', mount: 'mount',

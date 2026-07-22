@@ -32,6 +32,8 @@ const WORKSHOP_ITEMS = {
   // figures for the iconic-scene rethemes
   david:"🧒", goliath:"🧌", mary:"🧕", joseph:"🧔", man:"🧑", female:"👩", baby:"👶",
   armies:"⚔️", chariot:"🛞", horse:"🐴",
+  // the two armies of the valley of Elah + the smooth stones
+  israelites:"🛡️", philistines:"⚔️", rocks:"🪨",
   water:"🌊", staff:"🦯", moses:"🧔", light:"⚡", wheat:"🌾",
   // the road to Damascus: Saul struck down by the light, the risen Jesus appears
   saul:"🧑", road:"🛤️",
@@ -54,7 +56,7 @@ const WORKSHOP_ITEMS = {
   bite:"🍎", share:"🍎", leave:"😔",
   // backdrop objects: placing one becomes the whole scene (manger already above)
   ark:"🚢", tomb:"⚰️", sea:"🌊", split:"🌊",
-  desert:"🏜️", eden:"🌳",
+  desert:"🏜️", eden:"🌳", valley:"🏞️",
   field:"🌾", sinai:"⛰️", mount:"⛰️",
   // larger illustrated images (loaded from assets/scenes/) usable as placeable
   // pieces too — scale them up with place(name, col, row, size) or the ＋ button
@@ -80,16 +82,16 @@ const WORKSHOPS = {
     subtitle: "The Valley of Elah",
     grid: { cols: 8, rows: 6 },
     ground: "grass",
-    background: "desert",                            // the dry valley of Elah fills the scene
-    freeGoal: 'Set up the showdown! The desert valley of Elah is already here. Place David — place("david", 1, 3) — and the giant Goliath, the two armies on the hills, plus horses and chariots. There is a quiet David too — place("harp") — the shepherd boy on his rock, before any of this. Then tap the 🦉 button to bring it to life.',
-    items: ["david","harp","goliath","armies","horse","chariot","sheep","desert","dove"],
-    aiPreview: [ 'place("david", 1, 3)', 'place("goliath", 6, 3)', 'place("armies", 3, 1)' ],
+    background: "valley",                            // the valley of Elah with the stream
+    freeGoal: 'Set up the showdown! The valley of Elah is already here. Place David the shepherd boy — place("david", 1, 3) — and the giant Goliath facing him. Line the two armies on the hills: the Israelites — place("israelites", 1, 1) — and the Philistines — place("philistines", 6, 1). Add David\'s sheep and scatter some smooth stones. There is a quiet David too — place("harp") — before any of this. Then tap the 🦉 button to bring it to life.',
+    items: ["david","harp","goliath","israelites","philistines","sheep","rocks","horse","chariot","valley","dove"],
+    aiPreview: [ 'place("david", 1, 3)', 'place("goliath", 6, 3)', 'place("israelites", 1, 1)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: {
       sky: "day",
       twinkle: 0,
-      grass: { emoji:"🌿", n:6, rows:[4,5] },
-      extras: [ { emoji:"🪨", n:3, rows:[4,5] } ],   // five smooth stones in the brook
+      grass: { sprite:"rocks", n:5, rows:[4,5] },    // five smooth stones scattered in the brook
+      extras: [],
       dove: true,
       shimmer: ["david","harp"],   // harp never wanders — he is sitting on a rock
       wander: ["horse","sheep","david"]
