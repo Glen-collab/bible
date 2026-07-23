@@ -46,6 +46,8 @@ const WORKSHOP_ITEMS = {
   boulder:"🪨", jesus:"🧍", king:"🤴", daniel:"🧑",
   // Feeding the 5,000: disciples, the loaves & fish, baskets, scenery
   disciples:"🧑", fish:"🐟", bread:"🍞", basket:"🧺", bigtree:"🌳", rubble:"🪨",
+  // The empty tomb / Resurrection
+  women:"👩", stone:"🪨", soldier:"💂", shroud:"🧻", crucified:"✝️", crown:"👑", jesusdeath:"🧍",
   // nativity stand-ins (emoji until real art is added)
   cow:"🐄", noah:"🧔",
   // Noah's ark — animals two by two (each sprite is a pair), + Noah poses
@@ -198,20 +200,21 @@ const WORKSHOPS = {
     title: "Roll the Stone Away",
     subtitle: "He is not here",
     grid: { cols: 8, rows: 6 },
-    background: "eden",                               // the tomb was in a garden (John 19:41)
-    items: ["tomb","boulder","jesus","angel","man","female","crowd","dove"],
-    // the stone is on a track: it always sits at "home" (sealed) and rolls to "open"
-    rail: { item:"boulder", home:{col:2,row:1}, open:{col:0,row:1} },
-    aiPreview: [ 'place("tomb")', 'place("boulder", 2, 1)', 'move("boulder", "left")', 'place("jesus", 4, 3)' ],
+    background: "tomb",                               // the garden tomb at dawn (crosses on the hill, the open grave)
+    aliases: { jesus: "jesustomb", angel: "angeltomb", disciples: "disciplestomb" },  // this story's own art
+    items: ["stone","jesus","angel","women","disciples","soldier","shroud","crucified","crown","jesusdeath","dove"],
+    // the stone is on a track: it sits at "home" (sealed) and rolls away to "open"
+    rail: { item:"stone", home:{col:2,row:1}, open:{col:0,row:1} },
+    aiPreview: [ 'place("stone", 2, 1)', 'move("stone", "left")', 'place("jesus", 4, 3)' ],
     rungs: [
-      { id:0, label:"1 · The tomb", goalItem:"tomb",
-        goal:'The tomb was set in a garden. Place the tomb: place("tomb").' },
-      { id:1, label:"2 · Seal it",  goalItem:"boulder", target:{col:2,row:1},
-        goal:'Roll the great stone over the door: place("boulder"). It sits right at the entrance.' },
-      { id:2, label:"3 · Roll it away", goalMove:{item:"boulder",dir:"left"},
-        goal:'On the third day, roll the stone away: move("boulder", "left"). Roll it back with move("boulder", "right").' },
-      { id:3, label:"4 · He is risen", goalItem:"jesus", target:{col:4,row:3},
-        goal:'The tomb is empty — reveal him: place("jesus", 4, 3).' },
+      { id:0, label:"1 · Seal it",  goalItem:"stone", target:{col:2,row:1},
+        goal:'Roll the great stone over the door: place("stone"). It sits right at the entrance.' },
+      { id:1, label:"2 · Roll it away", goalMove:{item:"stone",dir:"left"},
+        goal:'On the third day, roll the stone away: move("stone", "left"). Roll it back with move("stone", "right").' },
+      { id:2, label:"3 · He is risen", goalItem:"jesus", target:{col:4,row:3},
+        goal:'The tomb is empty — reveal the risen Jesus: place("jesus", 4, 3).' },
+      { id:3, label:"4 · The angel", goalItem:"angel", target:{col:2,row:2},
+        goal:'An angel greets the women at dawn: place("angel", 2, 2). Add the women who came — place("women", 1, 4).' },
     ],
     practice: { enabled:true, prompt:"I'll call out where the figures go." },
     finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:7, rows:[0,2]}], dove:true, shimmer:["jesus","angel"], wander:["dove"] }

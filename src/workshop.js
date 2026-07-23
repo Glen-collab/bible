@@ -57,6 +57,8 @@
     feast: 1.5, fishbread: 1.5, loaves: 1.5,
     // Feeding the 5,000
     jesusfeed: 1.75, disciples: 2.25, fish: 1, bread: 0.7, basket: 1, bigtree: 2.5, rubble: 1,
+    // The empty tomb
+    women: 2.25, stone: 1.5, soldier: 1.5, shroud: 1, crucified: 2.25, crown: 0.6, jesusdeath: 2,
   };
   const SCENE_BASE = 'assets/scenes/';
   // "Backdrop" items: placing one sets the whole scene behind the grid (instead of
@@ -78,7 +80,7 @@
   // the tomb, the den) — so they layer ON TOP of a landscape instead of replacing it.
   // Two separate <img> layers: landscape (z-index 0) behind, structure (z-index 1)
   // in front of it but still behind the pieces (z-index 2).
-  const STRUCTURES = new Set(['manger', 'ark', 'tomb', 'den']);
+  const STRUCTURES = new Set(['manger', 'ark', 'den']);   // tomb is now a full painted scene, not a structure
   let backdropEl = null, backdropName = null;     // the landscape layer
   let structEl = null, structName = null;         // the structure layer
   function setBackdrop(file, isStruct) {
