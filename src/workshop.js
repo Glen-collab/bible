@@ -523,46 +523,59 @@
   WS._togglePalette = function () { $('palette').classList.toggle('open'); $('commands').classList.remove('open'); };
   WS._toggleCommands = function () { $('commands').classList.toggle('open'); $('palette').classList.remove('open'); };
 
-  // Build a printable coloring page: every placed piece becomes its line-art (_bw)
-  // outline, on a white page at the same spot, then hand off to the device's print
-  // dialog (which is where AirPrint / OS printer discovery lives — a web page can't
-  // reach printers itself). The colored backdrop is intentionally dropped for a
-  // clean, colorable page.
-  function printColoringPage() {
+  // Build a printable coloring page. Every placed piece (and the backdrop) is
+  // drawn in its line-art (_bw) outline onto ONE white canvas at the same spot,
+  // then handed to the device's print dialog. Rendering to a single image is the
+  // reliable way across browsers (esp. iOS Safari) — no colored app content can
+  // leak into the print. Wireless printer discovery lives in the OS dialog
+  // (AirPrint on iPad/iPhone); a web page can't reach printers itself.
+  function loadImg(src) {
+    return new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+  }
+  function drawFit(ctx, img, x, y, w, h, mode) {
+    const r = img.width / img.height, br = w / h; let dw, dh;
+    const cover = mode === 'cover';
+    if ((r > br) === !cover) { dw = w; dh = w / r; } else { dh = h; dw = h * r; }
+    ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+  }
+  async function outlineFor(coloredSrc) {
+    const o = coloredSrc.replace('/sprites/', '/outlines/').replace('/scenes/', '/outlines/');
+    return (await loadImg(o)) || (await loadImg(coloredSrc));   // fall back to colored if no outline yet
+  }
+  async function printColoringPage() {
+    const CW = COLS * 170, CH = ROWS * 170, cw = CW / COLS, ch = CH / ROWS;
+    const canvas = document.createElement('canvas'); canvas.width = CW; canvas.height = CH;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, CW, CH);
+    // backdrop outlines: landscape (cover) then structure (contain)
+    if (backdropName) { const o = await loadImg('assets/outlines/' + backdropName + '.png'); if (o) drawFit(ctx, o, 0, 0, CW, CH, 'cover'); }
+    if (structName) { const o = await loadImg('assets/outlines/' + structName + '.png'); if (o) drawFit(ctx, o, 0, 0, CW, CH, 'contain'); }
+    // placed pieces, honoring rotation/flip
+    for (const s of sprites) {
+      const src = s.el.querySelector('img');
+      const bx = s.col * cw, by = s.row * ch, bw = s.size * cw, bh = s.size * ch;
+      if (src) {
+        const img = await outlineFor(src.src); if (!img) continue;
+        ctx.save();
+        const cx = bx + bw / 2, cy = by + bh / 2;
+        ctx.translate(cx, cy);
+        if (s.rot) ctx.rotate(s.rot * Math.PI / 180);
+        if (s.flipped) ctx.scale(-1, 1);
+        ctx.translate(-cx, -cy);
+        drawFit(ctx, img, bx, by, bw, bh, 'contain');
+        ctx.restore();
+      } else if (s.el.textContent) {   // emoji piece
+        ctx.font = (Math.min(bw, bh) * 0.7) + 'px sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000';
+        ctx.fillText(s.el.textContent, bx + bw / 2, by + bh / 2);
+      }
+    }
     const old = document.getElementById('print-page'); if (old) old.remove();
     const pg = document.createElement('div'); pg.id = 'print-page';
-    const stage = document.createElement('div'); stage.className = 'print-stage';
-    stage.style.aspectRatio = COLS + ' / ' + ROWS;
-    const imgs = [];
-    sprites.forEach((s) => {
-      const src = s.el.querySelector('img');
-      const piece = document.createElement('div'); piece.className = 'print-piece';
-      piece.style.left = s.el.style.left; piece.style.top = s.el.style.top;
-      piece.style.width = s.el.style.width; piece.style.height = s.el.style.height;
-      if (s.el.style.transform) piece.style.transform = s.el.style.transform;
-      if (src) {
-        const outline = src.src.replace('/sprites/', '/outlines/').replace('/scenes/', '/outlines/');
-        const img = document.createElement('img'); img.className = 'print-img';
-        const colored = src.src;
-        img.onerror = function () { img.onerror = null; img.src = colored; };  // no outline yet -> use the colored art
-        img.src = outline; piece.appendChild(img); imgs.push(img);
-      } else {
-        piece.textContent = s.el.textContent;   // an emoji piece prints as its emoji
-        piece.style.display = 'grid'; piece.style.placeItems = 'center'; piece.style.fontSize = '40px';
-      }
-      stage.appendChild(piece);
-    });
-    pg.appendChild(stage); document.body.appendChild(pg);
+    const im = document.createElement('img'); im.className = 'print-sheet'; im.src = canvas.toDataURL('image/png');
+    pg.appendChild(im); document.body.appendChild(pg);
     window.onafterprint = function () { const p = document.getElementById('print-page'); if (p) p.remove(); window.onafterprint = null; };
-    // wait for the outline images to load, then open the print dialog
-    let pending = imgs.length;
-    const go = () => window.print();
-    if (!pending) return go();
-    let done = false; const fire = () => { if (!done) { done = true; go(); } };
-    imgs.forEach((img) => { if (img.complete) { if (--pending === 0) fire(); }
-      else { img.addEventListener('load', () => { if (--pending === 0) fire(); });
-             img.addEventListener('error', () => { if (--pending === 0) fire(); }); } });
-    setTimeout(fire, 1500);   // safety net so it always prints
+    if (im.complete) window.print(); else im.onload = () => window.print();
   }
   WS._print = printColoringPage;
   WS._toggleGrid = function () {
