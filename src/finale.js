@@ -146,6 +146,8 @@
 
     for (const ex of (cfg.extras || [])) {
       const exToken = ex.sprite || ex.emoji;
+      // ifAbsent: don't auto-add this piece if the kid already placed one (e.g. the rainbow)
+      if (ex.ifAbsent && ex.sprite && has(ex.sprite)) continue;
       await step('scatter("' + exToken + '", ' + ex.n + ');', () => setGroup([], exToken, ex.n, ex.rows[0], ex.rows[1], 'scenery', !!ex.sprite), 700,
         'The same <code>scatter</code> command again with new numbers — reusing a command is how coders build a lot, fast.');
     }

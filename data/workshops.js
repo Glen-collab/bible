@@ -187,7 +187,7 @@ const WORKSHOPS = {
         goal:'The dove and raven will search for dry land: place("doves", 6, 1).' },
     ],
     practice: { enabled:true, prompt:"Fill the ark! I'll call out which pair goes where." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"💧", n:8, rows:[0,2]}, extras:[{sprite:"rainbow", n:1, rows:[0,0]}], dove:true, shimmer:["rainbow"], wander:["elephants","giraffes","lions","zebras","bears","camels","deer"] }
+    finale: { sky:"day", twinkle:0, grass:{emoji:"💧", n:8, rows:[0,2]}, extras:[{sprite:"rainbow", n:1, rows:[0,0], ifAbsent:true}], dove:true, shimmer:["rainbow"], wander:["elephants","giraffes","lions","zebras","bears","camels","deer"] }
   },
 
   /* ---- Standalone scene: the empty tomb (roll the stone away) ---- */
