@@ -187,6 +187,7 @@
         <div class="toggle" id="gridToggle" onclick="FootstepsWorkshop._toggleGrid()"><span class="sw"></span> Grid</div>
         <button class="palettebtn" onclick="FootstepsWorkshop._togglePalette()">📦 Objects</button>
         <button class="palettebtn" onclick="FootstepsWorkshop._toggleCommands()">⌨️ Commands</button>
+        <button class="palettebtn printbtn" onclick="FootstepsWorkshop._print()">🖨️ Print Coloring Page</button>
       </div>
       <div class="palette" id="palette"></div>
       <div class="palette" id="commands"></div>
@@ -521,6 +522,49 @@
   }
   WS._togglePalette = function () { $('palette').classList.toggle('open'); $('commands').classList.remove('open'); };
   WS._toggleCommands = function () { $('commands').classList.toggle('open'); $('palette').classList.remove('open'); };
+
+  // Build a printable coloring page: every placed piece becomes its line-art (_bw)
+  // outline, on a white page at the same spot, then hand off to the device's print
+  // dialog (which is where AirPrint / OS printer discovery lives — a web page can't
+  // reach printers itself). The colored backdrop is intentionally dropped for a
+  // clean, colorable page.
+  function printColoringPage() {
+    const old = document.getElementById('print-page'); if (old) old.remove();
+    const pg = document.createElement('div'); pg.id = 'print-page';
+    const stage = document.createElement('div'); stage.className = 'print-stage';
+    stage.style.aspectRatio = COLS + ' / ' + ROWS;
+    const imgs = [];
+    sprites.forEach((s) => {
+      const src = s.el.querySelector('img');
+      const piece = document.createElement('div'); piece.className = 'print-piece';
+      piece.style.left = s.el.style.left; piece.style.top = s.el.style.top;
+      piece.style.width = s.el.style.width; piece.style.height = s.el.style.height;
+      if (s.el.style.transform) piece.style.transform = s.el.style.transform;
+      if (src) {
+        const outline = src.src.replace('/sprites/', '/outlines/').replace('/scenes/', '/outlines/');
+        const img = document.createElement('img'); img.className = 'print-img';
+        const colored = src.src;
+        img.onerror = function () { img.onerror = null; img.src = colored; };  // no outline yet -> use the colored art
+        img.src = outline; piece.appendChild(img); imgs.push(img);
+      } else {
+        piece.textContent = s.el.textContent;   // an emoji piece prints as its emoji
+        piece.style.display = 'grid'; piece.style.placeItems = 'center'; piece.style.fontSize = '40px';
+      }
+      stage.appendChild(piece);
+    });
+    pg.appendChild(stage); document.body.appendChild(pg);
+    window.onafterprint = function () { const p = document.getElementById('print-page'); if (p) p.remove(); window.onafterprint = null; };
+    // wait for the outline images to load, then open the print dialog
+    let pending = imgs.length;
+    const go = () => window.print();
+    if (!pending) return go();
+    let done = false; const fire = () => { if (!done) { done = true; go(); } };
+    imgs.forEach((img) => { if (img.complete) { if (--pending === 0) fire(); }
+      else { img.addEventListener('load', () => { if (--pending === 0) fire(); });
+             img.addEventListener('error', () => { if (--pending === 0) fire(); }); } });
+    setTimeout(fire, 1500);   // safety net so it always prints
+  }
+  WS._print = printColoringPage;
   WS._toggleGrid = function () {
     showGrid = !showGrid;
     $('stage').classList.toggle('grid', showGrid);
