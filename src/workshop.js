@@ -42,6 +42,7 @@
     deer: 2, lambs: 2, doves: 1.75, ducks: 1.5, parrots: 1.5, bunnies: 1.3,
     israelites: 3, philistines: 3, rocks: 1.2,   // the two armies span the hillsides
     moses: 1.5, water: 2, staff: 1.2, wheat: 1, light: 2,
+    parting: 1.75, people: 2.5, mountain: 2.5, commandments: 1.75, smoke: 1.5, fire: 1,
     harp: 1.25, tablets: 1.5,   // same spans as david / moses
     wisemen: 3.5, camel: 1.5,               // the three magi are drawn side by side
     saul: 1.75, saul_fallen: 2.5, damascus: 3,   // Paul standing / struck down; the city

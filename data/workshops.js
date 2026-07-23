@@ -39,6 +39,8 @@ const WORKSHOP_ITEMS = {
   ruth:"👩", boaz:"🧔", naomi:"🧕", barley:"🌾", figtree:"🌳", jar:"🏺", landscape:"🏞️",
   // the road to Damascus: Saul struck down by the light, the risen Jesus appears
   saul:"🧑", road:"🛤️", saul_fallen:"🧎", damascus:"🏛️",
+  // Moses / the Exodus: the parting pose, the people, Sinai, commandments, pillars
+  parting:"🧔", people:"👥", mountain:"⛰️", commandments:"📜", smoke:"☁️",
   // second poses of David and Moses — the same person at a different moment of
   // his story, so they are their own pieces rather than replacing the first art
   harp:"🎵", tablets:"📜",
@@ -119,13 +121,12 @@ const WORKSHOPS = {
     grid: { cols: 8, rows: 6 },
     ground: "sea",
     background: "sea",                               // the sea is already there, still closed
-    freeGoal: 'Part the Red Sea! The sea is already here. Place Moses, staff raised. When you are ready for the miracle, place("split") and the waters open. Now bring the whole nation through: place("crowd") behind Moses and he is leading his people across the dry path. Put Pharaoh\'s chariots behind them. And for what came after the crossing, switch the scene to the mountain — place("sinai") — and add place("tablets"), Moses down from Sinai with the ten commandments. Then tap the 🦉 button to bring it to life.',
-    items: ["sea","split","sinai","moses","tablets","crowd","man","female","sheep","chariot","horse","dove"],
-    aiPreview: [ 'place("moses", 0, 3)', 'place("split")', 'place("crowd", 5, 3)' ],
+    freeGoal: 'Part the Red Sea! The sea is already here. Place Moses — place("moses", 1, 3) — and when you are ready for the miracle, place("split") and the waters open. Raise Moses\'s arms with place("parting", 1, 3), then lead the people through — place("people", 2, 4) — with Pharaoh\'s chariots behind. A pillar of fire and cloud went before them: place("fire") and place("smoke"). Afterward, at the mountain, Moses received the commandments — place("mountain") and place("commandments"). Then tap the 🦉 button to bring it to life.',
+    items: ["sea","split","moses","parting","staff","people","chariot","fire","smoke","mountain","commandments","dove"],
+    aiPreview: [ 'place("moses", 1, 3)', 'place("split")', 'place("people", 2, 4)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    // No scattered 🌊/🐟 here: the sea backdrops already paint the water, and emoji
-    // on top of them just float in the sky.
-    finale: { sky:"day", twinkle:0, grass:null, extras:[], dove:true, shimmer:["moses","tablets"], wander:["man","female","sheep","horse"] }
+    // No scattered emoji here: the sea backdrops already paint the water.
+    finale: { sky:"day", twinkle:0, grass:null, extras:[], dove:true, shimmer:["moses","parting","commandments"], wander:["people","chariot"] }
   },
 
   /* ---- Workshop for CASE 4 (Ruth): build the harvest home ---- */
