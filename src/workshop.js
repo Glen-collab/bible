@@ -61,6 +61,8 @@
     jesusfeed: 1.75, disciples: 2.25, fish: 1, bread: 0.7, basket: 1, bigtree: 2.5, rubble: 1,
     // The empty tomb
     women: 2.25, stone: 1.5, soldier: 1.5, shroud: 1, crucified: 2.25, crown: 0.6, jesusdeath: 2,
+    // Sermon on the Mount
+    crowdmen: 3, flowers: 1, shrub: 1, tallshrub: 1.75, clouds: 2,
   };
   const SCENE_BASE = 'assets/scenes/';
   // "Backdrop" items: placing one sets the whole scene behind the grid (instead of

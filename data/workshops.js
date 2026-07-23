@@ -50,6 +50,8 @@ const WORKSHOP_ITEMS = {
   disciples:"🧑", fish:"🐟", bread:"🍞", basket:"🧺", bigtree:"🌳", rubble:"🪨",
   // The empty tomb / Resurrection
   women:"👩", stone:"🪨", soldier:"💂", shroud:"🧻", crucified:"✝️", crown:"👑", jesusdeath:"🧍",
+  // Sermon on the Mount scenery
+  crowdmen:"👥", flowers:"🌼", shrub:"🌿", tallshrub:"🌳", clouds:"☁️",
   // nativity stand-ins (emoji until real art is added)
   cow:"🐄", noah:"🧔",
   // Noah's ark — animals two by two (each sprite is a pair), + Noah poses
@@ -287,11 +289,12 @@ const WORKSHOPS = {
     grid: { cols: 8, rows: 6 },
     ground: "hill",
     background: "mount",                       // the mountainside over the lake
-    freeGoal: "Gather the hillside crowd! The mountain over the lake is already here. Place Jesus teaching — place(\"teaching\", 2, 2) — spread the listening crowd across the slope, add people who came to hear, and let a dove settle overhead — build it however you like.",
-    items: ["teaching","crowd","jesus","dove","man","female","mount"],
-    aiPreview: [ 'place("mount")', 'place("teaching", 2, 2)', 'place("crowd", 5, 3)' ],
+    aliases: { jesus: "jesussermon", crowd: "crowdsermon", tree: "sermontree" },  // this story's own art
+    freeGoal: "Gather the hillside crowd! The mountainside over the lake is already here. Place Jesus teaching — place(\"jesus\", 4, 2) — and spread the crowd across the slope to listen — place(\"crowd\", 2, 4). Add the men who came to hear, trees, flowering bushes, and clouds wherever you like. Then tap the 🦉 button to bring it to life.",
+    items: ["jesus","crowd","crowdmen","tree","flowers","shrub","tallshrub","clouds","dove"],
+    aiPreview: [ 'place("jesus", 4, 2)', 'place("crowd", 2, 4)', 'place("tree", 6, 3)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:6, rows:[4,5]}, extras:[{emoji:"✨", n:4, rows:[0,2]}], dove:true, shimmer:[], wander:["dove"] }
+    finale: { sky:"day", twinkle:0, grass:{sprite:"flowers", n:5, rows:[4,5]}, extras:[{sprite:"clouds", n:3, rows:[0,1]}], dove:true, shimmer:["jesus"], wander:["dove"] }
   },
 
   /* ---- Standalone scene: the manger (where it all started) ---- */
