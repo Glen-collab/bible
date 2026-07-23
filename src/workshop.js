@@ -46,6 +46,7 @@
     wisemen: 3.5, camel: 1.5,               // the three magi are drawn side by side
     saul: 1.75, saul_fallen: 2.5, damascus: 3,   // Paul standing / struck down; the city
     palm: 2, house: 2, well: 1.5, ox: 1.5,  // props and buildings
+    ruth: 1.5, boaz: 1.5, naomi: 1.5, barley: 1, figtree: 2, jar: 0.7,   // Ruth's story
     tree: 2.5, serpent: 1.5, fruit: 0.75, leaves: 1, adam: 1.5, eve: 1.5,
     appletree: 2.5, cherub: 1.5, flowerbush: 1, plant: 0.9, rock: 1,
     // Eden story poses — two figures (sometimes with a lion or a bush), so wider
@@ -66,7 +67,7 @@
     // reusable painted scenes: desert (David's valley + any dry-land story), the
     // garden of Eden, the Damascus road, and Ruth's barley field.
     desert: 'desert', eden: 'eden', valley: 'valley', flood: 'flood',
-    road: 'road', field: 'field',
+    road: 'road', field: 'field', landscape: 'landscape',
     // one mountain backdrop serves two scenes: Moses at Sinai and Jesus's sermon.
     sinai: 'mount', mount: 'mount',
   };

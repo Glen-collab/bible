@@ -35,6 +35,8 @@ const WORKSHOP_ITEMS = {
   // the two armies of the valley of Elah + the smooth stones
   israelites:"🛡️", philistines:"⚔️", rocks:"🪨",
   water:"🌊", staff:"🦯", moses:"🧔", light:"⚡", wheat:"🌾",
+  // Ruth's story: Ruth, Boaz, Naomi + the barley harvest props
+  ruth:"👩", boaz:"🧔", naomi:"🧕", barley:"🌾", figtree:"🌳", jar:"🏺", landscape:"🏞️",
   // the road to Damascus: Saul struck down by the light, the risen Jesus appears
   saul:"🧑", road:"🛤️", saul_fallen:"🧎", damascus:"🏛️",
   // second poses of David and Moses — the same person at a different moment of
@@ -132,12 +134,12 @@ const WORKSHOPS = {
     subtitle: "The Faithful Heart",
     grid: { cols: 8, rows: 6 },
     ground: "grass",
-    background: "field",                       // the golden field at harvest
-    freeGoal: 'Build the barley harvest! The golden field is already here. Place Ruth gleaning grain — place("female", 2, 4) — Boaz the kind landowner, sheaves of barley, an ox, a well, and a home nearby. Then tap the 🦉 button to bring it to life.',
-    items: ["female","man","wheat","ox","sheep","well","house","field","dove"],
-    aiPreview: [ 'place("female", 2, 4)', 'place("man", 5, 3)', 'place("wheat", 3, 5)' ],
+    background: "field",                       // the golden barley field at harvest
+    freeGoal: 'Build the barley harvest! The golden field is already here. Place Ruth gleaning grain — place("ruth", 2, 4) — and Boaz the kind landowner — place("boaz", 5, 3). Bring Naomi, her faithful mother-in-law, too. Add sheaves of barley, a well, a house, a donkey, and a fig tree wherever you like. Then tap the 🦉 button to bring it to life.',
+    items: ["ruth","boaz","naomi","barley","sheep","well","house","donkey","figtree","jar","landscape","dove"],
+    aiPreview: [ 'place("ruth", 2, 4)', 'place("boaz", 5, 3)', 'place("barley", 3, 5)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:{sprite:"wheat", n:6, rows:[3,5]}, extras:[{emoji:"🌿",n:4,rows:[4,5]}], dove:true, shimmer:["female"], wander:["ox","sheep","female","man"] }
+    finale: { sky:"day", twinkle:0, grass:{sprite:"barley", n:6, rows:[3,5]}, extras:[{emoji:"🌿",n:4,rows:[4,5]}], dove:true, shimmer:["ruth"], wander:["sheep","donkey","ruth","boaz"] }
   },
 
   /* ---- Workshop for CASE 5 (Paul): carry the light ---- */
