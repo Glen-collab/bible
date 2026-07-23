@@ -44,6 +44,8 @@ const WORKSHOP_ITEMS = {
   harp:"🎵", tablets:"📜",
   // resurrection scene pieces
   boulder:"🪨", jesus:"🧍", king:"🤴", daniel:"🧑",
+  // Feeding the 5,000: disciples, the loaves & fish, baskets, scenery
+  disciples:"🧑", fish:"🐟", bread:"🍞", basket:"🧺", bigtree:"🌳", rubble:"🪨",
   // nativity stand-ins (emoji until real art is added)
   cow:"🐄", noah:"🧔",
   // Noah's ark — animals two by two (each sprite is a pair), + Noah poses
@@ -243,12 +245,13 @@ const WORKSHOPS = {
     subtitle: "Feeding the Five Thousand",
     grid: { cols: 8, rows: 6 },
     ground: "grass",
-    background: "mount",                              // the hillside above the Sea of Galilee
-    freeGoal: "Feed the five thousand! The green hillside above the lake is already here. Place Jesus with the loaves and fish, spread a great crowd across the slope to share the meal, and send a dove overhead — build it however you like.",
-    items: ["fishbread","loaves","feast","jesus","dove","man","female","crowd"],
-    aiPreview: [ 'place("fishbread", 2, 2)', 'place("feast", 5, 3)', 'place("dove", 4, 0)' ],
+    background: "hillside",                           // the green hillside by the lake
+    aliases: { jesus: "jesusfeed" },                 // this story's own Jesus
+    freeGoal: "Feed the five thousand! The green hillside by the lake is already here. Place Jesus — place(\"jesus\", 4, 2) — and his disciples handing out the food. A boy brought five loaves and two fish — place(\"loaves\", 3, 3) and place(\"fish\", 5, 3). Spread the great crowd across the slope — place(\"crowd\", 2, 4) — and fill baskets with what is left over. Then tap the 🦉 button to bring it to life.",
+    items: ["jesus","disciples","loaves","fish","bread","basket","crowd","bigtree","rubble","dove"],
+    aiPreview: [ 'place("jesus", 4, 2)', 'place("loaves", 3, 3)', 'place("crowd", 2, 4)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:5, rows:[0,2]}], dove:true, shimmer:["jesus"], wander:["dove"] }
+    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:5, rows:[0,2]}], dove:true, shimmer:["jesus"], wander:["dove","disciples"] }
   },
 
   /* ---- Standalone scene: the garden of eden ---- */

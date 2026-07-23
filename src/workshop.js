@@ -54,7 +54,9 @@
     reach: 2.5, taste: 1.5, bite: 1.5,
     crowd: 4.25, den: 5,
     tomb: 3, sermon: 4, teaching: 3.5, healing: 3.5,
-    feast: 1.5, fishbread: 1.5, loaves: 4,
+    feast: 1.5, fishbread: 1.5, loaves: 1.5,
+    // Feeding the 5,000
+    jesusfeed: 1.75, disciples: 2.25, fish: 1, bread: 0.7, basket: 1, bigtree: 2.5, rubble: 1,
   };
   const SCENE_BASE = 'assets/scenes/';
   // "Backdrop" items: placing one sets the whole scene behind the grid (instead of
@@ -67,7 +69,7 @@
     // reusable painted scenes: desert (David's valley + any dry-land story), the
     // garden of Eden, the Damascus road, and Ruth's barley field.
     desert: 'desert', eden: 'eden', valley: 'valley', flood: 'flood',
-    road: 'road', field: 'field', landscape: 'landscape',
+    road: 'road', field: 'field', landscape: 'landscape', hillside: 'hillside',
     // one mountain backdrop serves two scenes: Moses at Sinai and Jesus's sermon.
     sinai: 'mount', mount: 'mount',
   };
@@ -104,8 +106,12 @@
   function backdropShowing(name) {
     return backdropName === BACKDROPS[name] || structName === BACKDROPS[name];
   }
+  // a scene may map an item to its own art file (e.g. a different Jesus per story):
+  // CFG.aliases = { jesus: "jesusfeed" }. The kid still types place("jesus").
+  function artFile(name) { return (CFG && CFG.aliases && CFG.aliases[name]) || name; }
   function paintSprite(el, name) {
     const emoji = (window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS[name]) || '';
+    const file = artFile(name);
     el.textContent = '';
     const img = document.createElement('img');
     img.className = 'spr-img'; img.alt = '';
@@ -113,10 +119,10 @@
     img.style.width = s + '%'; img.style.height = s + '%';
     let triedScenes = false;
     img.onerror = function () {
-      if (!triedScenes) { triedScenes = true; img.src = SCENE_BASE + name + '.png'; } // try scenes/ next
+      if (!triedScenes) { triedScenes = true; img.src = SCENE_BASE + file + '.png'; } // try scenes/ next
       else { el.textContent = emoji; }                                                 // then fall back to emoji
     };
-    img.src = SPRITE_BASE + name + '.png';
+    img.src = SPRITE_BASE + file + '.png';
     el.appendChild(img);
   }
 
@@ -475,9 +481,10 @@
         img.src = SCENE_BASE + BACKDROPS[k] + '.png';                  // backdrop items show their scene art
         img.onerror = function () { img.remove(); ico.textContent = ITEMS[k]; };
       } else {
+        const kf = artFile(k);
         let tried = false;
-        img.onerror = function () { if (!tried) { tried = true; img.src = SCENE_BASE + k + '.png'; } else { img.remove(); ico.textContent = ITEMS[k]; } };
-        img.src = SPRITE_BASE + k + '.png';
+        img.onerror = function () { if (!tried) { tried = true; img.src = SCENE_BASE + kf + '.png'; } else { img.remove(); ico.textContent = ITEMS[k]; } };
+        img.src = SPRITE_BASE + kf + '.png';
       }
       ico.appendChild(img);
       const nm = document.createElement('span'); nm.className = 'p-name'; nm.textContent = '"' + k + '"';
