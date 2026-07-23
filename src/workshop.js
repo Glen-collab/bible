@@ -65,7 +65,7 @@
     sea: 'sea', split: 'split',
     // reusable painted scenes: desert (David's valley + any dry-land story), the
     // garden of Eden, the Damascus road, and Ruth's barley field.
-    desert: 'desert', eden: 'eden', valley: 'valley',
+    desert: 'desert', eden: 'eden', valley: 'valley', flood: 'flood',
     road: 'road', field: 'field',
     // one mountain backdrop serves two scenes: Moses at Sinai and Jesus's sermon.
     sinai: 'mount', mount: 'mount',
@@ -222,6 +222,7 @@
     stage.style.backgroundSize = `${100 / COLS}% ${100 / ROWS}%`;
     // optional preset scene background (e.g. the ark) — pieces get placed on top of it
     if (CFG.background) setBackdrop(CFG.background);
+    if (CFG.structure) setBackdrop(BACKDROPS[CFG.structure] || CFG.structure, true);  // a structure that shows on top of the landscape (e.g. the ark on the flood)
     // optional simple CSS landscape so pieces stand on ground instead of floating
     if (CFG.ground) stage.classList.add('ground-' + CFG.ground);
     $('rulerTop').style.gridTemplateColumns = `22px repeat(${COLS},1fr)`;

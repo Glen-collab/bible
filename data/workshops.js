@@ -166,7 +166,8 @@ const WORKSHOPS = {
     title: "Fill the Ark",
     subtitle: "Two by Two",
     grid: { cols: 8, rows: 6 },
-    background: "ark",                        // the ark art sits behind the grid; animals board the deck
+    background: "flood",                      // the flood waters fill the scene…
+    structure: "ark",                         // …with the ark floating on top; animals board its deck
     freeBuild: true,
     freeGoal: 'Fill the ark! Start with Noah — place("noah", 3, 3) — then bring the animals aboard two by two. Each pair boards together: place("elephants", 1, 4), place("lions", 4, 4), place("giraffes", 6, 3). Add as many pairs as you like — bears, camels, zebras, ducks, bunnies, parrots, deer, lambs. The dove and raven will search for dry land — place("doves", 6, 1). Then tap the 🦉 button to bring it to life.',
     items: ["noah","noahkneel","noah_openarms","elephants","giraffes","lions","zebras","bears","camels","deer","lambs","bunnies","ducks","parrots","doves","rainbow","dove"],
@@ -182,7 +183,7 @@ const WORKSHOPS = {
         goal:'The dove and raven will search for dry land: place("doves", 6, 1).' },
     ],
     practice: { enabled:true, prompt:"Fill the ark! I'll call out which pair goes where." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"💧", n:8, rows:[0,2]}, extras:[{emoji:"🌈", n:1, rows:[0,0]}], dove:true, shimmer:[], wander:["elephants","giraffes","lions","zebras","bears","camels","deer"] }
+    finale: { sky:"day", twinkle:0, grass:{emoji:"💧", n:8, rows:[0,2]}, extras:[{sprite:"rainbow", n:1, rows:[0,0]}], dove:true, shimmer:["rainbow"], wander:["elephants","giraffes","lions","zebras","bears","camels","deer"] }
   },
 
   /* ---- Standalone scene: the empty tomb (roll the stone away) ---- */
