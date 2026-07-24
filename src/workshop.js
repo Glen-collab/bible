@@ -543,31 +543,45 @@
     return (await loadImg(o)) || (await loadImg(coloredSrc));   // fall back to colored if no outline yet
   }
   async function printColoringPage() {
-    const CW = COLS * 170, CH = ROWS * 170, cw = CW / COLS, ch = CH / ROWS;
-    const canvas = document.createElement('canvas'); canvas.width = CW; canvas.height = CH;
+    // Read each piece's ACTUAL on-screen box (%), so resizes/moves are exact. Grow
+    // the page beyond the grid if a piece extends past an edge, so nothing is cut off.
+    const px = COLS * 170 / 100, py = ROWS * 170 / 100;   // canvas px per 1% of the stage
+    const boxes = sprites.map((s) => ({
+      s, el: s.el,
+      x0: parseFloat(s.el.style.left) || 0, y0: parseFloat(s.el.style.top) || 0,
+      w: parseFloat(s.el.style.width) || 0, h: parseFloat(s.el.style.height) || 0,
+    }));
+    let minX = 0, minY = 0, maxX = 100, maxY = 100;
+    boxes.forEach((b) => { minX = Math.min(minX, b.x0); minY = Math.min(minY, b.y0); maxX = Math.max(maxX, b.x0 + b.w); maxY = Math.max(maxY, b.y0 + b.h); });
+    const ox = -minX * px, oy = -minY * py;               // where the grid's 0,0 lands on the canvas
+    const CW = (maxX - minX) * px, CH = (maxY - minY) * py;
+    const canvas = document.createElement('canvas'); canvas.width = Math.round(CW); canvas.height = Math.round(CH);
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, CW, CH);
-    // backdrop outlines: landscape (cover) then structure (contain)
-    if (backdropName) { const o = await loadImg('assets/outlines/' + backdropName + '.png'); if (o) drawFit(ctx, o, 0, 0, CW, CH, 'cover'); }
-    if (structName) { const o = await loadImg('assets/outlines/' + structName + '.png'); if (o) drawFit(ctx, o, 0, 0, CW, CH, 'contain'); }
-    // placed pieces, honoring rotation/flip
-    for (const s of sprites) {
-      const src = s.el.querySelector('img');
-      const bx = s.col * cw, by = s.row * ch, bw = s.size * cw, bh = s.size * ch;
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // backdrop outlines cover the GRID rectangle (not the overflow margins)
+    const gx = ox, gy = oy, gw = 100 * px, gh = 100 * py;
+    if (backdropName) { const o = await loadImg('assets/outlines/' + backdropName + '.png'); if (o) drawFit(ctx, o, gx, gy, gw, gh, 'cover'); }
+    if (structName) { const o = await loadImg('assets/outlines/' + structName + '.png'); if (o) drawFit(ctx, o, gx, gy, gw, gh, 'contain'); }
+    // placed pieces at their real spots, honoring per-sprite scale + rotation/flip
+    for (const b of boxes) {
+      const s = b.s, src = b.el.querySelector('img');
+      const sc = SPRITE_SCALE[s.name] || 0.85;            // the img fills this much of its cell box
+      const bw = b.w * px, bh = b.h * py, iw = bw * sc, ih = bh * sc;
+      const bx = b.x0 * px + ox + (bw - iw) / 2, by = b.y0 * py + oy + (bh - ih) / 2;
       if (src) {
         const img = await outlineFor(src.src); if (!img) continue;
         ctx.save();
-        const cx = bx + bw / 2, cy = by + bh / 2;
+        const cx = bx + iw / 2, cy = by + ih / 2;
         ctx.translate(cx, cy);
         if (s.rot) ctx.rotate(s.rot * Math.PI / 180);
         if (s.flipped) ctx.scale(-1, 1);
         ctx.translate(-cx, -cy);
-        drawFit(ctx, img, bx, by, bw, bh, 'contain');
+        drawFit(ctx, img, bx, by, iw, ih, 'contain');
         ctx.restore();
-      } else if (s.el.textContent) {   // emoji piece
-        ctx.font = (Math.min(bw, bh) * 0.7) + 'px sans-serif';
+      } else if (b.el.textContent) {   // emoji piece
+        ctx.font = (Math.min(iw, ih) * 0.8) + 'px sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000';
-        ctx.fillText(s.el.textContent, bx + bw / 2, by + bh / 2);
+        ctx.fillText(b.el.textContent, bx + iw / 2, by + ih / 2);
       }
     }
     const old = document.getElementById('print-page'); if (old) old.remove();
