@@ -36,6 +36,7 @@
     boulder: 5,
     man: 1.5, female: 1.5, angel: 1.5, mary: 1.25, joseph: 1.25, jesus: 2, king: 1.5, goliath: 2.25, david: 1.25, daniel: 1.5,
     baby: 1.2, cow: 1.5, noah: 1.5, armies: 2.5, chariot: 1.8, horse: 1.25,
+    sheep: 1.25, donkey: 1.5, manger: 5,   // manger house is now a big placeable object
     noah_openarms: 1.5, noahkneel: 1.5,
     // ark animal pairs — two side by side, so wider
     elephants: 3, camels: 2.75, giraffes: 2.5, lions: 2.5, zebras: 2.5, bears: 2.25,
@@ -68,7 +69,7 @@
   // "Backdrop" items: placing one sets the whole scene behind the grid (instead of
   // dropping a small piece), and everything else places on top. item name -> scene file.
   const BACKDROPS = {
-    manger: 'manger', ark: 'ark', tomb: 'tomb',
+    ark: 'ark', tomb: 'tomb',   // (manger house is now a placeable object, not a backdrop — Glen's making a new manger backdrop)
     // The Red Sea has two states: closed, then opened. Placing one replaces the
     // other, so the sea "parts" when the kid swaps the backdrop.
     sea: 'sea', split: 'split',
@@ -84,7 +85,7 @@
   // the tomb, the den) — so they layer ON TOP of a landscape instead of replacing it.
   // Two separate <img> layers: landscape (z-index 0) behind, structure (z-index 1)
   // in front of it but still behind the pieces (z-index 2).
-  const STRUCTURES = new Set(['manger', 'ark', 'den']);   // tomb is now a full painted scene, not a structure
+  const STRUCTURES = new Set(['ark', 'den']);   // tomb + manger are full/object art now, not structures
   let backdropEl = null, backdropName = null;     // the landscape layer
   let structEl = null, structName = null;         // the structure layer
   function setBackdrop(file, isStruct) {
@@ -137,6 +138,21 @@
   // A list (not one-per-cell) lets pieces STACK and overlap freely — placing one never
   // deletes another. A flock is just several sprites with the same name.
   let sprites, showGrid, rung, mode, score, target, actx;
+  // A snapshot of the scene AS DESIGNED, captured right before the finale animates
+  // the pieces — so "Print" always uses the layout the kid built, not the moved one.
+  let sceneSnapshot = null;
+  function captureDesign() {
+    return sprites.map((s) => {
+      const img = s.el.querySelector('img');
+      return {
+        x0: parseFloat(s.el.style.left) || 0, y0: parseFloat(s.el.style.top) || 0,
+        w: parseFloat(s.el.style.width) || 0, h: parseFloat(s.el.style.height) || 0,
+        rot: s.rot, flipped: s.flipped, name: s.name,
+        imgSrc: img ? img.src : null, emoji: img ? null : s.el.textContent,
+      };
+    });
+  }
+  function invalidateSnapshot() { sceneSnapshot = null; }
 
   WS.play = function (config, options) {
     CFG = config;
@@ -298,13 +314,13 @@
     el.onclick = () => selectSprite(el);   // tap a piece to select/resize it
     $('stage').appendChild(el);
     const rec = { name, el, col, row, size, rot: 0, flipped: false, _cx: col + size / 2, _cy: row + size / 2 };
-    sprites.push(rec); el._cell = rec;      // a new piece each time — overlapping is fine, nothing is replaced
+    sprites.push(rec); el._cell = rec; invalidateSnapshot();   // a new piece each time — overlapping is fine, nothing is replaced
     chime(520 + col * 40);
     return name + ' placed at ' + col + ', ' + row + (size !== 1 ? ', size ' + size : '') + centerNote(col, row, size);
   }
   function el_cell(el, rec) { el._cell = rec; }
   function moveRec(rec, nc, nr) {   // relocate a piece; never removes whatever it lands on
-    rec.col = nc; rec.row = nr;
+    rec.col = nc; rec.row = nr; invalidateSnapshot();
     rec.el.classList.add('moving');
     positionEl(rec.el, nc, nr, rec.size);
     rec._cx = nc + (rec.size || 1) / 2; rec._cy = nr + (rec.size || 1) / 2;
@@ -342,7 +358,7 @@
   }
 
   function removeRec(rec) {
-    const i = sprites.indexOf(rec); if (i >= 0) sprites.splice(i, 1);
+    const i = sprites.indexOf(rec); if (i >= 0) sprites.splice(i, 1); invalidateSnapshot();
     rec.el.remove(); if (selected === rec.el) WS._deselect();
   }
   function remove(name) {
@@ -407,7 +423,7 @@
     if (!selected || !selected._cell) return;
     const c = selected._cell;
     const sz = Math.max(0.25, Math.min(6, (c.size || 1) + dir * 0.25));
-    c.size = sz; sizeSprite(selected, sz);
+    c.size = sz; sizeSprite(selected, sz); invalidateSnapshot();
     // grow from the remembered center so the piece stays put as it changes size
     selected.style.left = ((c._cx - sz / 2) * 100 / COLS) + '%';
     selected.style.top = ((c._cy - sz / 2) * 100 / ROWS) + '%';
@@ -543,14 +559,11 @@
     return (await loadImg(o)) || (await loadImg(coloredSrc));   // fall back to colored if no outline yet
   }
   async function printColoringPage() {
-    // Read each piece's ACTUAL on-screen box (%), so resizes/moves are exact. Grow
-    // the page beyond the grid if a piece extends past an edge, so nothing is cut off.
+    // Use the frozen design snapshot if the finale has moved pieces; otherwise the
+    // live layout. Boxes are in % of the stage; grow the page if a piece runs past
+    // an edge so nothing is cut off.
     const px = COLS * 170 / 100, py = ROWS * 170 / 100;   // canvas px per 1% of the stage
-    const boxes = sprites.map((s) => ({
-      s, el: s.el,
-      x0: parseFloat(s.el.style.left) || 0, y0: parseFloat(s.el.style.top) || 0,
-      w: parseFloat(s.el.style.width) || 0, h: parseFloat(s.el.style.height) || 0,
-    }));
+    const boxes = (sceneSnapshot || captureDesign());
     let minX = 0, minY = 0, maxX = 100, maxY = 100;
     boxes.forEach((b) => { minX = Math.min(minX, b.x0); minY = Math.min(minY, b.y0); maxX = Math.max(maxX, b.x0 + b.w); maxY = Math.max(maxY, b.y0 + b.h); });
     const ox = -minX * px, oy = -minY * py;               // where the grid's 0,0 lands on the canvas
@@ -562,26 +575,25 @@
     const gx = ox, gy = oy, gw = 100 * px, gh = 100 * py;
     if (backdropName) { const o = await loadImg('assets/outlines/' + backdropName + '.png'); if (o) drawFit(ctx, o, gx, gy, gw, gh, 'cover'); }
     if (structName) { const o = await loadImg('assets/outlines/' + structName + '.png'); if (o) drawFit(ctx, o, gx, gy, gw, gh, 'contain'); }
-    // placed pieces at their real spots, honoring per-sprite scale + rotation/flip
+    // placed pieces at their designed spots, honoring per-sprite scale + rotation/flip
     for (const b of boxes) {
-      const s = b.s, src = b.el.querySelector('img');
-      const sc = SPRITE_SCALE[s.name] || 0.85;            // the img fills this much of its cell box
+      const sc = SPRITE_SCALE[b.name] || 0.85;            // the img fills this much of its cell box
       const bw = b.w * px, bh = b.h * py, iw = bw * sc, ih = bh * sc;
       const bx = b.x0 * px + ox + (bw - iw) / 2, by = b.y0 * py + oy + (bh - ih) / 2;
-      if (src) {
-        const img = await outlineFor(src.src); if (!img) continue;
+      if (b.imgSrc) {
+        const img = await outlineFor(b.imgSrc); if (!img) continue;
         ctx.save();
         const cx = bx + iw / 2, cy = by + ih / 2;
         ctx.translate(cx, cy);
-        if (s.rot) ctx.rotate(s.rot * Math.PI / 180);
-        if (s.flipped) ctx.scale(-1, 1);
+        if (b.rot) ctx.rotate(b.rot * Math.PI / 180);
+        if (b.flipped) ctx.scale(-1, 1);
         ctx.translate(-cx, -cy);
         drawFit(ctx, img, bx, by, iw, ih, 'contain');
         ctx.restore();
-      } else if (b.el.textContent) {   // emoji piece
+      } else if (b.emoji) {   // emoji piece
         ctx.font = (Math.min(iw, ih) * 0.8) + 'px sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000';
-        ctx.fillText(b.el.textContent, bx + iw / 2, by + ih / 2);
+        ctx.fillText(b.emoji, bx + iw / 2, by + ih / 2);
       }
     }
     const old = document.getElementById('print-page'); if (old) old.remove();
@@ -722,6 +734,7 @@
   }
   WS._finale = function () {
     if (window.FootstepsFinale) window.FootstepsFinale.stop();
+    sceneSnapshot = captureDesign();   // freeze the designed layout before pieces move
     $('nextwrap').innerHTML = '';
     const fb = $('finalebar'); if (fb) fb.style.display = 'none';
     return window.FootstepsFinale.run({

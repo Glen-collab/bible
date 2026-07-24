@@ -308,9 +308,9 @@ const WORKSHOPS = {
     grid: { cols: 8, rows: 6 },
     freeBuild: true,
     background: "desert",                             // the stable stands in the desert
-    freeGoal: 'Build the manger scene! The desert is already here — add the stable with place("manger"), and it stands right in the desert. Then add baby Jesus, Mary, Joseph, an angel, and the animals wherever you like. The shepherds came to see him — place("shepherd") — and the wise men followed the star from far away — place("star", 4, 0) and place("wisemen", 6, 4). Then bring it to life and watch night fall.',
+    freeGoal: 'Build the manger scene! The desert is already here. Add the stable — place("manger", 1, 0) — then baby Jesus, Mary, Joseph, an angel, and the animals wherever you like. The shepherds came to see him — place("shepherd") — and the wise men followed the star from far away — place("star", 4, 0) and place("wisemen", 6, 4). Then bring it to life and watch night fall.',
     items: ["manger","desert","baby","mary","joseph","angel","shepherd","wisemen","star","ox","donkey","sheep","dove"],
-    aiPreview: [ 'place("manger")', 'place("baby", 4, 3)', 'place("mary", 3, 3)', 'place("joseph", 5, 3)' ],
+    aiPreview: [ 'place("manger", 1, 0)', 'place("baby", 4, 3)', 'place("mary", 3, 3)', 'place("joseph", 5, 3)' ],
     rungs: [
       { id:0, label:"1 · The stable", goalItem:"manger",
         goal:'Set the stable: place("manger"). It fills the whole scene.' },
