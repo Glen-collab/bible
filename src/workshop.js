@@ -64,7 +64,7 @@
     // Feeding the 5,000
     jesusfeed: 1.75, disciples: 2.25, fish: 1, bread: 0.7, basket: 1, bigtree: 2.5, rubble: 1,
     // The empty tomb
-    women: 2.25, stone: 1.5, soldier: 1.5, shroud: 1, crucified: 2.25, crown: 0.6, jesusdeath: 2,
+    women: 2.25, stone: 2.5, soldier: 1.5, shroud: 1, crucified: 2.25, crown: 0.6, jesusdeath: 2,
     // Sermon on the Mount
     crowdmen: 3, flowers: 1, shrub: 1, tallshrub: 1.75, clouds: 2,
   };
@@ -78,7 +78,7 @@
     sea: 'sea', split: 'split',
     // reusable painted scenes: desert (David's valley + any dry-land story), the
     // garden of Eden, the Damascus road, and Ruth's barley field.
-    desert: 'desert', eden: 'eden', valley: 'valley', flood: 'flood',
+    desert: 'desert', eden: 'eden', valley: 'valley', arena: 'arena', flood: 'flood',
     road: 'road', field: 'field', hillside: 'hillside',
     // one mountain backdrop serves two scenes: Moses at Sinai and Jesus's sermon.
     sinai: 'mount', mount: 'mount',
@@ -313,7 +313,7 @@
     if (CFG.rail && CFG.rail.item === name) { col = CFG.rail.home.col; row = CFG.rail.home.row; railMsg = railHint(false, name); }  // railed piece snaps home (sealed)
     if (typeof col !== 'number' || typeof row !== 'number') throw { kind: 'numbers' };
     if (col < 0 || col >= COLS || row < 0 || row >= ROWS) throw { kind: 'range', col, row };
-    size = (typeof size === 'number' && size > 0) ? Math.max(0.25, Math.min(6, size)) : (DEFAULT_SIZE[name] || 1);
+    size = (typeof size === 'number' && size > 0) ? Math.max(0.25, Math.min(10, size)) : (DEFAULT_SIZE[name] || 1);
     const el = document.createElement('div');
     el.className = 'sprite celebrate';
     sizeSprite(el, size);
@@ -430,7 +430,7 @@
   WS._resize = function (dir) {
     if (!selected || !selected._cell) return;
     const c = selected._cell;
-    const sz = Math.max(0.25, Math.min(6, (c.size || 1) + dir * 0.25));
+    const sz = Math.max(0.25, Math.min(10, (c.size || 1) + dir * 0.25));
     c.size = sz; sizeSprite(selected, sz); invalidateSnapshot();
     // grow from the remembered center so the piece stays put as it changes size
     selected.style.left = ((c._cx - sz / 2) * 100 / COLS) + '%';

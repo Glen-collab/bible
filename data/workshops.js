@@ -73,7 +73,7 @@ const WORKSHOP_ITEMS = {
   bite:"🍎", share:"🍎", leave:"😔",
   // backdrop objects: placing one becomes the whole scene (manger already above)
   ark:"🚢", tomb:"⚰️", sea:"🌊", split:"🌊",
-  desert:"🏜️", eden:"🌳", valley:"🏞️",
+  desert:"🏜️", eden:"🌳", valley:"🏞️", arena:"🏟️",
   field:"🌾", sinai:"⛰️", mount:"⛰️",
   // larger illustrated images (loaded from assets/scenes/) usable as placeable
   // pieces too — scale them up with place(name, col, row, size) or the ＋ button
@@ -99,9 +99,9 @@ const WORKSHOPS = {
     subtitle: "The Valley of Elah",
     grid: { cols: 8, rows: 6 },
     ground: "grass",
-    background: "valley",                            // the valley of Elah with the stream
+    background: "arena",                             // the battlefield of Elah — open ground, armies on the sides
     freeGoal: 'Set up the showdown! The valley of Elah is already here. Place David the shepherd boy — place("david", 1, 3) — and the giant Goliath facing him. Line the two armies on the hills: the Israelites — place("israelites", 1, 1) — and the Philistines — place("philistines", 6, 1). Add David\'s sheep and scatter some smooth stones. Then tap the 🦉 button to bring it to life.',
-    items: ["david","goliath","israelites","philistines","sheep","rocks","horse","chariot","valley","dove"],
+    items: ["david","goliath","israelites","philistines","sheep","rocks","horse","chariot","arena","dove"],
     aiPreview: [ 'place("david", 1, 3)', 'place("goliath", 6, 3)', 'place("israelites", 1, 1)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: {

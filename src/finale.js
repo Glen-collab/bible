@@ -103,7 +103,7 @@
       timers.push(t);
     }
     function releaseDove() {
-      const d = decor('🕊️', 0, 1, 'fly');
+      const d = decor('dove', 0, 1, 'fly', true);   // Glen's dove sprite (falls back to 🕊️ if missing)
       requestAnimationFrame(() => { d.style.left = ((COLS - 1) * (100 / COLS)) + '%'; d.style.top = 0 + '%'; });
     }
 
