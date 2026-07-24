@@ -556,6 +556,16 @@
   function loadImg(src) {
     return new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
   }
+  // a white silhouette of an image, fit into a w×h box — used to blank the
+  // background (and pieces behind) before drawing a piece's outline, so hollow
+  // shapes like a sun don't show what's behind them on the coloring page.
+  function whiteSilhouette(img, w, h) {
+    const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(w)); c.height = Math.max(1, Math.round(h));
+    const cx = c.getContext('2d');
+    drawFit(cx, img, 0, 0, c.width, c.height, 'contain');
+    cx.globalCompositeOperation = 'source-in'; cx.fillStyle = '#fff'; cx.fillRect(0, 0, c.width, c.height);
+    return c;
+  }
   function drawFit(ctx, img, x, y, w, h, mode) {
     const r = img.width / img.height, br = w / h; let dw, dh;
     const cover = mode === 'cover';
@@ -588,12 +598,17 @@
       const bx = b.x0 * px + ox, by = b.y0 * py + oy, bw = b.w * px, bh = b.h * py;
       if (b.imgSrc) {
         const img = await outlineFor(b.imgSrc); if (!img) continue;
+        const colored = await loadImg(b.imgSrc);   // for the white footprint
         ctx.save();
         const cx = bx + bw / 2, cy = by + bh / 2;
         ctx.translate(cx, cy);
         if (b.rot) ctx.rotate(b.rot * Math.PI / 180);
         if (b.flipped) ctx.scale(-1, 1);
         ctx.translate(-cx, -cy);
+        if (colored) {   // blank out whatever is behind this piece, then draw its lines
+          const sil = whiteSilhouette(colored, bw, bh), p = 0.03;
+          ctx.drawImage(sil, bx - bw * p, by - bh * p, bw * (1 + 2 * p), bh * (1 + 2 * p));
+        }
         drawFit(ctx, img, bx, by, bw, bh, 'contain');
         ctx.restore();
       } else if (b.emoji) {   // emoji piece
