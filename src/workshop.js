@@ -75,7 +75,7 @@
     ark: 'ark', tomb: 'tomb', barn: 'barn',   // barn = the manger scene's stable interior backdrop
     // The Red Sea has two states: closed, then opened. Placing one replaces the
     // other, so the sea "parts" when the kid swaps the backdrop.
-    sea: 'sea', split: 'split',
+    split: 'split',
     // reusable painted scenes: desert (David's valley + any dry-land story), the
     // garden of Eden, the Damascus road, and Ruth's barley field.
     desert: 'desert', eden: 'eden', valley: 'valley', arena: 'arena', flood: 'flood',

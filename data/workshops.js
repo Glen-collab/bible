@@ -72,7 +72,7 @@ const WORKSHOP_ITEMS = {
   peace:"🦁", reach:"🍎", taste:"🍎",
   bite:"🍎", share:"🍎", leave:"😔",
   // backdrop objects: placing one becomes the whole scene (manger already above)
-  ark:"🚢", tomb:"⚰️", sea:"🌊", split:"🌊",
+  ark:"🚢", tomb:"⚰️", flood:"🌊", split:"🌊",
   desert:"🏜️", eden:"🌳", valley:"🏞️", arena:"🏟️",
   field:"🌾", sinai:"⛰️", mount:"⛰️",
   // larger illustrated images (loaded from assets/scenes/) usable as placeable
@@ -125,9 +125,9 @@ const WORKSHOPS = {
     subtitle: "The Long Road to Freedom",
     grid: { cols: 8, rows: 6 },
     ground: "sea",
-    background: "sea",                               // the sea is already there, still closed
+    background: "flood",                             // Glen's open-water art = the sea, still closed (place "split" to part it)
     freeGoal: 'Part the Red Sea! The sea is already here. Place Moses — place("moses", 1, 3) — and when you are ready for the miracle, place("split") and the waters open. Raise Moses\'s arms with place("parting", 1, 3), then lead the people through — place("people", 2, 4) — with Pharaoh\'s chariots behind. A pillar of fire and cloud went before them: place("fire") and place("smoke"). Afterward, at the mountain, Moses received the commandments — place("mountain") and place("commandments"). Then tap the 🦉 button to bring it to life.',
-    items: ["sea","split","moses","parting","staff","people","chariot","fire","smoke","mountain","commandments","dove"],
+    items: ["flood","split","moses","parting","staff","people","chariot","fire","smoke","mountain","commandments","dove"],
     aiPreview: [ 'place("moses", 1, 3)', 'place("split")', 'place("people", 2, 4)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     // No scattered emoji here: the sea backdrops already paint the water.
