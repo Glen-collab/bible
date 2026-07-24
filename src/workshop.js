@@ -48,6 +48,9 @@
     wisemen: 3.5, camel: 1.5,               // the three magi are drawn side by side
     saul: 1.75, saul_fallen: 2.5, damascus: 3,   // Paul standing / struck down; the city
     palm: 2, house: 2, well: 1.5, ox: 1.5,  // props and buildings
+    // Daniel's den
+    pray: 1.5, lionroar: 1.75, lionsleep: 1.75, lionwalk: 1.75, guard: 1.5,
+    accuser: 1.5, accuser2: 1.5, blame: 1.5, door: 1.5, bone: 0.6, skull: 0.5,
     ruth: 1.5, boaz: 1.5, naomi: 1.5, barley: 1, figtree: 2, jar: 0.7,   // Ruth's story
     landscape: 3.5,   // a placeable/resizable scenery object (NOT a backdrop), sits on the field
     tree: 2.5, serpent: 1.5, fruit: 0.75, leaves: 1, adam: 1.5, eve: 1.5,
@@ -85,7 +88,7 @@
   // the tomb, the den) — so they layer ON TOP of a landscape instead of replacing it.
   // Two separate <img> layers: landscape (z-index 0) behind, structure (z-index 1)
   // in front of it but still behind the pieces (z-index 2).
-  const STRUCTURES = new Set(['ark', 'den']);   // tomb + manger are full/object art now, not structures
+  const STRUCTURES = new Set(['ark']);   // tomb, manger, den are full/object art now, not structures
   let backdropEl = null, backdropName = null;     // the landscape layer
   let structEl = null, structName = null;         // the structure layer
   function setBackdrop(file, isStruct) {

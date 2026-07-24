@@ -46,6 +46,9 @@ const WORKSHOP_ITEMS = {
   harp:"🎵", tablets:"📜",
   // resurrection scene pieces
   boulder:"🪨", jesus:"🧍", king:"🤴", daniel:"🧑",
+  // Daniel in the lions' den: praying Daniel, lion poses, guard, accusers, den bits
+  pray:"🙏", lionroar:"🦁", lionsleep:"🦁", lionwalk:"🦁", guard:"💂",
+  accuser:"🧔", accuser2:"🧔", blame:"🧔", door:"🚪", bone:"🦴", skull:"💀",
   // Feeding the 5,000: disciples, the loaves & fish, baskets, scenery
   disciples:"🧑", fish:"🐟", bread:"🍞", basket:"🧺", bigtree:"🌳", rubble:"🪨",
   // The empty tomb / Resurrection
@@ -234,12 +237,12 @@ const WORKSHOPS = {
     subtitle: "Shut the Lions' Mouths",
     grid: { cols: 8, rows: 6 },
     ground: "cave",
-    background: "desert",                             // the den sits out in the desert
-    freeGoal: "Build the lions' den! The desert is already here. Set the den — place(\"den\", 3, 0) — then place Daniel himself — place(\"daniel\", 2, 4) — add the lions, the king who came at dawn, an angel, and a dove of peace. Arrange it however you like.",
-    items: ["desert","den","daniel","lion","king","angel","dove"],
-    aiPreview: [ 'place("den", 3, 0)', 'place("daniel", 2, 4)', 'place("king", 6, 4)' ],
+    background: "den",                                // the stone den (Glen's dungeon interior)
+    freeGoal: "Daniel in the lions' den! The stone den is already here. Place Daniel praying — place(\"pray\", 2, 3) — for God shut the lions' mouths, so lay the lions down asleep around him: place(\"lionsleep\", 5, 4). The king who threw him in comes at dawn — place(\"king\", 6, 2) — and the jealous men who accused him are here too. An angel keeps watch. Then tap the 🦉 button to bring it to life.",
+    items: ["daniel","pray","lionsleep","lion","lionwalk","lionroar","king","guard","accuser","accuser2","blame","door","bone","skull","angel","dove"],
+    aiPreview: [ 'place("pray", 2, 3)', 'place("lionsleep", 5, 4)', 'place("king", 6, 2)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:{sprite:"rocks", n:4, rows:[4,5]}, extras:[{sprite:"rubble", n:3, rows:[4,5]}], dove:true, shimmer:["angel"], wander:["dove","lion"] }
+    finale: { sky:"day", twinkle:0, grass:{sprite:"rubble", n:4, rows:[4,5]}, extras:[{sprite:"bone", n:3, rows:[4,5]}], dove:true, shimmer:["pray","angel"], wander:["dove","lionwalk"] }
   },
 
   /* ---- Standalone scene: the loaves and fishes ---- */
