@@ -21,7 +21,7 @@
    Claude Code: replace emoji with real sprite images from /assets later. */
 const WORKSHOP_ITEMS = {
   donkey:"🫏", sheep:"🐑", camel:"🐪", ox:"🐂", dove:"🕊️",
-  manger:"🪵", star:"⭐", lamp:"🪔", shepherd:"🧎", wiseman:"🧙",
+  star:"⭐", lamp:"🪔", shepherd:"🧎", wiseman:"🧙", barn:"🏚️",
   angel:"👼", palm:"🌴", house:"🏠", well:"🪣", fire:"🔥",
   // animals (real art in assets/sprites/, emoji fallback here)
   elephant:"🐘", giraffe:"🦒", zebra:"🦓", tiger:"🐅", lion:"🦁",
@@ -310,19 +310,19 @@ const WORKSHOPS = {
     subtitle: "Away in a Manger",
     grid: { cols: 8, rows: 6 },
     freeBuild: true,
-    background: "desert",                             // the stable stands in the desert
-    freeGoal: 'Build the manger scene! The desert is already here. Add the stable — place("manger", 1, 0) — then baby Jesus, Mary, Joseph, an angel, and the animals wherever you like. The shepherds came to see him — place("shepherd") — and the wise men followed the star from far away — place("star", 4, 0) and place("wisemen", 6, 4). Then bring it to life and watch night fall.',
-    items: ["manger","desert","baby","mary","joseph","angel","shepherd","wisemen","star","ox","donkey","sheep","dove"],
-    aiPreview: [ 'place("manger", 1, 0)', 'place("baby", 4, 3)', 'place("mary", 3, 3)', 'place("joseph", 5, 3)' ],
+    background: "barn",                               // the stable interior at night
+    freeGoal: 'Build the manger scene! The stable is already here. Lay baby Jesus in the manger — place("baby", 4, 3) — with Mary and Joseph beside him, and an angel above. Bring the ox and the donkey. The shepherds came to see him — place("shepherd") — and the wise men followed the star from far away — place("star", 4, 0) and place("wisemen", 6, 4). Then bring it to life and watch night fall.',
+    items: ["baby","mary","joseph","angel","shepherd","wisemen","star","ox","donkey","sheep","dove"],
+    aiPreview: [ 'place("baby", 4, 3)', 'place("mary", 3, 3)', 'place("joseph", 5, 3)', 'place("wisemen", 6, 4)' ],
     rungs: [
-      { id:0, label:"1 · The stable", goalItem:"manger",
-        goal:'Set the stable: place("manger"). It fills the whole scene.' },
-      { id:1, label:"2 · The baby",   goalItem:"baby", target:{col:4,row:3},
-        goal:'Lay baby Jesus in the manger: place("baby", 4, 3).' },
-      { id:2, label:"3 · Mary",       goalItem:"mary", target:{col:3,row:3},
+      { id:0, label:"1 · The baby",   goalItem:"baby", target:{col:4,row:3},
+        goal:'The stable is already here. Lay baby Jesus in the manger: place("baby", 4, 3).' },
+      { id:1, label:"2 · Mary",       goalItem:"mary", target:{col:3,row:3},
         goal:'Add Mary beside him: place("mary", 3, 3). Then Joseph: place("joseph", 5, 3).' },
-      { id:3, label:"4 · An angel",   goalItem:"angel", target:{col:4,row:0},
+      { id:2, label:"3 · An angel",   goalItem:"angel", target:{col:4,row:0},
         goal:'Hang an angel above the stable: place("angel", 4, 0).' },
+      { id:3, label:"4 · The wise men", goalItem:"wisemen", target:{col:6,row:4},
+        goal:'The wise men came following the star: place("wisemen", 6, 4).' },
     ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"night", twinkle:12, grass:{sprite:"rocks", n:3, rows:[5,5]}, extras:[{sprite:"star", n:1, rows:[0,0], ifAbsent:true}], dove:true, shimmer:["baby","angel"], wander:["donkey","sheep","ox","dove"] }

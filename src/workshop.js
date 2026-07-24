@@ -36,7 +36,7 @@
     boulder: 5,
     man: 1.5, female: 1.5, angel: 1.5, mary: 1.25, joseph: 1.25, jesus: 2, king: 1.5, goliath: 2.25, david: 1.25, daniel: 1.5,
     baby: 1.2, cow: 1.5, noah: 1.5, armies: 2.5, chariot: 1.8, horse: 1.25,
-    sheep: 1.25, donkey: 1.5, manger: 5,   // manger house is now a big placeable object
+    sheep: 1.25, donkey: 1.5,
     noah_openarms: 1.5, noahkneel: 1.5,
     // ark animal pairs — two side by side, so wider
     elephants: 3, camels: 2.75, giraffes: 2.5, lions: 2.5, zebras: 2.5, bears: 2.25,
@@ -72,7 +72,7 @@
   // "Backdrop" items: placing one sets the whole scene behind the grid (instead of
   // dropping a small piece), and everything else places on top. item name -> scene file.
   const BACKDROPS = {
-    ark: 'ark', tomb: 'tomb',   // (manger house is now a placeable object, not a backdrop — Glen's making a new manger backdrop)
+    ark: 'ark', tomb: 'tomb', barn: 'barn',   // barn = the manger scene's stable interior backdrop
     // The Red Sea has two states: closed, then opened. Placing one replaces the
     // other, so the sea "parts" when the kid swaps the backdrop.
     sea: 'sea', split: 'split',
