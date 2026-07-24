@@ -128,7 +128,7 @@ const WORKSHOPS = {
     aiPreview: [ 'place("moses", 1, 3)', 'place("split")', 'place("people", 2, 4)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     // No scattered emoji here: the sea backdrops already paint the water.
-    finale: { sky:"day", twinkle:0, grass:null, extras:[], dove:true, shimmer:["moses","parting","commandments"], wander:["people","chariot"] }
+    finale: { sky:"day", twinkle:0, grass:{sprite:"rocks", n:5, rows:[4,5]}, extras:[], dove:true, shimmer:["moses","parting","commandments"], wander:["people","chariot"] }
   },
 
   /* ---- Workshop for CASE 4 (Ruth): build the harvest home ---- */
@@ -146,7 +146,7 @@ const WORKSHOPS = {
     items: ["ruth","boaz","naomi","barley","sheep","well","house","donkey","figtree","jar","landscape","dove"],
     aiPreview: [ 'place("ruth", 2, 4)', 'place("boaz", 5, 3)', 'place("barley", 3, 5)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:{sprite:"barley", n:6, rows:[3,5]}, extras:[{emoji:"🌿",n:4,rows:[4,5]}], dove:true, shimmer:["ruth"], wander:["sheep","donkey","ruth","boaz"] }
+    finale: { sky:"day", twinkle:0, grass:{sprite:"barley", n:6, rows:[3,5]}, extras:[{sprite:"shrub",n:4,rows:[4,5]}], dove:true, shimmer:["ruth"], wander:["sheep","donkey","ruth","boaz"] }
   },
 
   /* ---- Workshop for CASE 5 (Paul): carry the light ---- */
@@ -165,7 +165,7 @@ const WORKSHOPS = {
     items: ["road","saul_fallen","light","jesus","damascus","horse","saul","palm","donkey","dove"],
     aiPreview: [ 'place("saul_fallen", 2, 4)', 'place("light", 3, 1)', 'place("jesus", 5, 1)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:null, extras:[{emoji:"✨", n:6, rows:[0,2]}], dove:true, shimmer:["jesus","saul_fallen","light"], wander:["horse","donkey"] }
+    finale: { sky:"day", twinkle:0, grass:{sprite:"rubble", n:5, rows:[4,5]}, extras:[{sprite:"clouds", n:2, rows:[0,1]}], dove:true, shimmer:["jesus","saul_fallen","light"], wander:["horse","donkey"] }
   },
 
   /* ---- Standalone scene (no full case yet): Noah's Ark ---- */
@@ -221,7 +221,7 @@ const WORKSHOPS = {
         goal:'An angel greets the women at dawn: place("angel", 2, 2). Add the women who came — place("women", 1, 4).' },
     ],
     practice: { enabled:true, prompt:"I'll call out where the figures go." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:7, rows:[0,2]}], dove:true, shimmer:["jesus","angel"], wander:["dove"] }
+    finale: { sky:"day", twinkle:0, grass:{sprite:"flowers", n:5, rows:[4,5]}, extras:[{sprite:"rubble", n:4, rows:[3,5]}], dove:true, shimmer:["jesus","angel"], wander:["dove"] }
   },
 
   /* ---- Standalone scene: Daniel in the lions' den ---- */
@@ -239,7 +239,7 @@ const WORKSHOPS = {
     items: ["desert","den","daniel","lion","king","angel","dove"],
     aiPreview: [ 'place("den", 3, 0)', 'place("daniel", 2, 4)', 'place("king", 6, 4)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:4, rows:[4,5]}, extras:[{emoji:"✨", n:5, rows:[0,2]}], dove:true, shimmer:["angel"], wander:["dove","lion"] }
+    finale: { sky:"day", twinkle:0, grass:{sprite:"rocks", n:4, rows:[4,5]}, extras:[{sprite:"rubble", n:3, rows:[4,5]}], dove:true, shimmer:["angel"], wander:["dove","lion"] }
   },
 
   /* ---- Standalone scene: the loaves and fishes ---- */
@@ -258,7 +258,7 @@ const WORKSHOPS = {
     items: ["jesus","disciples","loaves","fish","bread","basket","crowd","bigtree","rubble","dove"],
     aiPreview: [ 'place("jesus", 4, 2)', 'place("loaves", 3, 3)', 'place("crowd", 2, 4)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"🌿", n:5, rows:[4,5]}, extras:[{emoji:"✨", n:5, rows:[0,2]}], dove:true, shimmer:["jesus"], wander:["dove","disciples"] }
+    finale: { sky:"day", twinkle:0, grass:{sprite:"flowers", n:5, rows:[4,5]}, extras:[{sprite:"clouds", n:3, rows:[0,1]}], dove:true, shimmer:["jesus"], wander:["dove","disciples"] }
   },
 
   /* ---- Standalone scene: the garden of eden ---- */
@@ -322,7 +322,7 @@ const WORKSHOPS = {
         goal:'Hang an angel above the stable: place("angel", 4, 0).' },
     ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
-    finale: { sky:"night", twinkle:12, grass:{emoji:"🌿", n:3, rows:[5,5]}, extras:[{emoji:"⭐", n:1, rows:[0,0]}], dove:true, shimmer:["baby","angel"], wander:["donkey","sheep","ox","dove"] }
+    finale: { sky:"night", twinkle:12, grass:{sprite:"rocks", n:3, rows:[5,5]}, extras:[{sprite:"star", n:1, rows:[0,0], ifAbsent:true}], dove:true, shimmer:["baby","angel"], wander:["donkey","sheep","ox","dove"] }
   },
 
 };
