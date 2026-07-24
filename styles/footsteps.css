@@ -215,7 +215,7 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
    backdrop but behind the placed pieces. object-fit:contain so it isn't cropped. */
 .stage-bg.stage-struct{z-index:1;object-fit:contain;}
 .resizebar{display:none;flex-direction:column;gap:8px;margin-top:8px;padding:8px 12px;background:linear-gradient(180deg,#fdf8ec,#f6ecd4);border:1px solid var(--parch-deep);border-radius:12px;font-size:13px;}
-.resizebar .rz-row{display:flex;align-items:center;gap:9px;}
+.resizebar .rz-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
 .resizebar .rz-dpad{display:flex;align-items:center;gap:9px;}
 .resizebar .rz-dlab{color:var(--ink-soft);font-family:'Spline Sans';font-weight:600;font-size:11.5px;}
 .resizebar .rz-lab{color:var(--ink-soft);}.resizebar .rz-lab b{color:var(--terra-deep);font-family:'JetBrains Mono';}

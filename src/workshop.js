@@ -155,7 +155,7 @@
       return {
         x0: (box.left - sr.left) / sr.width * 100, y0: (box.top - sr.top) / sr.height * 100,
         w: box.width / sr.width * 100, h: box.height / sr.height * 100,
-        rot: s.rot, flipped: s.flipped, name: s.name,
+        rot: s.rot, flipped: s.flipped, name: s.name, z: s.z || 10,
         imgSrc: img ? img.src : null, emoji: img ? null : s.el.textContent,
       };
     });
@@ -228,6 +228,8 @@
           <button class="rz-b" title="bigger" onclick="FootstepsWorkshop._resize(1)">＋</button>
           <button class="rz-b" title="rotate" onclick="FootstepsWorkshop._rotateSelected()">↻</button>
           <button class="rz-b" title="flip" onclick="FootstepsWorkshop._flipSelected()">⇋</button>
+          <button class="rz-b" title="send to back" onclick="FootstepsWorkshop._sendBack()">↧</button>
+          <button class="rz-b" title="bring to front" onclick="FootstepsWorkshop._bringFront()">↥</button>
           <button class="rz-b rz-del" title="delete" onclick="FootstepsWorkshop._deleteSelected()">🗑</button>
           <button class="rz-done" onclick="FootstepsWorkshop._deselect()">done</button>
         </div>
@@ -322,6 +324,7 @@
     el.onclick = () => selectSprite(el);   // tap a piece to select/resize it
     $('stage').appendChild(el);
     const rec = { name, el, col, row, size, rot: 0, flipped: false, _cx: col + size / 2, _cy: row + size / 2 };
+    rec.z = frontZ() + 1; el.style.zIndex = rec.z;             // newest piece stacks on top (adjustable via front/back)
     sprites.push(rec); el._cell = rec; invalidateSnapshot();   // a new piece each time — overlapping is fine, nothing is replaced
     chime(520 + col * 40);
     return name + ' placed at ' + col + ', ' + row + (size !== 1 ? ', size ' + size : '') + centerNote(col, row, size);
@@ -391,6 +394,20 @@
     s.rot = (s.rot || 0) + deg; applyTransform(s.el, s);
     return name + ' rotated to ' + (((s.rot % 360) + 360) % 360) + '°';
   }
+  /* ---- stacking order (like clipart "bring to front" / "send to back") ---- */
+  // pieces live at z >= 2 (above the landscape at 0 and any structure at 1).
+  function frontZ() { return sprites.reduce((m, x) => Math.max(m, x.z || 10), 10); }
+  function backZ() { return sprites.reduce((m, x) => Math.min(m, x.z || 10), 10); }
+  function toFront(rec) { rec.z = frontZ() + 1; rec.el.style.zIndex = rec.z; invalidateSnapshot(); }
+  function toBack(rec) { rec.z = Math.max(2, backZ() - 1); rec.el.style.zIndex = rec.z; invalidateSnapshot(); }
+  function bring_to_front(name) {
+    const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
+    toFront(s); return name + ' brought to the front';
+  }
+  function move_back(name) {
+    const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
+    toBack(s); return name + ' moved to the back';
+  }
 
   /* ---- tap-a-piece to resize it (＋ / −) or delete it ---- */
   let selected = null;
@@ -408,7 +425,7 @@
     code = code
       .replace(/("[^"]*")/g, '<span class="c-str">$1</span>')
       .replace(/\b(-?\d+(?:\.\d+)?)\b/g, '<span class="c-num">$1</span>')
-      .replace(/\b(place|move|remove|flip|rotate)\b/g, '<span class="c-fn">$1</span>');
+      .replace(/\b(place|move_back|move|remove|flip|rotate|bring_to_front)\b/g, '<span class="c-fn">$1</span>');
     return code + (cmt ? '<span class="c-cmt">' + cmt + '</span>' : '');
   }
   function showCode(str) {
@@ -463,6 +480,18 @@
     rotate(selected._cell.name, 45);
     showCode('rotate("' + selected._cell.name + '", 45)');
     print('> rotate("' + selected._cell.name + '", 45)', 'echo');
+  };
+  WS._bringFront = function () {
+    if (!selected || !selected._cell) return;
+    toFront(selected._cell);   // act on THIS piece (a flock can share a name)
+    showCode('bring_to_front("' + selected._cell.name + '")');
+    print('> bring_to_front("' + selected._cell.name + '")', 'echo'); chime(640);
+  };
+  WS._sendBack = function () {
+    if (!selected || !selected._cell) return;
+    toBack(selected._cell);
+    showCode('move_back("' + selected._cell.name + '")');
+    print('> move_back("' + selected._cell.name + '")', 'echo'); chime(360);
   };
   WS._nudge = function (dx, dy) {
     if (!selected || !selected._cell) return;
@@ -593,8 +622,10 @@
     const gx = ox, gy = oy, gw = 100 * px, gh = 100 * py;
     if (backdropName) { const o = await loadImg('assets/outlines/' + backdropName + '.png'); if (o) drawFit(ctx, o, gx, gy, gw, gh, 'cover'); }
     if (structName) { const o = await loadImg('assets/outlines/' + structName + '.png'); if (o) drawFit(ctx, o, gx, gy, gw, gh, 'contain'); }
-    // each piece drawn into its exact captured box (already the on-screen size)
-    for (const b of boxes) {
+    // each piece drawn into its exact captured box (already the on-screen size),
+    // back-to-front so the coloring page matches the on-screen stacking order
+    const ordered = boxes.slice().sort((a, b) => (a.z || 10) - (b.z || 10));
+    for (const b of ordered) {
       const bx = b.x0 * px + ox, by = b.y0 * py + oy, bw = b.w * px, bh = b.h * py;
       if (b.imgSrc) {
         const img = await outlineFor(b.imgSrc); if (!img) continue;
@@ -703,7 +734,7 @@
     const raw = cmd.value; if (!raw.trim()) return;
     print('> ' + raw, 'echo');
     let result, threw = null;
-    try { result = Function('place', 'move', 'remove', 'flip', 'rotate', `"use strict"; return (${raw});`)(place, move, remove, flip, rotate); }
+    try { result = Function('place', 'move', 'remove', 'flip', 'rotate', 'bring_to_front', 'move_back', `"use strict"; return (${raw});`)(place, move, remove, flip, rotate, bring_to_front, move_back); }
     catch (err) { threw = err; }
     if (threw === null) {
       print('✓ ' + (result || 'done'), 'ok'); cmd.value = '';
