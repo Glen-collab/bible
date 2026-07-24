@@ -142,11 +142,16 @@
   // the pieces — so "Print" always uses the layout the kid built, not the moved one.
   let sceneSnapshot = null;
   function captureDesign() {
+    // Capture each piece's EXACT rendered box (the image element, or the div for an
+    // emoji) as a % of the stage — so the printed coloring page is pixel-for-pixel
+    // what's on screen, whatever the kid resized it to.
+    const sr = $('stage').getBoundingClientRect();
     return sprites.map((s) => {
       const img = s.el.querySelector('img');
+      const box = (img || s.el).getBoundingClientRect();
       return {
-        x0: parseFloat(s.el.style.left) || 0, y0: parseFloat(s.el.style.top) || 0,
-        w: parseFloat(s.el.style.width) || 0, h: parseFloat(s.el.style.height) || 0,
+        x0: (box.left - sr.left) / sr.width * 100, y0: (box.top - sr.top) / sr.height * 100,
+        w: box.width / sr.width * 100, h: box.height / sr.height * 100,
         rot: s.rot, flipped: s.flipped, name: s.name,
         imgSrc: img ? img.src : null, emoji: img ? null : s.el.textContent,
       };
@@ -575,25 +580,23 @@
     const gx = ox, gy = oy, gw = 100 * px, gh = 100 * py;
     if (backdropName) { const o = await loadImg('assets/outlines/' + backdropName + '.png'); if (o) drawFit(ctx, o, gx, gy, gw, gh, 'cover'); }
     if (structName) { const o = await loadImg('assets/outlines/' + structName + '.png'); if (o) drawFit(ctx, o, gx, gy, gw, gh, 'contain'); }
-    // placed pieces at their designed spots, honoring per-sprite scale + rotation/flip
+    // each piece drawn into its exact captured box (already the on-screen size)
     for (const b of boxes) {
-      const sc = SPRITE_SCALE[b.name] || 0.85;            // the img fills this much of its cell box
-      const bw = b.w * px, bh = b.h * py, iw = bw * sc, ih = bh * sc;
-      const bx = b.x0 * px + ox + (bw - iw) / 2, by = b.y0 * py + oy + (bh - ih) / 2;
+      const bx = b.x0 * px + ox, by = b.y0 * py + oy, bw = b.w * px, bh = b.h * py;
       if (b.imgSrc) {
         const img = await outlineFor(b.imgSrc); if (!img) continue;
         ctx.save();
-        const cx = bx + iw / 2, cy = by + ih / 2;
+        const cx = bx + bw / 2, cy = by + bh / 2;
         ctx.translate(cx, cy);
         if (b.rot) ctx.rotate(b.rot * Math.PI / 180);
         if (b.flipped) ctx.scale(-1, 1);
         ctx.translate(-cx, -cy);
-        drawFit(ctx, img, bx, by, iw, ih, 'contain');
+        drawFit(ctx, img, bx, by, bw, bh, 'contain');
         ctx.restore();
       } else if (b.emoji) {   // emoji piece
-        ctx.font = (Math.min(iw, ih) * 0.8) + 'px sans-serif';
+        ctx.font = (Math.min(bw, bh) * 0.9) + 'px sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000';
-        ctx.fillText(b.emoji, bx + iw / 2, by + ih / 2);
+        ctx.fillText(b.emoji, bx + bw / 2, by + bh / 2);
       }
     }
     const old = document.getElementById('print-page'); if (old) old.remove();
