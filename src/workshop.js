@@ -313,7 +313,7 @@
     if (CFG.rail && CFG.rail.item === name) { col = CFG.rail.home.col; row = CFG.rail.home.row; railMsg = railHint(false, name); }  // railed piece snaps home (sealed)
     if (typeof col !== 'number' || typeof row !== 'number') throw { kind: 'numbers' };
     if (col < 0 || col >= COLS || row < 0 || row >= ROWS) throw { kind: 'range', col, row };
-    size = (typeof size === 'number' && size > 0) ? Math.max(0.25, Math.min(10, size)) : (DEFAULT_SIZE[name] || 1);
+    size = (typeof size === 'number' && size > 0) ? Math.max(0.25, Math.min(10, size)) : ((CFG && CFG.sizes && CFG.sizes[name]) || DEFAULT_SIZE[name] || 1);
     const el = document.createElement('div');
     el.className = 'sprite celebrate';
     sizeSprite(el, size);

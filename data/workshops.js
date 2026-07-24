@@ -164,6 +164,7 @@ const WORKSHOPS = {
     ground: "road",
     background: "road",                     // the dusty road to Damascus
     aliases: { jesus: "jesustomb" },        // the risen Jesus (has an outline; the old global one didn't)
+    sizes: { horse: 3, palm: 5, jesus: 3.5, light: 4, damascus: 4 },   // scaled to the people on this road
     freeGoal: 'Set the road to Damascus! The road is already here. Place Saul struck to the ground — place("saul_fallen", 2, 4) — with the light bursting from heaven above him — place("light", 3, 1). The risen Jesus appears — place("jesus", 5, 1). His horse waits nearby, and the city of Damascus lies ahead — place("damascus", 6, 1). Then tap the 🦉 button to bring it to life.',
     items: ["road","saul_fallen","light","jesus","damascus","horse","saul","palm","donkey","dove"],
     aiPreview: [ 'place("saul_fallen", 2, 4)', 'place("light", 3, 1)', 'place("jesus", 5, 1)' ],
