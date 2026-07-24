@@ -1192,6 +1192,21 @@ const ROUNDTABLES = {
       "Even the oldest, wisest people you know still wrestle with waiting. You're not the only one.",
       "Waiting is hard for just about everybody — that's part of being human, not a problem with you.",
     ],
+    // Bible-facts round (the Manger / Nativity). Parent reads it, child guesses, then reveal.
+    // The engine picks a few at random each visit, so it stays fresh on replay.
+    facts: [
+      { q: "In what little town was baby Jesus born?", a: "Bethlehem — just as God's prophets had promised hundreds of years before." },
+      { q: "Where did Mary lay the baby to sleep?", a: "In a manger — the box animals eat from — because there was no room for them in the inn." },
+      { q: "Who were the very first visitors to come and see baby Jesus?", a: "Shepherds, who had been watching their sheep out in the fields at night." },
+      { q: "Who told the shepherds the good news that Jesus was born?", a: "An angel — and then the whole sky filled with angels praising God!" },
+      { q: "What did the wise men follow to find Jesus?", a: "A bright new star that led them a very long way, all the way from the East." },
+      { q: "What three gifts did the wise men bring?", a: "Gold, frankincense, and myrrh — precious treasures fit for a king." },
+      { q: "What was the name of Jesus's mother?", a: "Mary — a young woman who trusted God with her whole heart." },
+      { q: "Who was Joseph in the story?", a: "The kind carpenter who took care of Mary and raised Jesus as his own son." },
+      { q: "Why did Mary and Joseph have to travel to Bethlehem?", a: "The ruler ordered a big count of all the people (a census), so everyone went to their family's town." },
+      { q: "What does the name 'Jesus' mean?", a: "'The Lord saves' — the angel gave him that name because he came to save his people." },
+      { q: "What did the angels sing about that night?", a: "\"Glory to God, and peace on earth\" — the Savior had finally come." },
+    ],
   },
   david: { // Courage & Humility
     kid: [

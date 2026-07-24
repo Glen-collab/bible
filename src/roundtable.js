@@ -1,10 +1,16 @@
 /* =====================================================================
    FOOTSTEPS OF THE TEACHER — Round Table (parent + child discussion)
    ---------------------------------------------------------------------
-   Shown between a case's story and its workshop. Reads the case's
-   `roundtable` pools (kid / parent / together / notAlone) and picks one
-   prompt per slot at random each visit (no immediate repeat) — fresh, but
-   always on-theme. Framing, labels, and the keepsake badge are generic.
+   Shown between a case's story and its workshop. Two rounds share the
+   same rolling structure, and the family picks which to play:
+
+     • "Talk it over"  — heart-reflection pools (kid / parent / together).
+     • "Bible Facts"   — a pool of {q, a} facts about the story; the
+                         grown-up reads it, the child guesses, then reveal.
+
+   Each pick is random each visit (no immediate repeat) — fresh, but
+   always on-theme. The facts round only appears if the case defines a
+   `facts` pool, so it rolls out case-by-case.
 
    FootstepsRoundTable.play(caseObj, { onDone })
      onDone() — proceed (to the workshop). Called on finish OR skip.
@@ -19,10 +25,12 @@
     { key: 'together', label: 'Together', face: '🤝', hint: 'Say it out loud, and check in on it later.' },
   ];
   const PARENT_NOTE = "<b>Grown-ups:</b> kids share the most when <b>you go first</b> and are honest about your own struggles. There are no wrong answers here.";
+  const FACTS_HINT = "<b>Grown-up:</b> read it out loud, let them guess, then tap to reveal. Guessing is half the fun — no pressure to be right.";
   const VARY_NOTE = "🎲 The questions change each time — so you can come back to this table again and again.";
-  const BADGE = { icon: '🫖', name: 'Round Table' };
+  const FACTS_COUNT = 3;               // how many fact cards per facts round
+  const BADGE = { talk: { icon: '🫖', name: 'Round Table' }, facts: { icon: '📜', name: 'Bible Facts' } };
 
-  let C, opts, cur, step;
+  let C, opts, cur, step, mode;
   const lastPick = {};                         // persists across visits (in-memory)
 
   function pick(pool, key) {
@@ -33,11 +41,23 @@
     lastPick[key] = idx;
     return pool[idx];
   }
+  // pick n DISTINCT items from a pool at random (shuffled), capped at pool size
+  function pickN(pool, n) {
+    const a = (pool || []).slice();
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a.slice(0, Math.min(n, a.length));
+  }
   function newSession() {
     const rt = C.roundtable;
     cur = {
       notAlone: pick(rt.notAlone, C.id + ':na'),
       prompts: SLOTS.map((s) => ({ label: s.label, face: s.face, hint: s.hint, key: s.key, q: pick(rt[s.key], C.id + ':' + s.key) })),
+    };
+  }
+  function newFactsSession() {
+    const rt = C.roundtable;
+    cur = {
+      prompts: pickN(rt.facts, FACTS_COUNT).map((f) => ({ q: f.q, a: f.a, revealed: false, face: '📜', key: 'facts' })),
     };
   }
 
@@ -57,45 +77,77 @@
   }
 
   function renderIntro() {
-    step = -1; newSession();
+    step = -1; mode = null; newSession();
+    const hasFacts = !!(C.roundtable && C.roundtable.facts && C.roundtable.facts.length);
+    const factsBtn = hasFacts
+      ? `<button class="btn olive" style="margin-top:10px" onclick="FootstepsRoundTable._start('facts')">🎲 Play Bible Facts →</button>`
+      : '';
     $('screen').innerHTML = `<div class="rt-head"><div class="kicker">Round Table</div><h1>Talk it <em>over</em></h1></div>
       <div class="card">
-        <p class="blurb">The story you just walked was about <b>${C.theme}</b>. Before you build the scene in code, take a few minutes together — no rushing, just talk.</p>
+        <p class="blurb">The story you just walked was about <b>${C.theme}</b>. Before you build the scene in code, take a few minutes together — no rushing, just talk${hasFacts ? ', or test what you remember' : ''}.</p>
         <div class="notalone">${cur.notAlone}</div>
         <div class="pnote">${PARENT_NOTE}</div>
         <p class="rt-hint" style="text-align:center;margin-top:14px">${VARY_NOTE}</p>
-        <button class="btn" onclick="FootstepsRoundTable._go(0)">Start the round table →</button>
+        <button class="btn" onclick="FootstepsRoundTable._start('talk')">Talk it over →</button>
+        ${factsBtn}
         <button class="btn ghost" style="margin-top:10px" onclick="FootstepsRoundTable._skip()">Skip for now →</button>
       </div>`;
     scrollTop();
   }
+
   function renderPrompt(i) {
     step = i;
     const p = cur.prompts[i];
     const last = i === cur.prompts.length - 1;
-    $('screen').innerHTML = dots(i) + `<div class="card">
-      <div class="rt-prompt">
+    const nextLabel = last ? (mode === 'facts' ? 'All done ✓' : 'We talked it over ✓') : 'Next →';
+    let body;
+    if (mode === 'facts') {
+      body = `<div class="rt-prompt">
+        <span class="rt-who facts">Bible Fact</span>
+        <div class="rt-face">${p.face}</div>
+        <div class="rt-q">${p.q}</div>
+        ${p.revealed
+          ? `<div class="rt-answer">${p.a}</div>`
+          : `<button class="btn ghost rt-reveal" onclick="FootstepsRoundTable._reveal(${i})">Show the answer</button>`}
+        <div class="rt-hint">${FACTS_HINT}</div>
+      </div>`;
+    } else {
+      body = `<div class="rt-prompt">
         <span class="rt-who ${p.key}">${p.label}</span>
         <div class="rt-face">${p.face}</div>
         <div class="rt-q">${p.q}</div>
         <div class="rt-hint">${p.hint}</div>
-      </div>
+      </div>`;
+    }
+    $('screen').innerHTML = dots(i) + `<div class="card">
+      ${body}
       <div class="rt-nav">
         <button class="btn ghost" onclick="FootstepsRoundTable._go(${i - 1})">←</button>
-        <button class="btn ${last ? 'olive' : ''}" onclick="FootstepsRoundTable._go(${i + 1})">${last ? 'We talked it over ✓' : 'Next →'}</button>
+        <button class="btn ${last ? 'olive' : ''}" onclick="FootstepsRoundTable._go(${i + 1})">${nextLabel}</button>
       </div>`;
     scrollTop();
   }
+
   function renderDone() {
     step = cur.prompts.length;
+    const badge = BADGE[mode] || BADGE.talk;
+    const blurb = mode === 'facts'
+      ? "You know this story well — and every fact you remember makes it more your own. When you're ready, take up the pen and build the scene in code."
+      : "You talked it over — and that conversation is part of the story now, too. When you're ready, take up the pen and build the scene in code.";
     $('screen').innerHTML = dots(cur.prompts.length) + `<div class="card" style="text-align:center">
-      <div class="rt-badge"><div class="bi">${BADGE.icon}</div><div class="bn">${BADGE.name}</div></div>
-      <p class="blurb" style="margin-top:10px">You talked it over — and that conversation is part of the story now, too. When you're ready, take up the pen and build the scene in code.</p>
+      <div class="rt-badge"><div class="bi">${badge.icon}</div><div class="bn">${badge.name}</div></div>
+      <p class="blurb" style="margin-top:10px">${blurb}</p>
       <button class="btn olive" onclick="FootstepsRoundTable._done()">Take up the pen — build the scene →</button>
     </div>`;
     scrollTop();
   }
 
+  RT._start = function (m) {
+    mode = m;
+    if (m === 'facts') newFactsSession(); else newSession();
+    renderPrompt(0);
+  };
+  RT._reveal = function (i) { cur.prompts[i].revealed = true; renderPrompt(i); };
   RT._go = function (i) {
     if (i < 0) { renderIntro(); return; }
     if (i >= cur.prompts.length) { renderDone(); return; }

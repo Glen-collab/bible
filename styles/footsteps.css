@@ -337,6 +337,10 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
 .rt-face{font-size:46px;margin:2px 0 12px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.18));}
 .rt-q{font-family:'Fraunces';font-size:21px;line-height:1.35;color:var(--ink);}
 .rt-prompt .rt-hint{margin-top:12px;}
+.rt-who.facts{background:rgba(58,90,120,.15);color:#2f5a78;}
+.rt-reveal{margin:14px auto 0;display:block;}
+.rt-answer{margin:14px auto 2px;max-width:34ch;font-family:'Fraunces';font-size:16.5px;line-height:1.45;color:var(--olive-deep);
+  background:rgba(107,122,63,.1);border:1px solid rgba(107,122,63,.25);border-radius:12px;padding:12px 15px;animation:rise .3s ease;}
 .rt-nav{display:flex;gap:10px;margin-top:20px;}
 .rt-nav .btn{margin-top:0;}
 .rt-nav .btn.ghost{flex:0 0 auto;padding:14px 18px;}
