@@ -197,7 +197,11 @@ const WORKSHOPS = {
         goal:'The dove and raven will search for dry land: place("doves", 6, 1).' },
     ],
     practice: { enabled:true, prompt:"Fill the ark! I'll call out which pair goes where." },
-    finale: { sky:"day", twinkle:0, grass:{emoji:"💧", n:8, rows:[0,2]}, extras:[{sprite:"rainbow", n:1, rows:[0,0], ifAbsent:true}], dove:true, shimmer:["rainbow"], wander:["elephants","giraffes","lions","zebras","bears","camels","deer"] }
+    finale: { sky:"day", twinkle:0,
+      grass:{ emoji:"💧", n:5, rows:[0,4], max:40, cls:"rain scenery", note:"the rain begins",
+        hint:'The flood starts with a light rain. <b>Tap this line</b> and grow the number with − and + — watch a few drops become a downpour!',
+        cheer:(n)=> n < 14 ? 'A gentle rain — <b>'+n+'</b> drops falling. Grow the number for a real storm! 🌧️' : 'A downpour! <b>'+n+'</b> drops flood the sky. The waters are rising. 🌧️' },
+      extras:[{sprite:"rainbow", n:1, rows:[0,0], ifAbsent:true}], dove:true, shimmer:["rainbow"], wander:["elephants","giraffes","lions","zebras","bears","camels","deer"] }
   },
 
   /* ---- Standalone scene: the empty tomb (roll the stone away) ---- */

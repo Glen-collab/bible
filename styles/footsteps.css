@@ -292,6 +292,9 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
 .sprite.twinkle{font-size:14px;animation:tw 1.8s ease-in-out infinite;}
 @keyframes tw{0%,100%{opacity:.25;}50%{opacity:1;}}
 .sprite.fly{transition:left 3.4s linear,top 3.4s ease-in-out;}
+/* falling rain: each drop staggers its own delay/duration in decor() */
+.sprite.rain{font-size:20px;opacity:.9;z-index:3;animation:rainfall 1.1s linear infinite;}
+@keyframes rainfall{0%{transform:translateY(-70%) scale(.7);opacity:0;}12%{opacity:.95;}100%{transform:translateY(135%) scale(.7);opacity:.12;}}
 
 #termout .caret{color:var(--term-green);animation:blink .9s step-end infinite;}
 @keyframes blink{50%{opacity:0;}}
