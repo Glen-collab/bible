@@ -18,13 +18,28 @@
   const CHAR_MS = 24;
   const F = {};
   let timers = [];
+  let curStage = null;   // the stage of the current run, so stop() can clean it
+  let gen = 0;           // bumped on every stop() to abort any in-flight run
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-  F.stop = function () { timers.forEach(clearInterval); timers = []; };
+  // Halt all animation AND undo the live-action layer: timers, scattered decor,
+  // nightfall, and the roam/shimmer classes on placed pieces. Leaves the kid's
+  // own placed pieces on the stage so they can keep editing and re-run.
+  F.stop = function () {
+    gen++;
+    timers.forEach(clearInterval); timers = [];
+    if (curStage) {
+      curStage.classList.remove('night');
+      curStage.querySelectorAll('.finale-decor').forEach((e) => e.remove());
+      curStage.querySelectorAll('.roam, .shimmer').forEach((e) => e.classList.remove('roam', 'shimmer'));
+    }
+  };
 
   F.run = async function (ctx) {
     F.stop();
+    const myGen = gen;                       // if stop() bumps gen, this run bails
     const { stage, out, ada, sprites, COLS, ROWS, ITEMS } = ctx;
+    curStage = stage;
     const scene = sprites || [];
     const cfg = ctx.config || { sky: 'night', twinkle: 8, grass: { emoji: '🌿', n: 6, rows: [4, 5] }, dove: true, shimmer: ['star', 'lamp'], wander: ['donkey', 'sheep', 'ox', 'camel', 'dove'] };
     let linesRun = 0;
@@ -43,7 +58,7 @@
     // ---- decor sprite helpers ----
     function decor(token, c, r, cls, sprite) {
       const el = document.createElement('div');
-      el.className = 'sprite ' + (cls || '');
+      el.className = 'sprite finale-decor ' + (cls || '');   // finale-decor: stop() sweeps these away
       if ((cls || '').indexOf('rain') >= 0) {   // each drop falls on its own clock, so the rain looks natural
         el.style.animationDelay = (-Math.random() * 1.2).toFixed(2) + 's';
         el.style.animationDuration = (0.85 + Math.random() * 0.7).toFixed(2) + 's';
@@ -124,11 +139,17 @@
       const text = document.createElement('span'); div.appendChild(text);
       const caret = document.createElement('span'); caret.className = 'caret'; caret.textContent = '▋'; div.appendChild(caret);
       out.appendChild(div);
-      for (let i = 0; i < line.length; i++) { text.innerHTML = color(line.slice(0, i + 1)); out.scrollTop = out.scrollHeight; await sleep(CHAR_MS); }
+      for (let i = 0; i < line.length; i++) { if (myGen !== gen) return; text.innerHTML = color(line.slice(0, i + 1)); out.scrollTop = out.scrollHeight; await sleep(CHAR_MS); }
       text.innerHTML = color(line); caret.remove();
       linesRun++; out.scrollTop = out.scrollHeight;
     }
-    const step = async (code, fn, pause, explain, edit) => { await typeLine(code, explain, edit); if (fn) fn(); await sleep(pause == null ? 650 : pause); };
+    const step = async (code, fn, pause, explain, edit) => {
+      if (myGen !== gen) return;                 // stopped mid-run — bail before adding more
+      await typeLine(code, explain, edit);
+      if (myGen !== gen) return;
+      if (fn) fn();
+      await sleep(pause == null ? 650 : pause);
+    };
 
     // ---- run the finale, building lines from the kid's actual scene ----
     ada.innerHTML = '<b>Ada:</b> Watch closely — the scene <i>and</i> the code…';
@@ -184,6 +205,7 @@
     await step('// scene complete — drawn by ' + (linesRun + 1) + ' lines of real code', null, 300,
       'One more <b>comment</b> — just a note counting the lines. The computer skips it.');
 
+    if (myGen !== gen) return;                 // stopped before finishing
     ada.innerHTML = '<b>Ada:</b> You placed the first pieces. Your code did the rest — the whole living scene, drawn by real JavaScript. <b>Curious what a line does? Hover or tap it.</b> <i>Same truth, new scribes.</i> 🌟';
     enableTeaching(out, ada);
     if (ctx.onDone) ctx.onDone();

@@ -118,6 +118,8 @@ h1 em{font-style:italic;color:var(--olive-deep);}
 .btn:active{transform:translateY(3px);box-shadow:0 1px 0 #6e2f14;}
 .btn.olive{background:linear-gradient(180deg,var(--olive),var(--olive-deep));box-shadow:0 4px 0 #39431f;}
 .btn.olive:active{box-shadow:0 1px 0 #39431f;}
+.btn.stopbtn{background:linear-gradient(180deg,var(--terra),var(--terra-deep));box-shadow:0 4px 0 #6e2f14;}
+.btn.stopbtn:active{box-shadow:0 1px 0 #6e2f14;}
 .btn.ghost{background:none;color:var(--ink-soft);box-shadow:none;border:1.5px solid var(--parch-deep);}
 .btn.ghost:active{transform:translateY(2px);}
 

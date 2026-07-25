@@ -161,6 +161,15 @@
     });
   }
   function invalidateSnapshot() { sceneSnapshot = null; }
+  // put every placed piece back where the kid designed it — undoing any roam
+  // drift or shimmer from a finale run, so the scene is clean to edit again
+  function restoreDesign() {
+    sprites.forEach((rec) => {
+      rec.el.classList.remove('roam', 'shimmer', 'moving');
+      positionEl(rec.el, rec.col, rec.row, rec.size);
+      applyTransform(rec.el, rec);   // keep the kid's flip/rotate; drop any shimmer scale
+    });
+  }
 
   WS.play = function (config, options) {
     CFG = config;
@@ -784,19 +793,31 @@
     html += `<button class="btn ghost" onclick="FootstepsWorkshop._exit()">Back to the map</button>`;
     nw.innerHTML = html;
   }
+  const STOP_BTN = '<button class="btn stopbtn" onclick="FootstepsWorkshop._stopFinale()">⏹ Stop the action &amp; keep building</button>';
+  const RUN_BTN = '<button class="btn olive" onclick="FootstepsWorkshop._finale()">🦉 Bring the scene to life — watch the code run</button>';
   WS._finale = function () {
     if (window.FootstepsFinale) window.FootstepsFinale.stop();
+    restoreDesign();                   // clear any leftover animation from a prior run
     sceneSnapshot = captureDesign();   // freeze the designed layout before pieces move
     $('nextwrap').innerHTML = '';
-    const fb = $('finalebar'); if (fb) fb.style.display = 'none';
+    const fb = $('finalebar'); if (fb) { fb.style.display = 'block'; fb.innerHTML = STOP_BTN; }   // Run becomes Stop while it plays
     return window.FootstepsFinale.run({
       stage: $('stage'), out: $('termout'), ada: $('tutorbody'),
       sprites: sprites, COLS: COLS, ROWS: ROWS, ITEMS: ITEMS, config: CFG.finale,
       onDone: finaleDone,
     });
   };
+  // Stop the live scene: strip the animation, snap pieces back, return to build mode
+  WS._stopFinale = function () {
+    if (window.FootstepsFinale) window.FootstepsFinale.stop();
+    restoreDesign();
+    invalidateSnapshot();
+    $('nextwrap').innerHTML = '';
+    const fb = $('finalebar'); if (fb) fb.innerHTML = RUN_BTN;
+    tutorSay('Paused the scene. <b>Add more pieces or take some away</b> — then tap <b>🦉 Bring the scene to life</b> to run it again.');
+  };
   function finaleDone() {
-    const fb = $('finalebar'); if (fb) fb.style.display = 'block';
+    const fb = $('finalebar'); if (fb) { fb.style.display = 'block'; fb.innerHTML = STOP_BTN; }   // stays Stop — the action keeps looping
     let html = '';
     if (CFG.practice && CFG.practice.enabled) html += `<button class="btn olive" onclick="FootstepsWorkshop._practice()">Practice on your own →</button>`;
     html += `<button class="btn ghost" onclick="FootstepsWorkshop._exit()">Back to the map</button>`;
