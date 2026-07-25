@@ -295,7 +295,9 @@ const CASE_DAVID = {
       scene:"You reach for the quick win, the shortcut to power. But grabbing what isn't yours yet only leads down a dead end. Some things must be waited for.",
       lesson:"The patient, honest road is longer — but it's the one that lasts. You find your way back to the trail." },
   ],
-  stops: [
+  // Four investigation trails converging on David's rise (see startCase for the random pick).
+  variants: [
+   { title:"The Shepherd Who Became King", stops: [
     { place:"Bethlehem", tag:"The fields where a shepherd boy tends sheep",
       eli:"If I were the youngest of eight brothers, I'd want to prove I'm the <b>best</b>. Bet David felt that too!",
       spots:[
@@ -366,8 +368,160 @@ const CASE_DAVID = {
       eli:"He finally becomes king! And he did it the hard way — the patient, honest way. I think that's braver than the giant, honestly.",
       final:true,
       teaching:"David faced a giant with courage — but his greatest strength was refusing to seize the crown by force, and sparing the king who hunted him. He waited, stayed humble, and trusted God's timing. Courage got him to the battle; humility made him worthy of the throne." },
+   ] },
+
+   { title:"The Prophet's Secret Errand", stops: [
+    { place:"Ramah", tag:"Where the old prophet Samuel grieves",
+      eli:"A brand-new king? I'd send for the biggest, strongest, most impressive man in the land. Obvious pick.",
+      spots:[
+        { ico:"🕯️", label:"Sit with Samuel", lead:"The prophet Samuel is still grieving that King Saul turned away from God.",
+          clue:"God tells him to stop grieving — fill your horn with oil, for a new king has been chosen." },
+        { ico:"📜", label:"Read God's instructions", lead:"God gives Samuel a secret errand.",
+          clue:"Go to Bethlehem, to the house of a man named Jesse — the new king is one of his sons." },
+      ],
+      ask:"Where does God send Samuel to find the new king?",
+      options:["The palace in Gibeah","Jesse's house in Bethlehem","The army camp"],
+      answer:1,
+      hint:"God's instructions name Bethlehem, and the house of Jesse.",
+      sidequest:{ title:"Steady a nervous traveler", desc:"Samuel fears King Saul will hear of this secret errand. Walk with him and calm his fears?",
+        lesson:"You keep the worried prophet company on a risky road. Eli sees that quiet courage often walks beside someone who's scared.", badge:"helper" } },
+
+    { place:"Jesse's House", tag:"Seven sons pass by, one at a time",
+      eli:"The oldest brother is tall and handsome — THAT'S the king, surely. Let's crown him and go!",
+      spots:[
+        { ico:"💪", label:"Watch the eldest sons", lead:"Jesse's tall, strong older sons pass before Samuel one by one.",
+          clue:"Samuel is impressed by the first — but God says no to him, and to the next, and the next." },
+        { ico:"❤️", label:"Hear what God says", lead:"God explains why he keeps saying no.",
+          clue:"People look at the outside — height and looks — but God looks at the heart." },
+      ],
+      ask:"Why does God turn down the tall, impressive older brothers?",
+      options:["They were too old","God looks at the heart, not the outside","They didn't want the job"],
+      answer:1,
+      hint:"God tells Samuel that people judge by looks, but God judges by the heart.",
+      sidequest:null },
+
+    { place:"The Sheep Fields", tag:"The one no one thought to call",
+      eli:"There's ANOTHER son? Out with the sheep? Nobody even invited him inside...",
+      spots:[
+        { ico:"🐏", label:"Ask about the youngest", lead:"Samuel asks Jesse if he has any more sons.",
+          clue:"The youngest, David, wasn't even called in — he's out watching the sheep." },
+        { ico:"🫒", label:"See the anointing", lead:"They send for David, and God speaks.",
+          clue:"'Rise and anoint him — this is the one.' Samuel pours the oil over the shepherd boy." },
+      ],
+      ask:"Where was David while the others were being considered?",
+      options:["Out tending the sheep","Asleep in the house","Away at war"],
+      answer:0,
+      hint:"David, the youngest, was overlooked — out in the fields tending the sheep.",
+      sidequest:null },
+
+    { place:"The Least, Chosen", tag:"God's surprising pick",
+      eli:"The youngest, smallest, forgotten shepherd — HE'S the king God wanted. I keep sizing people up wrong, don't I?",
+      final:true,
+      teaching:"When God chose Israel's greatest king, he passed over the tall, strong, impressive brothers and chose David — the youngest, left out in the fields with the sheep. God doesn't measure people the way we do. He looks past height and looks and reputation, straight to the heart. The humble and overlooked are exactly the ones he loves to lift up." },
+   ] },
+
+   { title:"Forty Days of Fear", stops: [
+    { place:"The Valley of Elah", tag:"Two armies, frozen on the hills",
+      eli:"There's a REWARD for beating the giant? I'd be first in line — think of the glory!",
+      spots:[
+        { ico:"⛰️", label:"Survey the two camps", lead:"Israel's army and the Philistine army face off across a valley.",
+          clue:"No one dares fight. A giant named Goliath, over nine feet tall in bronze armor, steps out." },
+        { ico:"📣", label:"Count the challenges", lead:"The giant bellows the same dare, morning and evening.",
+          clue:"For forty days he taunts Israel — 'Send me a man to fight!' — and every soldier trembles." },
+      ],
+      ask:"How long has Goliath been taunting Israel's army?",
+      options:["Three days","Forty days","A single morning"],
+      answer:1,
+      hint:"The clue counts the challenges — forty days, morning and evening.",
+      sidequest:{ title:"Cheer a fearful soldier", desc:"A young soldier is shaking with fear in the ranks. Stop and encourage him?",
+        lesson:"You steady a frightened soldier instead of pushing past. Eli learns courage can be shared — it grows when we lift each other.", badge:"helper" } },
+
+    { place:"King Saul's Tent", tag:"A king as afraid as his men",
+      eli:"Even the KING won't fight? He's the tallest man in Israel! Okay — what's the deal here?",
+      spots:[
+        { ico:"👑", label:"Listen at the king's tent", lead:"King Saul and all his soldiers are terrified of the giant.",
+          clue:"Saul offers a huge reward to anyone who defeats Goliath: riches, his daughter, and freedom from taxes." },
+        { ico:"😰", label:"Feel the fear in camp", lead:"Day after day, no one steps forward.",
+          clue:"The bigger the reward grows, the clearer it is — everyone is simply too afraid." },
+      ],
+      ask:"What does King Saul offer to whoever defeats Goliath?",
+      options:["A great reward and his daughter","A new suit of armor","A quiet farm"],
+      answer:0,
+      hint:"Saul promises riches, his daughter in marriage, and a tax-free family.",
+      sidequest:null },
+
+    { place:"The Supply Road", tag:"An unexpected volunteer arrives",
+      eli:"A shepherd kid showed up with lunch for his brothers — and HE'S the one upset that no one will fight?",
+      spots:[
+        { ico:"🧀", label:"Follow the errand boy", lead:"Jesse sends young David with bread and cheese for his soldier brothers.",
+          clue:"David arrives just as Goliath roars his daily taunt." },
+        { ico:"🔥", label:"Hear David's heart", lead:"David is stunned that no one will stand up.",
+          clue:"He isn't after the reward — he's upset the giant dares to defy the living God. David volunteers." },
+      ],
+      ask:"Who finally steps forward to face the giant?",
+      options:["A veteran captain","David, the shepherd boy","The king himself"],
+      answer:1,
+      hint:"It's David — the young shepherd who came with food — who volunteers.",
+      sidequest:null },
+
+    { place:"One Boy Steps Forward", tag:"Courage where everyone else froze",
+      eli:"Everyone bigger and stronger was frozen with fear — and the shepherd boy stepped up. Not for the prize. For God.",
+      final:true,
+      teaching:"For forty days a whole army, and even their tall king, stood frozen in fear. Then a shepherd boy — too young to be a soldier, there only to bring lunch — stepped forward. He wasn't chasing the reward; he simply couldn't stand to see the giant mock God while everyone else trembled. Courage isn't the absence of fear. It's caring about the right thing enough to step forward when everyone else steps back." },
+   ] },
+
+   { title:"Not by Sword or Spear", stops: [
+    { place:"The King's Armor", tag:"Borrowed strength that doesn't fit",
+      eli:"If I'm fighting a giant, give me the biggest sword and the heaviest armor in the kingdom!",
+      spots:[
+        { ico:"🛡️", label:"Try on Saul's armor", lead:"King Saul dresses David in his own royal armor and helmet.",
+          clue:"It's far too big and heavy — David can barely walk in it." },
+        { ico:"🚶", label:"Watch David decide", lead:"David takes it all off again.",
+          clue:"He won't fight in borrowed strength he can't use — he'll go as himself, trusting God." },
+      ],
+      ask:"Why does David take off the king's armor?",
+      options:["It was too big and he couldn't move","It was the wrong color","He wanted a shield instead"],
+      answer:0,
+      hint:"The armor was too big and heavy — David couldn't fight in it, so he went as himself.",
+      sidequest:{ title:"Return a borrowed thing", desc:"Someone pressed a fancy tool on you that isn't yours to use. Kindly give it back and use what you know?",
+        lesson:"You hand back what wasn't yours and trust what you've been given. Eli learns real strength is being honestly yourself, not pretending to be bigger.", badge:"helper" } },
+
+    { place:"The Brook", tag:"Small stones and a steady heart",
+      eli:"Just a sling and some pebbles? Against a NINE-FOOT giant? This can't possibly work...",
+      spots:[
+        { ico:"🪨", label:"Gather at the stream", lead:"David picks five smooth stones from the brook and takes his shepherd's sling.",
+          clue:"The same sling he used to guard his sheep from lions and bears is all he brings." },
+        { ico:"🗣️", label:"Hear David answer the giant", lead:"Goliath laughs and mocks the boy.",
+          clue:"David answers that he comes not with sword and spear, but in the name of the Lord — the battle is God's." },
+      ],
+      ask:"What does David bring to face Goliath?",
+      options:["A sling and a smooth stone","A borrowed sword","A war horse"],
+      answer:0,
+      hint:"David chooses his shepherd's sling and smooth stones — and his trust in God.",
+      sidequest:null },
+
+    { place:"The Clash", tag:"The giant falls",
+      eli:"Okay... he's actually running AT the giant. Here it goes!",
+      spots:[
+        { ico:"🏃", label:"Watch David charge", lead:"David runs quickly toward the battle line.",
+          clue:"He slings a single stone — it strikes Goliath in the forehead, and the giant falls face-down." },
+        { ico:"🌄", label:"See the armies react", lead:"Israel erupts; the Philistines flee.",
+          clue:"The unbeatable giant is beaten — not by a bigger weapon, but by a boy who trusted God." },
+      ],
+      ask:"How does David defeat the giant?",
+      options:["One slung stone to the forehead","A long sword fight","He waits for the army"],
+      answer:0,
+      hint:"David slings one smooth stone; it strikes Goliath's forehead and he falls.",
+      sidequest:null },
+
+    { place:"The Battle Is the Lord's", tag:"Strength that isn't about size",
+      eli:"He didn't win with muscles or armor. He won because he trusted God — and stayed humble enough to fight as himself. THAT'S the strong way.",
+      final:true,
+      teaching:"Everyone measured the fight by size: the giant was huge, the boy was small, so surely the giant would win. But David refused the borrowed armor, took his simple sling, and ran toward the giant declaring the battle belonged to God. One stone was enough. Real strength was never about who's biggest — it's about trusting God and staying humble enough to be exactly who you are. Courage got David to the valley; humility and trust won the day." },
+   ] },
   ]
 };
+CASE_DAVID.stops = CASE_DAVID.variants[0].stops;
 
 
 /* =====================================================================
@@ -395,7 +549,9 @@ const CASE_MOSES = {
       scene:"You reach for the fast, easy way out. But the shortcut loops back on itself — some journeys simply have to be walked, one step at a time.",
       lesson:"Trusting the long road is its own kind of strength. You find your footing and rejoin the path." },
   ],
-  stops: [
+  // Four trails converging on the road to freedom (random pick in startCase).
+  variants: [
+   { title:"The Long Road to Freedom", stops: [
     { place:"Midian", tag:"A quiet desert where a shepherd hides from his past",
       eli:"Moses ran away and became a shepherd? I'd want to forget the whole thing and never go back. Way easier!",
       spots:[
@@ -466,8 +622,160 @@ const CASE_MOSES = {
       eli:"We made it to the mountain. That whole long road... every hard step actually got us somewhere. I think I finally get why we didn't quit.",
       final:true,
       teaching:"Moses ran from his past, faced a king who said no again and again, walked toward a sea with no way through, and crossed a desert that tested everyone. He kept going — not because it was easy, but because he trusted. At the mountain, the people met God. Perseverance isn't never being afraid or tired. It's taking the next step anyway, and trusting where the road leads." },
+   ] },
+
+   { title:"The Voice in the Flames", stops: [
+    { place:"Horeb", tag:"The far side of the desert, tending sheep",
+      eli:"If God asked ME to march back to the place I ran from? I'd say no thanks and keep my quiet little job.",
+      spots:[
+        { ico:"🔥", label:"Approach the burning bush", lead:"Moses spots a bush wrapped in flames out in the wilderness.",
+          clue:"It burns and burns — yet it is not burned up. A voice calls his name from the fire." },
+        { ico:"👣", label:"Stand on holy ground", lead:"The voice tells Moses to take off his sandals.",
+          clue:"'I am the God of your fathers. I have seen my people suffering in Egypt, and I am sending you.'" },
+      ],
+      ask:"What was so strange about the bush Moses saw?",
+      options:["It could talk on its own","It burned but was not burned up","It grew fruit in winter"],
+      answer:1,
+      hint:"The bush was on fire, yet the flames never consumed it — and God spoke from within it.",
+      sidequest:{ title:"Coax out a hidden helper", desc:"A shy person nearby has a real gift but hides from being noticed. Gently encourage them to use it?",
+        lesson:"You draw out someone afraid to be seen. Eli learns that God often calls the reluctant — the ones who feel least ready.", badge:"helper" } },
+
+    { place:"The Reluctant Reply", tag:"A shepherd full of excuses",
+      eli:"'Who am I to do this?' — honestly, that's exactly what I'd say too. Let someone braver go!",
+      spots:[
+        { ico:"🙋", label:"Hear Moses's excuses", lead:"Moses protests that he's a nobody and a poor speaker.",
+          clue:"God doesn't say Moses is impressive — he says, 'I will be with you.'" },
+        { ico:"🐍", label:"Watch the signs", lead:"God turns Moses's staff into a snake and back again.",
+          clue:"And he sends Moses's brother Aaron to speak alongside him — Moses won't go alone." },
+      ],
+      ask:"How does God answer Moses's fear that he isn't good enough?",
+      options:["He finds a different person","He promises to be with him and sends Aaron to help","He makes Moses a king first"],
+      answer:1,
+      hint:"God promises 'I will be with you' and sends Aaron alongside him.",
+      sidequest:null },
+
+    { place:"The Road Back to Egypt", tag:"Saying yes to the hard thing",
+      eli:"He's actually going back? Into danger, to the place he fled? That takes more than I thought I had.",
+      spots:[
+        { ico:"🥾", label:"Follow Moses's choice", lead:"Moses takes the staff of God and turns toward Egypt.",
+          clue:"He's still afraid — but he goes anyway, one step at a time." },
+        { ico:"🤝", label:"Meet Aaron on the way", lead:"Aaron comes out to meet him in the wilderness.",
+          clue:"Two brothers, one mission: to tell Pharaoh to let God's people go." },
+      ],
+      ask:"What does Moses finally decide to do?",
+      options:["Go back to free his people, afraid but trusting","Stay in the desert with his sheep","Wait for someone braver"],
+      answer:0,
+      hint:"Moses takes God's staff and heads back to Egypt — scared, but going anyway.",
+      sidequest:null },
+
+    { place:"The Reluctant Rescuer Says Yes", tag:"God uses the unready",
+      eli:"He felt too small, too scared, too unready — and God used him anyway. Maybe 'not ready' isn't the same as 'no.'",
+      final:true,
+      teaching:"God called Moses from a burning bush, and Moses was full of reasons why not: he wasn't impressive, wasn't a good speaker, wasn't ready. God never argued that Moses was amazing — he simply promised, 'I will be with you,' and sent help alongside him. Perseverance often starts here: not with feeling ready, but with taking the first scared step because you trust the One who called you." },
+   ] },
+
+   { title:"Let My People Go", stops: [
+    { place:"Pharaoh's Court", tag:"A demand, and a hard 'no'",
+      eli:"They ask once, the king says no, and... that's that, right? Time to give up.",
+      spots:[
+        { ico:"🏛️", label:"Stand before Pharaoh", lead:"Moses and Aaron deliver God's message: let my people go.",
+          clue:"Pharaoh refuses flatly — and makes the slaves work even harder to punish them." },
+        { ico:"😤", label:"Feel the setback", lead:"Things get worse before they get better.",
+          clue:"The people are angry at Moses. It would be so easy to quit right here." },
+      ],
+      ask:"How does Pharaoh respond the very first time?",
+      options:["He lets them go at once","He refuses and makes the work harder","He asks for time to think"],
+      answer:1,
+      hint:"Pharaoh flatly refuses — and cruelly increases the slaves' workload.",
+      sidequest:{ title:"Encourage the discouraged", desc:"The people blame Moses when things get harder. Steady a downcast worker and remind them not to lose heart?",
+        lesson:"You lift someone when the first try made things worse. Eli learns perseverance means not quitting at the first 'no.'", badge:"helper" } },
+
+    { place:"The Ten Signs", tag:"'No' after 'no' after 'no'",
+      eli:"Wait — Moses keeps GOING back? After all those refusals? Why not just stop?",
+      spots:[
+        { ico:"🐸", label:"Witness the wonders", lead:"God sends sign after sign — the Nile turns to blood, then frogs, and more.",
+          clue:"Pharaoh's own magicians can't keep up; even they say this is the finger of God." },
+        { ico:"🪨", label:"Watch Pharaoh's heart", lead:"Again and again Pharaoh almost gives in, then hardens his heart.",
+          clue:"Every time he says no, Moses comes back and tries again. He does not give up." },
+      ],
+      ask:"Why do the signs and plagues keep coming, one after another?",
+      options:["Pharaoh keeps refusing to let the people go","God forgot to stop","The people asked for more"],
+      answer:0,
+      hint:"Each time Pharaoh hardens his heart and refuses, so Moses returns and God sends another sign.",
+      sidequest:null },
+
+    { place:"The Passover Night", tag:"The night everything changed",
+      eli:"After all those tries... is THIS the one that finally works?",
+      spots:[
+        { ico:"🐑", label:"Mark the doorposts", lead:"God tells each family to share a lamb and put its blood on their doorframes.",
+          clue:"That night the final plague passes over every home marked by the blood." },
+        { ico:"🚪", label:"See Pharaoh break", lead:"At last, in the dark, Pharaoh summons Moses.",
+          clue:"'Go — take your people and leave!' After all the noes, the yes finally comes." },
+      ],
+      ask:"What finally makes Pharaoh set the people free?",
+      options:["The last, most terrible plague on Passover night","A gift of gold","A friendly letter"],
+      answer:0,
+      hint:"It's the final plague, on the night of the Passover, that at last breaks Pharaoh's resolve.",
+      sidequest:null },
+
+    { place:"Freedom at Last", tag:"The reward of not quitting",
+      eli:"So many refusals — and Moses went back every single time. If he'd stopped at the first no, they'd still be slaves.",
+      final:true,
+      teaching:"Moses asked Pharaoh to free the people, and the answer was no — then no again, and again, and again. It would have been so easy to quit after the first refusal, especially when things got harder. But Moses kept going back, trusting God through every setback, until at last the people walked free. Perseverance isn't winning on the first try. It's refusing to give up on the right thing, one 'try again' at a time." },
+   ] },
+
+   { title:"A Wall of Water", stops: [
+    { place:"Trapped at the Sea", tag:"Nowhere left to run",
+      eli:"Water in front, an army behind — it's hopeless. This is the part where everybody gives up.",
+      spots:[
+        { ico:"🌊", label:"Look at the sea ahead", lead:"The freed people reach the edge of the Red Sea — and stop.",
+          clue:"There is no boat, no bridge, no way across the deep water." },
+        { ico:"🐎", label:"Look at the dust behind", lead:"Pharaoh changed his mind and sent his whole army after them.",
+          clue:"Chariots thunder closer. The people are trapped between the water and the soldiers, and they panic." },
+      ],
+      ask:"What has the people trapped at the sea?",
+      options:["A storm overhead","The sea ahead and Pharaoh's army behind","A locked city gate"],
+      answer:1,
+      hint:"They're caught between the deep sea in front and the chariots charging up behind.",
+      sidequest:{ title:"Calm a panicking crowd", desc:"People around you are frightened and shouting. Help calm just one family and point them to hope?",
+        lesson:"You bring calm where there's panic. Eli learns that trust is a choice you make even when every way looks blocked.", badge:"helper" } },
+
+    { place:"Stand Firm", tag:"Trust before you can see the way",
+      eli:"Moses says don't be afraid? With the sea RIGHT THERE? How can he be so sure?",
+      spots:[
+        { ico:"🙌", label:"Hear Moses steady them", lead:"Moses tells the people not to fear — God will make a way.",
+          clue:"A pillar of cloud moves behind them, standing between the people and the army all night." },
+        { ico:"🦯", label:"See God's instruction", lead:"God speaks to Moses at the water's edge.",
+          clue:"'Lift up your staff and stretch out your hand over the sea.' Moses obeys, though he can't yet see how it will work." },
+      ],
+      ask:"What does God tell Moses to do at the sea?",
+      options:["Build a boat","Stretch out his hand and staff over the water","Turn back and surrender"],
+      answer:1,
+      hint:"God tells Moses to raise his staff and stretch his hand over the sea.",
+      sidequest:null },
+
+    { place:"The Crossing", tag:"A path where there was none",
+      eli:"The water is... SPLITTING? There's a road right through the middle of the sea!",
+      spots:[
+        { ico:"💨", label:"Watch the wind blow", lead:"A strong wind blows all night and the waters divide.",
+          clue:"The sea opens into two walls of water with dry ground in between." },
+        { ico:"👣", label:"Cross on dry ground", lead:"The whole nation walks through the sea on dry land.",
+          clue:"When the army follows, the walls of water rush back — and God's people are safe on the far shore." },
+      ],
+      ask:"How do the people finally cross the sea?",
+      options:["On dry ground through the parted waters","In a fleet of boats","Over a stone bridge"],
+      answer:0,
+      hint:"God parts the sea into walls of water, and the people cross on dry ground.",
+      sidequest:null },
+
+    { place:"Through the Sea", tag:"The way that opened one step at a time",
+      eli:"There was NO way through — until they trusted and took a step. Then the way appeared. I'll remember that.",
+      final:true,
+      teaching:"Caught between an army and a sea, with no way out that anyone could see, the people were sure it was over. But Moses trusted, stretched out his hand, and God opened a road right through the deep. They crossed on dry ground and reached the far shore free. Sometimes the way forward only opens as you take the next trusting step. Perseverance walks toward the sea before it sees the path — and finds that God makes one." },
+   ] },
   ]
 };
+CASE_MOSES.stops = CASE_MOSES.variants[0].stops;
 
 
 /* =====================================================================
@@ -495,7 +803,9 @@ const CASE_RUTH = {
       scene:"You weigh whether being faithful is 'worth it.' But love kept only when it pays isn't really love. The road of loyalty asks for more than that.",
       lesson:"Faithfulness gives without counting the cost. You choose to stay, and the path steadies under you." },
   ],
-  stops: [
+  // Four trails converging on Ruth's faithfulness and redemption (random pick in startCase).
+  variants: [
+   { title:"The Faithful Heart", stops: [
     { place:"Moab", tag:"A foreign land, after great loss",
       eli:"Both husbands gone, and Naomi's heading back to her homeland alone. Ruth doesn't owe her anything now — I'd just go find a better deal, honestly.",
       spots:[
@@ -566,8 +876,160 @@ const CASE_RUTH = {
       eli:"She stayed faithful when there was nothing in it for her — and it led to a whole home and family. I think loyalty might be the strongest thing there is.",
       final:true,
       teaching:"Ruth had every reason to walk away. Instead she stayed faithful to Naomi through loss, a long road, and humble work, expecting nothing in return. Her quiet loyalty was seen, met with kindness, and led to a home she never demanded. And her story became part of a much bigger one — she is remembered in the family line that leads all the way to Jesus. Faithfulness rarely looks flashy. But staying true, especially when no one's watching, is one of the strongest things a heart can do." },
+   ] },
+
+   { title:"Where You Go, I Will Go", stops: [
+    { place:"Moab", tag:"Three widows, and a hard road home",
+      eli:"If there's nothing left for me in it, I'd look out for myself. Why stay loyal to someone who can't help you?",
+      spots:[
+        { ico:"💔", label:"Learn what happened", lead:"A famine had driven Naomi's family far from home to Moab.",
+          clue:"There, over the years, Naomi's husband and both of her sons died. She is left with her two sons' widows." },
+        { ico:"🧳", label:"Watch Naomi prepare", lead:"Hearing there's food again in Bethlehem, Naomi sets out to go home.",
+          clue:"She's lost nearly everything — but she still has two loyal daughters-in-law beside her." },
+      ],
+      ask:"What great loss has Naomi suffered in Moab?",
+      options:["Her husband and both her sons have died","Her house burned down","She lost her way in the desert"],
+      answer:0,
+      hint:"Naomi's husband and both of her sons died, leaving three widows.",
+      sidequest:{ title:"Sit with a grieving neighbor", desc:"Someone nearby has lost a loved one and feels forgotten. Stay a while and grieve with them?",
+        lesson:"You keep company with someone in loss instead of hurrying on. Eli learns that showing up for the hurting is a quiet kind of loyalty.", badge:"helper" } },
+
+    { place:"The Crossroads", tag:"Naomi tells them to turn back",
+      eli:"Naomi's telling them to leave — free pass to go home! Most people would take it in a heartbeat.",
+      spots:[
+        { ico:"🛤️", label:"Hear Naomi's blessing", lead:"Naomi urges both young widows to return to their own families and start again.",
+          clue:"She has nothing left to offer them — no husbands, no home, no security." },
+        { ico:"👋", label:"Watch Orpah decide", lead:"One daughter-in-law, Orpah, tearfully says goodbye and turns back.",
+          clue:"It's the sensible choice — but Ruth still won't let go of Naomi's hand." },
+      ],
+      ask:"What does Naomi urge her daughters-in-law to do?",
+      options:["Come to Bethlehem no matter what","Go back to their own families and homes","Find new work in Moab"],
+      answer:1,
+      hint:"Having nothing to give them, Naomi tells them to return to their own families.",
+      sidequest:null },
+
+    { place:"Ruth's Vow", tag:"A promise with nothing in it for her",
+      eli:"She's staying? With an old widow, headed to a strange country, with no reward waiting? ...Why?",
+      spots:[
+        { ico:"🤝", label:"Hear Ruth's promise", lead:"Ruth clings to Naomi and makes a vow.",
+          clue:"'Where you go I will go; your people will be my people, and your God my God.'" },
+        { ico:"🌾", label:"See where love leads", lead:"Together the two widows set out for Bethlehem.",
+          clue:"Ruth gains nothing by this — she stays purely out of love and loyalty." },
+      ],
+      ask:"What does Ruth choose to do?",
+      options:["Stay with Naomi no matter what","Return home like Orpah","Wait in Moab for better times"],
+      answer:0,
+      hint:"Ruth refuses to leave, vowing to stay with Naomi and her God.",
+      sidequest:null },
+
+    { place:"A Promise That Cost Everything", tag:"Loyalty that expects nothing back",
+      eli:"There was nothing in it for her — and she stayed anyway. Maybe that's what makes loyalty so strong: it doesn't need a reward.",
+      final:true,
+      teaching:"When everything fell apart, Naomi had nothing left to offer — and the sensible thing was to walk away, as Orpah did. But Ruth clung to her and vowed to stay, gaining nothing for herself. That's what real faithfulness looks like: choosing to stay loyal when there's no reward in it, simply because you love. Quiet promises like that turn out to be some of the strongest things in the world." },
+   ] },
+
+   { title:"Under His Wings", stops: [
+    { place:"The Barley Fields", tag:"Hard, humble work at harvest",
+      eli:"Picking up leftover scraps behind the workers? That's beneath me. I'd want a real job with real pay.",
+      spots:[
+        { ico:"🌾", label:"Watch Ruth glean", lead:"Ruth goes into the fields to gather leftover grain the harvesters drop.",
+          clue:"It's stooping, tiring work in the sun — but it's how she and Naomi will eat." },
+        { ico:"☀️", label:"See her keep at it", lead:"She works from morning with barely a rest.",
+          clue:"No complaints, no shortcuts — just faithful, humble labor to care for Naomi." },
+      ],
+      ask:"How does Ruth get food for herself and Naomi?",
+      options:["By gleaning leftover grain in the fields","By begging at the gate","By selling her jewelry"],
+      answer:0,
+      hint:"Ruth gleans — gathering the leftover grain the harvesters leave behind.",
+      sidequest:{ title:"Take on a humble chore", desc:"There's an unglamorous job nobody wants to do. Quietly do it well without being asked?",
+        lesson:"You do the lowly task without complaint. Eli learns that faithfulness often looks like humble work no one applauds.", badge:"helper" } },
+
+    { place:"Boaz Notices", tag:"Kindness meets a good reputation",
+      eli:"Why would the rich landowner even glance at a poor foreign woman gleaning scraps?",
+      spots:[
+        { ico:"🧔", label:"Meet Boaz", lead:"Boaz, the field's owner, asks his workers who the young woman is.",
+          clue:"He's already heard how faithfully she has cared for her mother-in-law, Naomi." },
+        { ico:"🍞", label:"Receive his welcome", lead:"Boaz tells Ruth to stay safe in his field and share his workers' food and water.",
+          clue:"He blesses her for taking refuge under God's wings, and treats a stranger with honor." },
+      ],
+      ask:"Why does Boaz show Ruth such kindness?",
+      options:["He heard how faithful she'd been to Naomi","She was the richest woman there","She demanded to be treated well"],
+      answer:0,
+      hint:"Boaz had heard of Ruth's loyalty to Naomi, and honored her for it.",
+      sidequest:null },
+
+    { place:"A Full Basket Home", tag:"Faithfulness, quietly rewarded",
+      eli:"Wait — he told his workers to DROP extra grain on purpose, just for her?",
+      spots:[
+        { ico:"🌾", label:"See the extra grain", lead:"Boaz quietly tells his workers to leave handfuls behind for Ruth.",
+          clue:"She gathers far more than a gleaner ever could — an armful of provision." },
+        { ico:"🏠", label:"Bring it to Naomi", lead:"Ruth carries the abundance home.",
+          clue:"Naomi sees God's kindness at work, and hope returns to her heart." },
+      ],
+      ask:"What does Ruth bring home from the field?",
+      options:["Far more grain than a gleaner could expect","A single small handful","Nothing that day"],
+      answer:0,
+      hint:"Thanks to Boaz's quiet generosity, Ruth brings home an abundance of grain.",
+      sidequest:null },
+
+    { place:"Kindness Meets Faithfulness", tag:"Loyalty that gets noticed",
+      eli:"She wasn't loyal to get anything — but her faithfulness got noticed anyway, and met with kindness. That's a good way for a story to turn.",
+      final:true,
+      teaching:"Ruth didn't glean the fields to be noticed; she did humble, tiring work simply to care for Naomi. But her quiet faithfulness had already reached Boaz's ears, and he met it with generosity — protection, food, and grain left behind on purpose. Loyalty rarely announces itself, yet it has a way of being seen. Stay faithful in the small, unglamorous things, and kindness often comes to meet you." },
+   ] },
+
+   { title:"The Kinsman-Redeemer", stops: [
+    { place:"Naomi's Plan", tag:"A relative who could rescue them",
+      eli:"So there's a relative who could help? Why would he bother taking on someone else's troubles?",
+      spots:[
+        { ico:"💡", label:"Hear Naomi's idea", lead:"Naomi realizes Boaz is a close relative of their family.",
+          clue:"By their law, a near relative — a 'kinsman-redeemer' — could rescue a family that had lost everything." },
+        { ico:"🌙", label:"Send Ruth to ask", lead:"Naomi tells Ruth to go to Boaz and ask for his protection and care.",
+          clue:"Ruth humbly asks Boaz to take her family under his covering." },
+      ],
+      ask:"What is a 'kinsman-redeemer'?",
+      options:["A relative who can rescue and provide for the family","A judge at the city gate","A soldier for hire"],
+      answer:0,
+      hint:"It's a close relative who, by their law, could redeem — rescue and care for — a family in need.",
+      sidequest:{ title:"Offer help before you're asked", desc:"Someone near you is struggling but too proud to ask. Quietly step in and lighten their load?",
+        lesson:"You redeem a hard moment for someone who couldn't ask. Eli learns that faithfulness means stepping in to rescue, not just staying nearby.", badge:"helper" } },
+
+    { place:"The City Gate", tag:"A promise made in the open",
+      eli:"There's ANOTHER relative with first dibs? This could all fall apart...",
+      spots:[
+        { ico:"⚖️", label:"Watch at the gate", lead:"Boaz gathers the town elders and the nearer relative to settle it publicly.",
+          clue:"The closer relative could redeem the land — but he backs out, unwilling to take on Ruth's family." },
+        { ico:"🤝", label:"See Boaz step up", lead:"Boaz gladly takes the responsibility himself.",
+          clue:"Before the whole town, he pledges to redeem the family and take Ruth as his wife." },
+      ],
+      ask:"Who agrees to redeem the family and marry Ruth?",
+      options:["Boaz","The nearer relative","One of the town elders"],
+      answer:0,
+      hint:"The nearer relative declines, and Boaz steps forward to redeem the family himself.",
+      sidequest:null },
+
+    { place:"A Son Named Obed", tag:"A small story inside a huge one",
+      eli:"They had a baby — and that baby's family line leads to... KING DAVID? And on to Jesus?",
+      spots:[
+        { ico:"👶", label:"Meet baby Obed", lead:"Ruth and Boaz marry, and God blesses them with a son named Obed.",
+          clue:"Naomi, once empty-handed and grieving, now holds a grandchild and a future." },
+        { ico:"📜", label:"Trace the family line", lead:"Follow Obed's family forward.",
+          clue:"Obed becomes the grandfather of King David — so Ruth is woven into the family line that leads to Jesus." },
+      ],
+      ask:"Whose famous family line does faithful Ruth become part of?",
+      options:["King David's — the line leading to Jesus","A line of Egyptian kings","No one remembers"],
+      answer:0,
+      hint:"Ruth's son Obed is the grandfather of King David, placing her in the line that leads to Jesus.",
+      sidequest:null },
+
+    { place:"Woven Into the Story", tag:"Quiet loyalty, lasting reward",
+      eli:"A loyal foreign widow, gleaning scraps — and she ends up in the family line of the King of kings. Faithfulness really does matter more than I thought.",
+      final:true,
+      teaching:"Ruth never demanded anything. She stayed loyal, worked humbly, and trusted — and Boaz, a redeemer, stepped in to rescue her family. Their son Obed became grandfather to King David, weaving this quiet, faithful woman into the greatest story of all, the line that leads to Jesus. You never know how far a faithful heart will reach. Stay true in the small things, and God can make your quiet loyalty part of something enormous." },
+   ] },
   ]
 };
+CASE_RUTH.stops = CASE_RUTH.variants[0].stops;
 
 
 /* =====================================================================
@@ -595,7 +1057,9 @@ const CASE_PAUL = {
       scene:"You want to hold the past against him — he did real harm, after all. But a heart clenched around old wrongs can't receive a new story.",
       lesson:"Grace means letting a changed person be new. You loosen your grip and step back onto the road." },
   ],
-  stops: [
+  // Four trails converging on Saul's transformation into Paul (random pick in startCase).
+  variants: [
+   { title:"The Heart That Changed", stops: [
     { place:"The Road to Damascus", tag:"Where a man set against the truth is stopped in his tracks",
       eli:"This guy Saul HUNTS people who follow Jesus. He's the villain. There's no way HE turns good — no chance.",
       spots:[
@@ -666,8 +1130,160 @@ const CASE_PAUL = {
       eli:"The biggest villain became one of the greatest heroes. I was so sure people couldn't change. I was wrong — and I'm really glad I was.",
       final:true,
       teaching:"Saul set out to destroy the faith — and became Paul, the man who carried it farther than anyone. He was stopped, humbled, changed, welcomed by people brave enough to give him a chance, and sent across the world through storms, prisons, and shipwrecks. His letters, written in chains, were copied by hand and carried for two thousand years — words still read today. No one is beyond change, and a changed heart can carry the truth farther than we can imagine. That's the mission: to be transformed, and to help carry it on." },
+   ] },
+
+   { title:"The Persecutor", stops: [
+    { place:"Jerusalem", tag:"A young man who's sure he's right",
+      eli:"Some people are just bad guys, plain and simple. They never change — everybody knows that.",
+      spots:[
+        { ico:"🧥", label:"Watch at Stephen's trial", lead:"A follower of Jesus named Stephen is dragged out and stoned for his faith.",
+          clue:"A young man named Saul stands by approving, guarding the coats of those who do it." },
+        { ico:"😠", label:"See Saul's zeal", lead:"Saul is certain these believers are dangerous and must be stopped.",
+          clue:"He is utterly convinced he's serving God — and utterly wrong." },
+      ],
+      ask:"What does Saul do at the death of Stephen?",
+      options:["Tries to stop it","Stands by approving and guards the coats","Weeps and walks away"],
+      answer:1,
+      hint:"Saul watches approvingly and guards the coats of those stoning Stephen.",
+      sidequest:{ title:"Give someone a fair hearing", desc:"Everyone has already decided a newcomer is 'trouble.' Take the time to actually listen to their side?",
+        lesson:"You refuse to write someone off before knowing them. Eli learns that being sure you're right isn't the same as being right.", badge:"helper" } },
+
+    { place:"House to House", tag:"A man breathing threats",
+      eli:"So he's not just watching now — he's hunting people down? See, told you: bad to the bone.",
+      spots:[
+        { ico:"🚪", label:"Follow Saul's raids", lead:"Saul goes from house to house, dragging off men and women who follow Jesus.",
+          clue:"He throws them in prison, doing everything he can to stamp out the young faith." },
+        { ico:"🔥", label:"Feel his fury", lead:"The believers scatter in fear wherever Saul goes.",
+          clue:"He is, by every measure, the last person on earth you'd expect God to use." },
+      ],
+      ask:"What is Saul doing to the followers of Jesus?",
+      options:["Quietly ignoring them","Hunting them down and arresting them","Secretly helping them"],
+      answer:1,
+      hint:"Saul goes house to house, arresting believers and throwing them in prison.",
+      sidequest:null },
+
+    { place:"Letters to Damascus", tag:"Setting out to do more harm",
+      eli:"Now he's getting official papers to arrest even MORE of them, in another city? This guy is beyond hope.",
+      spots:[
+        { ico:"📜", label:"Examine the letters", lead:"Saul gets official letters granting him power to arrest believers in Damascus.",
+          clue:"He sets out on the road, determined to drag them back to Jerusalem in chains." },
+        { ico:"🛣️", label:"Watch him ride out", lead:"Saul travels toward Damascus, full of threats.",
+          clue:"He has no idea that on this very road, everything about him is about to change." },
+      ],
+      ask:"Where is Saul headed, and why?",
+      options:["To Damascus, to arrest believers","To Rome, to see the emperor","Home, to rest"],
+      answer:0,
+      hint:"Saul carries letters to Damascus so he can arrest and imprison the believers there.",
+      sidequest:null },
+
+    { place:"The Last Man You'd Expect", tag:"No one is beyond change",
+      eli:"He's the WORST enemy the believers have... and I have a funny feeling he's the one about to change the most. I did NOT see that coming.",
+      final:true,
+      teaching:"Saul wasn't a small-time troublemaker — he approved of killing believers and hunted them house to house. If anyone seemed beyond hope, it was him. That's exactly the point. The very man everyone had written off was the one God was about to transform into the greatest missionary who ever lived. No one — no one — is too far gone for a changed heart." },
+   ] },
+
+   { title:"The Reluctant Helper", stops: [
+    { place:"A House in Damascus", tag:"A believer given a hard assignment",
+      eli:"God wants a believer to go HELP the man who came to arrest him? No way. I'd hide.",
+      spots:[
+        { ico:"🙏", label:"Meet Ananias", lead:"A follower of Jesus named Ananias is praying when God speaks to him in a vision.",
+          clue:"God tells him to go to a house on Straight Street and find a man named Saul." },
+        { ico:"👁️", label:"Learn Saul's state", lead:"Saul has been struck blind and is waiting, praying, for three days.",
+          clue:"God says Ananias is to lay hands on Saul so he can see again." },
+      ],
+      ask:"Whom does God send Ananias to help?",
+      options:["Saul, the persecutor","A sick king","A lost child"],
+      answer:0,
+      hint:"God sends Ananias to Saul, the man who had come to arrest believers.",
+      sidequest:{ title:"Do a scary right thing", desc:"You're asked to be kind to someone who once hurt you. Take a breath and do the kind thing anyway?",
+        lesson:"You choose to help even though it's frightening. Eli learns that transformation sometimes needs a brave person willing to reach out first.", badge:"helper" } },
+
+    { place:"Ananias's Fear", tag:"Every reason to say no",
+      eli:"Of COURSE he's scared! Everyone knows what Saul has done. This is a trap, surely.",
+      spots:[
+        { ico:"😨", label:"Hear his objection", lead:"Ananias protests to God about the assignment.",
+          clue:"'Lord, I've heard how much harm this man has done to your people!'" },
+        { ico:"✨", label:"Hear God's answer", lead:"God gently but firmly reassures him.",
+          clue:"'Go — this man is my chosen instrument to carry my name to the nations.'" },
+      ],
+      ask:"Why is Ananias afraid to go to Saul?",
+      options:["Saul had been arresting and harming believers","Saul was a giant","The road was too far"],
+      answer:0,
+      hint:"Ananias knew Saul's cruel reputation — he'd been hunting believers like him.",
+      sidequest:null },
+
+    { place:"Brother Saul", tag:"An enemy welcomed as family",
+      eli:"He actually WENT? And called the man 'brother'? After everything?",
+      spots:[
+        { ico:"🤲", label:"Watch Ananias obey", lead:"Ananias goes to the house, lays his hands on Saul, and calls him 'Brother Saul.'",
+          clue:"Something like scales falls from Saul's eyes, and he can see again." },
+        { ico:"💧", label:"See Saul baptized", lead:"Saul gets up, is baptized, and eats.",
+          clue:"The hunter has become a brother — welcomed by the very people he came to arrest." },
+      ],
+      ask:"What happens when Ananias bravely obeys?",
+      options:["Saul regains his sight and is baptized","Saul arrests him on the spot","Nothing at all"],
+      answer:0,
+      hint:"Ananias lays hands on Saul; his sight returns and he is baptized.",
+      sidequest:null },
+
+    { place:"The Welcome That Changed a Man", tag:"Grace with skin on",
+      eli:"Saul changed on the road — but it took a scared believer being brave enough to welcome him. Both of them had to trust.",
+      final:true,
+      teaching:"God changed Saul's heart on the road — but the transformation needed one more thing: someone willing to welcome him. Ananias had every reason to refuse; he knew exactly what Saul had done. Yet he obeyed, laid his hands on his enemy, and called him 'brother.' Real transformation often needs brave people willing to give the changed a chance. Be the one who reaches out first." },
+   ] },
+
+   { title:"The New Mission", stops: [
+    { place:"The Synagogues of Damascus", tag:"The hunter now preaches",
+      eli:"People really change and then just... go right back to normal, right? This won't actually stick.",
+      spots:[
+        { ico:"📣", label:"Hear Saul preach", lead:"Right away, Saul begins telling everyone that Jesus is the Son of God.",
+          clue:"The very man who came to arrest believers is now boldly preaching the faith." },
+        { ico:"😲", label:"See the crowd's shock", lead:"Everyone who hears him is astonished.",
+          clue:"'Isn't this the man who came here to drag us away in chains?' They can hardly believe it." },
+      ],
+      ask:"What does Saul do right after his heart is changed?",
+      options:["Boldly preaches that Jesus is God's Son","Goes back to arresting believers","Leaves quietly and hides"],
+      answer:0,
+      hint:"Saul immediately begins preaching Jesus in the synagogues — the opposite of why he came.",
+      sidequest:{ title:"Cheer on a fresh start", desc:"Someone is trying hard to change, and others keep doubting them. Encourage their new start out loud?",
+        lesson:"You back someone's fresh start instead of doubting it. Eli learns that a changed life deserves support, not suspicion.", badge:"helper" } },
+
+    { place:"The Plot", tag:"The mission gets dangerous",
+      eli:"Uh oh — now the people who USED to be his side want him dead? Being changed cost him everything.",
+      spots:[
+        { ico:"🗡️", label:"Uncover the danger", lead:"Saul's former allies are furious at his change and plan to kill him.",
+          clue:"They watch the city gates closely, day and night, waiting to catch him." },
+        { ico:"🛡️", label:"See the believers rally", lead:"The believers he once hunted now work to protect him.",
+          clue:"The people Saul came to arrest are the ones who will save his life." },
+      ],
+      ask:"What danger does the changed Saul now face?",
+      options:["A plot to kill him","A heavy fine","Being sent home"],
+      answer:0,
+      hint:"His former allies plot to kill him and watch the gates to catch him.",
+      sidequest:null },
+
+    { place:"Over the Wall", tag:"A daring nighttime escape",
+      eli:"They lowered him in a BASKET over the city wall? That's the most Carmen-Sandiego thing yet!",
+      spots:[
+        { ico:"🧺", label:"Watch the escape", lead:"At night, the believers put Saul in a large basket.",
+          clue:"They lower him down through an opening in the city wall, past the watching gates." },
+        { ico:"🌟", label:"See the mission continue", lead:"Saul slips safely away to keep preaching elsewhere.",
+          clue:"His change wasn't a passing mood — it became the mission of his whole life." },
+      ],
+      ask:"How does Saul escape the plot in Damascus?",
+      options:["Lowered in a basket over the city wall","He fights his way out","He surrenders"],
+      answer:0,
+      hint:"The believers lower Saul in a basket through an opening in the wall at night.",
+      sidequest:null },
+
+    { place:"The Message Carries On", tag:"A changed heart on a mission",
+      eli:"He didn't just change and stop there — he spent the rest of his life carrying the good news, whatever it cost. The change was real.",
+      final:true,
+      teaching:"Saul's transformation wasn't a passing feeling — it became his whole life's mission. He preached at once, faced deadly plots, and escaped in a basket over a wall, all to carry the very message he once tried to destroy. He traveled the world and wrote letters, still read two thousand years later. A truly changed heart doesn't just turn around; it carries the truth forward, further than anyone imagined." },
+   ] },
   ]
 };
+CASE_PAUL.stops = CASE_PAUL.variants[0].stops;
 
 
 /* =====================================================================
@@ -700,7 +1316,9 @@ const CASE_NOAH = {
       scene:"Eli wants to build it his own way and ignore the plans. But guesses and shortcuts leave the ark leaky and unsafe — some instructions are worth following exactly.",
       lesson:"Obedience means trusting the plan even when we can't see the whole picture yet. You find your way back." },
   ],
-  stops: [
+  // Four trails converging on the ark and the rainbow promise (random pick in startCase).
+  variants: [
+   { title:"The Ark and the Promise", stops: [
     { place:"Noah's Field", tag:"Where a strange task begins",
       eli:"Build a giant boat? Out here, with no water anywhere? That makes <b>no</b> sense. I'd just... not.",
       spots:[
@@ -771,8 +1389,160 @@ const CASE_NOAH = {
       eli:"We made it. All that building, all that waiting... and it wasn't silly at all. I think I finally get it.",
       final:true,
       teaching:"Noah obeyed when it made no sense, built for years while everyone laughed, gathered the animals two by two, and waited out the long storm — all because he trusted. When the family and animals finally stepped onto dry land, God set a rainbow in the sky as a promise never to flood the whole earth again. Obedience and faith aren't about understanding everything first. They're about trusting the One who does, and doing the next right thing — even when it looks strange to everyone else." },
+   ] },
+
+   { title:"The Strangest Blueprint", stops: [
+    { place:"A World Gone Wrong", tag:"One faithful man in a dark time",
+      eli:"Build a giant boat on dry land with no rain in sight? That's the silliest instruction I've ever heard. I'd ignore it.",
+      spots:[
+        { ico:"🌍", label:"Look at the world", lead:"The earth has filled up with cruelty and wrong.",
+          clue:"Yet one man, Noah, quietly keeps walking faithfully with God." },
+        { ico:"🙏", label:"Meet Noah", lead:"God decides to begin again, and looks for someone he can trust.",
+          clue:"He chooses Noah — not the strongest or richest, but the one who obeys." },
+      ],
+      ask:"Why does God choose Noah?",
+      options:["He was the wealthiest man alive","He walked faithfully with God","He was the best sailor"],
+      answer:1,
+      hint:"In a world gone wrong, Noah stood out because he walked faithfully with God.",
+      sidequest:{ title:"Do right when it's unpopular", desc:"Everyone around is cutting a corner. Quietly do the honest thing even though no one else is?",
+        lesson:"You do right while others don't. Eli learns that faithfulness sometimes means standing alone.", badge:"helper" } },
+
+    { place:"The Instructions", tag:"A blueprint that made no sense",
+      eli:"Wait — he wrote down the EXACT measurements? For a boat? Nowhere near water?",
+      spots:[
+        { ico:"📐", label:"Read the plans", lead:"God gives Noah a detailed design: a huge ark of wood, with rooms, a door, and a window.",
+          clue:"It's enormous — big enough for his family and pairs of every kind of animal." },
+        { ico:"🔨", label:"Start the work", lead:"Noah gathers wood and begins to build, far from any sea.",
+          clue:"It makes no sense to anyone — but Noah simply does exactly what God said." },
+      ],
+      ask:"What does God tell Noah to build?",
+      options:["A giant boat, the ark","A tall tower","A stone wall"],
+      answer:0,
+      hint:"God gives Noah the plans for an ark — an enormous wooden boat.",
+      sidequest:null },
+
+    { place:"Years of Hammering", tag:"Obeying while everyone laughs",
+      eli:"People are LAUGHING at him... and he just keeps building? For YEARS? Why not quit?",
+      spots:[
+        { ico:"😆", label:"Hear the mockers", lead:"Neighbors point and laugh at the giant boat on dry land.",
+          clue:"There's no sea and no rain — building it looks utterly foolish." },
+        { ico:"💪", label:"Watch Noah keep going", lead:"Day after day, year after year, Noah keeps building.",
+          clue:"He trusts God more than he fears the laughter, and he never stops." },
+      ],
+      ask:"How do people react while Noah builds the ark?",
+      options:["They help him eagerly","They laugh and mock him","They ignore him completely"],
+      answer:1,
+      hint:"With no sea and no rain, the neighbors mock Noah for building a giant boat.",
+      sidequest:null },
+
+    { place:"Faith That Keeps Hammering", tag:"Obedience before it makes sense",
+      eli:"He obeyed for YEARS while everyone laughed, before a single drop fell. That's a kind of faith I want to have.",
+      final:true,
+      teaching:"God asked Noah to do something that made no sense at all — build a massive boat far from any water — and Noah simply obeyed, hammering away for years while his neighbors laughed. He didn't wait to understand it all first; he trusted the One who did. That's faith: doing the next right thing God asks, even when it looks foolish to everyone around you and the rain hasn't started yet." },
+   ] },
+
+   { title:"Two by Two", stops: [
+    { place:"The Gathering", tag:"Animals coming from everywhere",
+      eli:"How do you get every kind of animal onto one boat? That's impossible — this plan is falling apart.",
+      spots:[
+        { ico:"🦓", label:"Watch the animals come", lead:"From every direction, animals begin arriving at the finished ark.",
+          clue:"They come in pairs — two of every kind, a male and a female — led by God, not chased by Noah." },
+        { ico:"🐘", label:"See them board", lead:"Pair by pair, the animals file up the ramp into the ark.",
+          clue:"What looked impossible happens quietly, exactly as God said it would." },
+      ],
+      ask:"How do the animals come to the ark?",
+      options:["Two by two, a pair of each kind","All of one kind at a time","Noah hunts them down"],
+      answer:0,
+      hint:"The animals come in pairs — two of every kind, male and female.",
+      sidequest:{ title:"Welcome the ones left out", desc:"Some kids are being left out of a group. Go make room and bring them in?",
+        lesson:"You make sure no one's left outside. Eli learns that God's rescue makes room for everyone who will come.", badge:"helper" } },
+
+    { place:"The Family Boards", tag:"Eight who trusted",
+      eli:"So the whole world laughed... and only Noah's little family actually got on board?",
+      spots:[
+        { ico:"👨‍👩‍👦", label:"Count the family", lead:"Noah, his wife, his three sons, and their wives step aboard.",
+          clue:"Just eight people in all — the ones who believed and obeyed." },
+        { ico:"🍎", label:"Check the supplies", lead:"They bring food for the family and all the animals.",
+          clue:"Everything God told them to gather is ready. They've obeyed down to the last detail." },
+      ],
+      ask:"How many people go into the ark?",
+      options:["Eight — Noah's family","Just Noah alone","A hundred neighbors"],
+      answer:0,
+      hint:"Noah, his wife, his three sons and their wives — eight people in all.",
+      sidequest:null },
+
+    { place:"God Shuts the Door", tag:"Safe inside before the storm",
+      eli:"Noah didn't even close the door himself — GOD did? Then the rain came?",
+      spots:[
+        { ico:"🚪", label:"See the door close", lead:"When everyone is safely inside, the LORD himself shuts the door of the ark.",
+          clue:"They are sealed in, safe, before a single drop has fallen." },
+        { ico:"🌧️", label:"Feel the first rain", lead:"Then the sky opens and the rain begins.",
+          clue:"The obedience of years is what carried them safely inside in time." },
+      ],
+      ask:"Who shuts the door of the ark?",
+      options:["God himself","Noah's eldest son","The strongest animal"],
+      answer:0,
+      hint:"The LORD himself shuts them safely inside before the rain begins.",
+      sidequest:null },
+
+    { place:"Safe Inside", tag:"Where obedience led",
+      eli:"All those years of trusting and obeying... they led right here, to being safe inside when the storm hit. It was worth it.",
+      final:true,
+      teaching:"When the finished ark stood ready, the animals came two by two, Noah's family of eight stepped aboard, and God himself shut the door — sealing them safely in before the first raindrop fell. Every strange instruction Noah had obeyed for years led to this moment of shelter. Obedience isn't always understood in the middle of it. But trusting God and doing what he says has a way of bringing you exactly where you need to be." },
+   ] },
+
+   { title:"The Dove and the Rainbow", stops: [
+    { place:"Forty Days of Rain", tag:"Waiting out the long storm",
+      eli:"Stuck on a boat in endless rain? I'd be so done. When does this part just... end?",
+      spots:[
+        { ico:"🌊", label:"Watch the waters rise", lead:"Rain falls for forty days and nights until water covers everything.",
+          clue:"The ark floats safely on top of the deep, carrying its precious cargo." },
+        { ico:"⏳", label:"Feel the long wait", lead:"Even after the rain stops, they wait for the waters to go down.",
+          clue:"Faith isn't only obeying — sometimes it's the patience to wait for God's timing." },
+      ],
+      ask:"How long did the rain fall?",
+      options:["Forty days and forty nights","A single afternoon","A whole year"],
+      answer:0,
+      hint:"The rain fell for forty days and forty nights.",
+      sidequest:{ title:"Keep someone company while they wait", desc:"A friend is stuck waiting on something hard and slow. Wait it out beside them?",
+        lesson:"You sit with someone through a long wait. Eli learns that faith includes patience when nothing seems to be happening.", badge:"helper" } },
+
+    { place:"The Dove Returns", tag:"A leaf that means hope",
+      eli:"He sent out a bird to check for land? Clever. What did it find?",
+      spots:[
+        { ico:"🕊️", label:"Send out the birds", lead:"Noah sends a raven, then a dove, to see if the waters have gone down.",
+          clue:"The dove comes back the second time carrying a fresh olive leaf in its beak." },
+        { ico:"🌿", label:"Read the sign", lead:"An olive leaf means plants are growing again.",
+          clue:"When Noah sends the dove once more and it doesn't return, he knows the land is dry." },
+      ],
+      ask:"What does the dove bring back to the ark?",
+      options:["A fresh olive leaf","A fish","A stone"],
+      answer:0,
+      hint:"The dove returns with a fresh olive leaf — a sign the land is drying and plants are growing.",
+      sidequest:null },
+
+    { place:"The Promise in the Sky", tag:"A new beginning, sealed by God",
+      eli:"They finally step onto dry land — and God paints a RAINBOW as a promise? What a way to end it.",
+      spots:[
+        { ico:"👣", label:"Step onto dry land", lead:"Noah, his family, and all the animals come out onto the fresh, dry earth.",
+          clue:"The first thing Noah does is stop and worship the God who saved them." },
+        { ico:"🌈", label:"See the rainbow", lead:"God sets a rainbow in the clouds.",
+          clue:"It's his promise: never again will a flood destroy the whole earth." },
+      ],
+      ask:"What is the rainbow a sign of?",
+      options:["God's promise to never flood the whole earth again","A coming storm","The way back to the ark"],
+      answer:0,
+      hint:"God sets the rainbow as the sign of his promise never to flood the whole earth again.",
+      sidequest:null },
+
+    { place:"A Promise Kept", tag:"Where faithful obedience leads",
+      eli:"Obey, trust, wait... and it ends with a rainbow and a promise. God was faithful the whole time — I just couldn't see the end yet.",
+      final:true,
+      teaching:"Noah waited out the long storm, sent out the dove, and at last stepped onto dry ground with his family and the animals. He worshiped — and God answered with a rainbow, a promise never to flood the whole earth again. All that trusting and obeying, even the patient waiting, led to a fresh start sealed by God's own promise. Faithful obedience may feel long in the middle, but it always ends up somewhere good in the hands of a God who keeps his word." },
+   ] },
   ]
 };
+CASE_NOAH.stops = CASE_NOAH.variants[0].stops;
 
 
 /* =====================================================================
@@ -801,7 +1571,9 @@ const CASE_DANIEL = {
       scene:"Eli tries to keep everyone happy and bend whichever way the crowd leans. But you can't follow God and the crowd in opposite directions at once — the path just doubles back.",
       lesson:"Sometimes doing right means someone won't be pleased, and that's okay. You find your footing and rejoin the trail." },
   ],
-  stops: [
+  // Four trails converging on the lions' den (random pick in startCase).
+  variants: [
+   { title:"The Lions' Den", stops: [
     { place:"The King's Court", tag:"A faithful man far from home",
       eli:"Daniel's a foreigner serving a foreign king? I'd just keep my head down and blend in so nobody bugs me.",
       spots:[
@@ -872,8 +1644,160 @@ const CASE_DANIEL = {
       eli:"He's ALIVE! The lions didn't touch him! I came in wanting to hide who I was... and Daniel just showed me the braver way.",
       final:true,
       teaching:"Daniel served faithfully in a foreign land, and when a law was made to trap him, he kept praying to God exactly as he always had — not hiding, not showing off, just quietly faithful even when it could cost him everything. Thrown to the lions, he trusted God through the long dark night. In the morning the king found him unharmed: God had shut the lions' mouths. Courage isn't never being afraid. It's staying true to God and doing the next right thing — especially when it's hard, and especially when others are watching." },
+   ] },
+
+   { title:"The Jealous Plot", stops: [
+    { place:"The Palace", tag:"A servant too good to ignore",
+      eli:"If everyone else at work resented me, I'd just blend in and stop standing out. Way safer.",
+      spots:[
+        { ico:"📈", label:"Watch Daniel work", lead:"Daniel serves King Darius so wisely and honestly that he rises above all the other officials.",
+          clue:"The king plans to put him in charge of the whole kingdom." },
+        { ico:"🤨", label:"Feel the jealousy", lead:"The other officials burn with envy at Daniel's success.",
+          clue:"They start hunting for something — anything — to use against him." },
+      ],
+      ask:"Why does King Darius favor Daniel above the others?",
+      options:["Daniel was the king's cousin","His excellent, trustworthy work","He gave the biggest gifts"],
+      answer:1,
+      hint:"Daniel served so wisely and honestly that the king wanted to promote him over everyone.",
+      sidequest:{ title:"Praise a rival honestly", desc:"Someone you might envy did great work. Give them real, public credit instead of grumbling?",
+        lesson:"You honor someone instead of envying them. Eli learns that jealousy is a trap — and honesty is the braver road.", badge:"helper" } },
+
+    { place:"No Fault to Find", tag:"An honest man gives no handle",
+      eli:"They're digging for dirt on Daniel? Bet they find something — everybody's got a secret.",
+      spots:[
+        { ico:"🔎", label:"Watch them investigate", lead:"The jealous officials search Daniel's work for any mistake or corruption.",
+          clue:"They find nothing — he is completely faithful and trustworthy." },
+        { ico:"🙏", label:"Spot their only angle", lead:"They realize the only way to trap him is through his faith.",
+          clue:"'We'll never trap Daniel unless it has to do with the law of his God.'" },
+      ],
+      ask:"Why can't the officials find anything to accuse Daniel of?",
+      options:["He was too sneaky","He was honest and faithful — no corruption","He paid them off"],
+      answer:1,
+      hint:"Daniel was so trustworthy that they found no fault — the only angle left was his faith.",
+      sidequest:null },
+
+    { place:"The Trick Law", tag:"A trap dressed up as an honor",
+      eli:"A law that says pray only to the KING for a month? That's a trap with Daniel's name on it.",
+      spots:[
+        { ico:"📜", label:"Read the new law", lead:"The officials flatter the king into signing a law they invented.",
+          clue:"For thirty days, anyone who prays to anyone but the king will be thrown into the lions' den." },
+        { ico:"🔒", label:"See the catch", lead:"Once the king signs, the law cannot be changed — not even by him.",
+          clue:"They know Daniel prays to God every day. The trap is set." },
+      ],
+      ask:"What does the trick law forbid for thirty days?",
+      options:["Praying to anyone but the king","Leaving the city","Eating bread"],
+      answer:0,
+      hint:"The law bans praying to anyone except the king — aimed straight at Daniel's daily prayers.",
+      sidequest:null },
+
+    { place:"A Trap Set for a Good Man", tag:"Faithfulness in the crosshairs",
+      eli:"They couldn't find ANYTHING wrong with him — so they made being faithful against the law. That tells you how good he really was.",
+      final:true,
+      teaching:"Daniel's enemies searched and searched for a flaw, and found none — he was simply honest and faithful in everything. So they made a law that turned his very faithfulness into a crime. Being good doesn't make everyone happy; sometimes it makes jealous people angry. But a life with nothing to hide gives no handle to those who'd trip you up. The trap was set — and Daniel's integrity would meet it head-on." },
+   ] },
+
+   { title:"The Open Window", stops: [
+    { place:"The News Arrives", tag:"A choice: hide, or stay true",
+      eli:"Okay, if praying could get me thrown to lions? I'd just skip it quietly for a month. Nobody would blame me.",
+      spots:[
+        { ico:"📰", label:"Bring Daniel the news", lead:"Daniel learns the trap law has been signed and sealed.",
+          clue:"He knows exactly what it means — and exactly what he'll do." },
+        { ico:"🕊️", label:"Watch his response", lead:"Daniel doesn't panic, argue, or protest.",
+          clue:"He simply goes home to pray, just as he always has." },
+      ],
+      ask:"What does Daniel do when he hears about the law?",
+      options:["Stops praying to stay safe","Keeps praying to God as always","Flees the city"],
+      answer:1,
+      hint:"Daniel doesn't hide — he goes home and keeps praying just as he always had.",
+      sidequest:{ title:"Keep a good habit under pressure", desc:"Doing the right thing just got harder and less popular. Keep it up quietly anyway?",
+        lesson:"You hold to what's right even when it's suddenly costly. Eli learns that faithfulness means not dropping good habits the moment they're tested.", badge:"helper" } },
+
+    { place:"Three Times a Day", tag:"Faithful in plain sight",
+      eli:"He opened the windows? He's not even trying to HIDE it? That's either brave or crazy...",
+      spots:[
+        { ico:"🪟", label:"See the open windows", lead:"Daniel goes to his upstairs room, where the windows open toward Jerusalem.",
+          clue:"He doesn't sneak — he prays the same open way he always has." },
+        { ico:"🙇", label:"Count his prayers", lead:"Daniel kneels and prays and gives thanks to God.",
+          clue:"Three times a day, just as before — not hiding, not showing off, simply faithful." },
+      ],
+      ask:"How often does Daniel pray, even under the new law?",
+      options:["Three times a day, as always","Once, in secret","Never again"],
+      answer:0,
+      hint:"Daniel keeps praying three times a day at his open window, exactly as he always had.",
+      sidequest:null },
+
+    { place:"Caught and Condemned", tag:"When doing right costs everything",
+      eli:"They caught him... and even the KING can't undo his own law? So Daniel really gets thrown in?",
+      spots:[
+        { ico:"👀", label:"See them catch him", lead:"The officials spy Daniel praying and rush to accuse him before the king.",
+          clue:"They remind the king his law cannot be changed." },
+        { ico:"😟", label:"Watch the king's dismay", lead:"Darius is horrified — he likes Daniel and tries all day to save him.",
+          clue:"But the law is fixed, and Daniel is led to the lions' den." },
+      ],
+      ask:"What happens when Daniel is caught praying?",
+      options:["He is thrown into the lions' den","He is quietly forgiven","He is made king"],
+      answer:0,
+      hint:"Trapped by his own unchangeable law, the king must have Daniel thrown to the lions.",
+      sidequest:null },
+
+    { place:"He Would Not Hide", tag:"Faithful, whatever the cost",
+      eli:"He could've prayed with the curtains shut and stayed safe. Instead he stayed true, right out in the open. That's the braver way — the way I want to be.",
+      final:true,
+      teaching:"Daniel could have skipped praying for a month, or done it in secret with the windows shut, and no one would have blamed him. Instead he kept praying openly, three times a day, exactly as always — not to show off, just refusing to hide who he was. Real courage isn't loud. It's quietly staying true to God even when it might cost you everything. Daniel wouldn't hide — and God would meet him in the dark." },
+   ] },
+
+   { title:"The Sleepless King", stops: [
+    { place:"A King Who Cannot Sleep", tag:"The long night of waiting",
+      eli:"So the powerful king just shrugs and moves on, right? Daniel's on his own now.",
+      spots:[
+        { ico:"🌙", label:"Watch the king all night", lead:"King Darius, who loves Daniel, is heartbroken over the trap he fell into.",
+          clue:"He refuses food and entertainment and cannot sleep a wink all night long." },
+        { ico:"🤞", label:"Hear his hope", lead:"The king clings to one hope as he paces.",
+          clue:"'May the God you serve so faithfully rescue you,' he had told Daniel." },
+      ],
+      ask:"How does King Darius spend the night?",
+      options:["Feasting happily","Sleepless and worried, refusing to eat","Away on a trip"],
+      answer:1,
+      hint:"Darius is so distressed he can't eat or sleep, hoping Daniel's God will rescue him.",
+      sidequest:{ title:"Sit up with a worried friend", desc:"Someone is up all night sick with worry. Keep them company and share their hope?",
+        lesson:"You share someone's long, worried night. Eli learns that hope is easier to hold when we don't wait in the dark alone.", badge:"helper" } },
+
+    { place:"In the Den", tag:"Not alone among the lions",
+      eli:"He's in there with real, hungry lions all night. How is he not... you know?",
+      spots:[
+        { ico:"🦁", label:"Look into the den", lead:"Daniel spends the whole night among the lions.",
+          clue:"God sends an angel who shuts the lions' mouths, so they do him no harm." },
+        { ico:"😌", label:"See Daniel's peace", lead:"Daniel rests through the night, unharmed.",
+          clue:"He is not alone in the dark — God is right there with him." },
+      ],
+      ask:"What keeps Daniel safe among the lions?",
+      options:["An angel who shuts the lions' mouths","A thick iron cage","The lions weren't hungry"],
+      answer:0,
+      hint:"God sends an angel to shut the lions' mouths so they can't harm Daniel.",
+      sidequest:null },
+
+    { place:"Dawn at the Den", tag:"The morning after the dark",
+      eli:"The king RAN to the den at sunrise? And Daniel actually answers back — alive?!",
+      spots:[
+        { ico:"🌅", label:"Race to the den at dawn", lead:"At first light the king hurries to the den and calls out anxiously.",
+          clue:"'Daniel — was your God able to rescue you from the lions?'" },
+        { ico:"🎉", label:"Hear Daniel answer", lead:"A voice comes up from the den.",
+          clue:"'My God sent his angel and shut the lions' mouths.' Daniel is completely unharmed." },
+      ],
+      ask:"What does the king find at dawn?",
+      options:["Daniel alive and unharmed","An empty den","Only footprints"],
+      answer:0,
+      hint:"At dawn Daniel answers from the den — alive and unharmed; God shut the lions' mouths.",
+      sidequest:null },
+
+    { place:"Alive at Dawn", tag:"God in the long dark night",
+      eli:"He stayed faithful, trusted God through the scariest night imaginable — and walked out alive. Being true was worth it after all.",
+      final:true,
+      teaching:"While a worried king lay sleepless all night, Daniel spent that same night among lions — and was not alone. God sent an angel to shut their mouths, and at dawn Daniel walked out unharmed. Staying faithful had led him into real danger, through a long dark night, and out the other side into the morning. Courage doesn't mean the dark night never comes. It means trusting that God is with you in it — and that morning is coming." },
+   ] },
   ]
 };
+CASE_DANIEL.stops = CASE_DANIEL.variants[0].stops;
 
 
 /* =====================================================================
@@ -1166,7 +2090,9 @@ const CASE_LOAVES = {
       scene:"'All these hungry people aren't really my job,' Eli decides, and slips toward the exit. But walking past someone who needs help just leads down a lonely, empty little loop.",
       lesson:"You don't have to fix everything — but you can offer something. You turn around and rejoin the others." },
   ],
-  stops: [
+  // Four trails converging on the feeding of the five thousand (random pick in startCase).
+  variants: [
+   { title:"The Loaves and Fishes", stops: [
     { place:"The Hungry Hillside", tag:"A huge crowd, and evening coming",
       eli:"Thousands of people, way out here, and it's getting dark and everyone's hungry. Yikes. Not my problem though, right?",
       spots:[
@@ -1237,8 +2163,160 @@ const CASE_LOAVES = {
       final:true,
       teaching:"Five thousand hungry people, one impossible problem, and the disciples' answer was 'send them away — there's not enough.' Then one boy offered his tiny lunch, Jesus gave thanks for it, and as it was shared it became more than enough — with twelve baskets to spare. That's how God provides. You don't need to have a lot before you can help; you just need to offer what you have. Worry is always sure there won't be enough, so it holds on tight and looks away. But a small gift, given with thanks and love, has a way of stretching further than anyone counted on."
     },
+   ] },
+
+   { title:"The Impossible Problem", stops: [
+    { place:"The Gathering Crowd", tag:"Thousands come to a lonely place",
+      eli:"That many people showing up? I'd be counting my snacks and making sure I got mine first.",
+      spots:[
+        { ico:"👥", label:"Watch the crowd arrive", lead:"Thousands of people follow Jesus to a remote hillside.",
+          clue:"They come hungry to hear him teach and to be healed — five thousand men, plus women and children." },
+        { ico:"🌄", label:"Feel the day slip away", lead:"Jesus teaches and heals until the sun starts to sink.",
+          clue:"It's getting late, everyone's hungry, and there are no shops for miles." },
+      ],
+      ask:"Why has the huge crowd come to this lonely place?",
+      options:["To hear Jesus and be healed","To go to market","To watch a battle"],
+      answer:0,
+      hint:"The crowd came hungry to hear Jesus teach and to be healed.",
+      sidequest:{ title:"Notice who's hungry", desc:"Someone nearby is going without while others have plenty. Quietly make sure they're included?",
+        lesson:"You notice a need others walked past. Eli learns that seeing people's hunger is the first step to helping.", badge:"helper" } },
+
+    { place:"You Feed Them", tag:"A task that feels impossible",
+      eli:"'Send them away to buy their own food' — yeah, that's what I'd say. Not my problem, right?",
+      spots:[
+        { ico:"🗣️", label:"Hear the disciples' plan", lead:"The disciples urge Jesus to send the crowd away to find food.",
+          clue:"Instead, Jesus says something startling: 'You give them something to eat.'" },
+        { ico:"😳", label:"See their reaction", lead:"The disciples are stunned by the idea.",
+          clue:"Feed thousands? With what? They have almost nothing." },
+      ],
+      ask:"What does Jesus tell the disciples to do about the hungry crowd?",
+      options:["Send everyone home","Feed them themselves","Ignore the problem"],
+      answer:1,
+      hint:"Rather than send them away, Jesus tells the disciples, 'You give them something to eat.'",
+      sidequest:null },
+
+    { place:"The Impossible Math", tag:"Worry counts what's missing",
+      eli:"See? They did the math and there's nowhere near enough. Told you — never enough to go around.",
+      spots:[
+        { ico:"🧮", label:"Do the numbers with Philip", lead:"Philip figures the cost of feeding everyone.",
+          clue:"Even eight months' wages wouldn't buy enough bread for each person to get a bite." },
+        { ico:"😔", label:"Feel the hopelessness", lead:"The disciples see only what they lack.",
+          clue:"By every calculation, the problem is far too big to solve." },
+      ],
+      ask:"What do the disciples conclude about feeding the crowd?",
+      options:["It's easy","There is nowhere near enough","They'll just share a little"],
+      answer:1,
+      hint:"Philip figures even months of wages couldn't buy enough — there's not nearly enough.",
+      sidequest:null },
+
+    { place:"Too Big to Fix", tag:"Where worry always stops",
+      eli:"The disciples got stuck on 'not enough' — that's exactly where I always get stuck too. But I have a feeling Jesus isn't finished...",
+      final:true,
+      teaching:"Faced with thousands of hungry people and almost no food, the disciples did the math and came up empty: send them away, there's not enough. That's where worry always stops — counting what's missing and giving up. But 'not enough for us' is never the end of the story with God. The problem that looked far too big was about to become the setting for one of his greatest gifts." },
+   ] },
+
+   { title:"The Boy's Lunch", stops: [
+    { place:"Searching the Crowd", tag:"Looking for anything at all",
+      eli:"Find food in a crowd of thousands? Good luck. Everyone's hoarding their own, obviously.",
+      spots:[
+        { ico:"🔍", label:"Search with Andrew", lead:"The disciple Andrew moves through the crowd, hunting for any food at all.",
+          clue:"Among thousands of people, hardly anyone has brought a thing." },
+        { ico:"🧒", label:"Spot the one who shares", lead:"Andrew finds a single boy willing to offer what he has.",
+          clue:"While grown-ups hold tight to their own, a child steps forward." },
+      ],
+      ask:"What does Andrew go looking for in the crowd?",
+      options:["A doctor","Any food to feed people","A place to sit"],
+      answer:1,
+      hint:"Andrew searches the crowd for any food at all to help feed the people.",
+      sidequest:{ title:"Give first", desc:"There's a little of something good to share, and everyone's waiting for someone else to start. Be the first to give?",
+        lesson:"You give before anyone else will. Eli learns that generosity usually needs someone brave enough to go first.", badge:"helper" } },
+
+    { place:"Five Loaves, Two Fish", tag:"A very small offering",
+      eli:"A little kid's lunch? Five little rolls and a couple of fish? That's nothing against thousands.",
+      spots:[
+        { ico:"🍞", label:"Count the loaves", lead:"The boy has five small barley loaves.",
+          clue:"Barley bread was the food of poor folk — this is a humble lunch." },
+        { ico:"🐟", label:"Count the fish", lead:"He also has two little dried fish.",
+          clue:"It's not much at all — but it's everything he has, and he's willing to give it." },
+      ],
+      ask:"What does the boy have to offer?",
+      options:["Five loaves and two fish","A basket of gold","A jug of water"],
+      answer:0,
+      hint:"The boy offers his lunch: five small barley loaves and two fish.",
+      sidequest:null },
+
+    { place:"But What Is That?", tag:"The gift handed over",
+      eli:"Even Andrew says 'what good is that among so many?' — and the boy hands it over anyway?",
+      spots:[
+        { ico:"🤲", label:"Hear Andrew's doubt", lead:"Andrew brings the boy to Jesus, unsure.",
+          clue:"'But what is that among so many?' he wonders aloud." },
+        { ico:"💛", label:"Watch the boy give", lead:"The boy places his whole lunch into Jesus' hands.",
+          clue:"He doesn't hold back the little he has — he simply offers it." },
+      ],
+      ask:"What does the boy do with his small lunch?",
+      options:["Eats it quickly himself","Gives it to Jesus","Hides it away"],
+      answer:1,
+      hint:"Despite the doubt, the boy hands his whole small lunch over to Jesus.",
+      sidequest:null },
+
+    { place:"The Little That Was Offered", tag:"Small gifts in open hands",
+      eli:"A kid's tiny lunch, given away instead of hoarded. I keep wanting to hold on tight — but he just... opened his hands.",
+      final:true,
+      teaching:"In a crowd of thousands where the grown-ups held tight to their own, one boy offered his small barley lunch — five loaves and two fish — even when a disciple doubted it could matter. That's the whole secret of how God provides: you don't need to have much before you can help. You just need to offer what's in your hands. Worry clutches and looks away; generosity opens up and gives. And a small gift, freely given, is exactly what God loves to multiply." },
+   ] },
+
+   { title:"Twelve Baskets Over", stops: [
+    { place:"Sit Down on the Grass", tag:"Getting ready for a miracle",
+      eli:"Why would he tell thousands of hungry people to sit down when there's basically no food? Weird move.",
+      spots:[
+        { ico:"🌱", label:"Watch them be seated", lead:"Jesus tells the disciples to have everyone sit down on the green grass.",
+          clue:"The people settle in groups, thousands of them, and wait to see what he'll do." },
+        { ico:"🙂", label:"Feel the calm", lead:"There's a strange peace as everyone gets ready.",
+          clue:"Jesus isn't worried at all — he already knows what he's about to do." },
+      ],
+      ask:"What does Jesus have the huge crowd do first?",
+      options:["Sit down on the grass","Line up single file","Go home"],
+      answer:0,
+      hint:"Jesus has the disciples seat everyone on the grass in groups.",
+      sidequest:{ title:"Set the table for others", desc:"A meal or snack is about to be shared. Quietly help get everyone seated and ready before you take yours?",
+        lesson:"You serve the setup instead of grabbing first. Eli learns that provision flows best when we make room for everyone.", badge:"helper" } },
+
+    { place:"He Gave Thanks", tag:"The small lunch, blessed",
+      eli:"He's thanking God for... five rolls and two fish? For thousands? I'd be too busy panicking.",
+      spots:[
+        { ico:"🙏", label:"Watch Jesus give thanks", lead:"Jesus takes the five loaves and two fish and looks up to heaven.",
+          clue:"He gives thanks to God for the little that's there — before there's any sign of more." },
+        { ico:"🍞", label:"See him break the bread", lead:"He begins breaking the bread and fish and handing them to the disciples to pass out.",
+          clue:"And somehow, the food keeps coming, and coming, and coming." },
+      ],
+      ask:"What does Jesus do before the food is shared?",
+      options:["Gives thanks to God","Sends for more supplies","Divides it into tiny crumbs"],
+      answer:0,
+      hint:"Jesus looks up to heaven and gives thanks for the loaves and fish before sharing them.",
+      sidequest:null },
+
+    { place:"More Than Enough", tag:"Leftovers from almost nothing",
+      eli:"Everyone ate until they were FULL? From one kid's lunch? And there were LEFTOVERS?",
+      spots:[
+        { ico:"😋", label:"Watch everyone eat", lead:"All five thousand (plus women and children) eat as much as they want.",
+          clue:"Every single person is completely satisfied — no one goes hungry." },
+        { ico:"🧺", label:"Gather the leftovers", lead:"The disciples collect what's left over.",
+          clue:"Twelve full baskets of pieces remain — far more than they started with." },
+      ],
+      ask:"How much food was left over after everyone ate?",
+      options:["Twelve baskets full","A few crumbs","Nothing at all"],
+      answer:0,
+      hint:"After everyone was full, the disciples gathered twelve baskets of leftovers.",
+      sidequest:null },
+
+    { place:"Enough, and More", tag:"How God provides",
+      eli:"Twelve whole baskets LEFT OVER — from a lunch I would've called 'not enough.' A little, given and blessed, fed everybody.",
+      final:true,
+      teaching:"Jesus seated the crowd, took a boy's tiny lunch, gave thanks for it, and began to share — and it kept multiplying until thousands ate their fill and twelve baskets of leftovers remained. What started as 'not nearly enough' became far more than enough. That's how God provides: not by us having a lot, but by us offering the little we have with thanks. In grateful, open hands, a small gift stretches further than anyone could count." },
+   ] },
   ]
 };
+CASE_LOAVES.stops = CASE_LOAVES.variants[0].stops;
 
 
 /* =====================================================================
@@ -1271,7 +2349,9 @@ const CASE_EDEN = {
       scene:"Eli figures if he just tucks the mistake away where nobody can see, it'll be like it never happened. But the hollow only gets darker and lonelier the deeper he hides.",
       lesson:"Hiding from the people who love you doesn't make the wrong disappear — it just makes you feel alone with it. Coming out into the light is a relief. You turn back." },
   ],
-  stops: [
+  // Four trails converging on honesty and grace in the garden (random pick in startCase).
+  variants: [
+   { title:"The Garden and the Serpent", stops: [
     { place:"The Good Garden", tag:"Everything given, one loving rule",
       eli:"A perfect garden, everything you need, and just one 'please don't'? How hard could following ONE rule be?",
       spots:[
@@ -1343,8 +2423,160 @@ const CASE_EDEN = {
       final:true,
       teaching:"In the good garden there was one loving rule, and a sneaky voice made breaking it look like a great idea. The moment they did, everything changed: for the first time they felt shame, sewed leaves to cover up, hid in the bushes, and blamed each other. But notice what God did. He came walking through the garden and called, 'Where are you?' — not because he couldn't find them, but to invite them out of hiding. There were real consequences, yet he didn't stop loving them; he even made them proper clothes to cover them, and promised that one day everything broken would be made right. That's the truth under this whole story: everyone does wrong sometimes, and the first thing wrong makes us want to do is hide and blame. But hiding from someone who loves you only leaves you lonely. Being honest is the way back — and love comes looking for you even when you've messed up."
     },
+   ] },
+
+   { title:"The Serpent's Question", stops: [
+    { place:"The One Rule", tag:"A whole garden, and a single boundary",
+      eli:"One rule in the whole garden? Honestly, I'd be tempted to break it just to see what happens.",
+      spots:[
+        { ico:"🌳", label:"Look around the garden", lead:"God has given Adam and Eve a beautiful garden full of good trees to enjoy.",
+          clue:"They may eat freely from almost every tree — the garden is overflowing with 'yes.'" },
+        { ico:"🚫", label:"Learn the one rule", lead:"There is a single loving boundary.",
+          clue:"'Don't eat from that one tree,' God says — a rule meant to protect, not to spoil their joy." },
+      ],
+      ask:"What was God's one rule in the garden?",
+      options:["Don't eat from that one tree","Never leave the garden","Don't name the animals"],
+      answer:0,
+      hint:"Out of a whole garden of 'yes,' there was one tree they were told not to eat from.",
+      sidequest:{ title:"Respect a good boundary", desc:"There's a rule that feels annoying but is there to keep someone safe. Honor it without grumbling?",
+        lesson:"You keep a good rule even when it's tempting not to. Eli learns that loving rules protect us, they don't spoil the fun.", badge:"helper" } },
+
+    { place:"Did God Really Say?", tag:"A crafty voice twists the truth",
+      eli:"A talking snake making the one bad idea sound GREAT? This is how trouble always starts...",
+      spots:[
+        { ico:"🐍", label:"Hear the serpent", lead:"A crafty serpent slides up to Eve with a sly question.",
+          clue:"'Did God really say you can't eat from any tree?' — twisting God's kind words into something unfair." },
+        { ico:"🍎", label:"Catch the lie", lead:"The serpent promises the very opposite of what God said.",
+          clue:"'You won't really die — you'll become like God.' It's a lie that makes the wrong thing look wonderful." },
+      ],
+      ask:"What does the serpent do to Eve?",
+      options:["Warns her kindly","Twists God's words and tells a lie","Offers her a different tree"],
+      answer:1,
+      hint:"The serpent twists what God said and tells an outright lie to make the wrong choice look good.",
+      sidequest:null },
+
+    { place:"The Choice", tag:"When wrong looks good",
+      eli:"The fruit looks nice, the snake sounds convincing... uh oh. I can see where this goes.",
+      spots:[
+        { ico:"👀", label:"See how it looks", lead:"Eve looks at the tree — the fruit seems good and pleasing and wise.",
+          clue:"The lie has done its work: the forbidden thing now looks like a great idea." },
+        { ico:"🤝", label:"Watch the choice", lead:"Eve takes some and eats, and gives some to Adam, who eats too.",
+          clue:"In one moment, the one loving rule is broken." },
+      ],
+      ask:"What do Adam and Eve do?",
+      options:["Walk away from the tree","Eat the forbidden fruit","Ask God first"],
+      answer:1,
+      hint:"Believing the lie, Eve takes the fruit and eats, and gives some to Adam.",
+      sidequest:null },
+
+    { place:"The First Wrong Choice", tag:"How a lie leads us astray",
+      eli:"A lie made the one wrong thing look like the best idea ever. I'll be watching out for THAT trick from now on.",
+      final:true,
+      teaching:"God gave a whole garden of good things and just one loving boundary. But a crafty voice twisted his words and made the one wrong choice look wonderful — 'you won't die, you'll be like God.' That's how temptation almost always works: it dresses up the wrong thing to look good and makes the truth sound unfair. Learning to spot the lie, and to trust that God's rules are for our good, is the first step to living wisely." },
+   ] },
+
+   { title:"Hiding in the Bushes", stops: [
+    { place:"A New Feeling", tag:"Shame arrives for the first time",
+      eli:"They broke the rule — bet the very first thing they want to do is cover it up. That's what I always want to do.",
+      spots:[
+        { ico:"😳", label:"Notice the change", lead:"The moment they eat, something shifts inside them.",
+          clue:"For the very first time, they feel ashamed and exposed." },
+        { ico:"🍃", label:"Watch them cover up", lead:"They quickly sew fig leaves together.",
+          clue:"They try to cover the wrong themselves — the first attempt to hide a mistake." },
+      ],
+      ask:"What do Adam and Eve feel and do right after eating?",
+      options:["Proud and happy","Ashamed, and they cover themselves","Nothing changes"],
+      answer:1,
+      hint:"For the first time they feel shame, and sew fig leaves to cover themselves.",
+      sidequest:{ title:"Own a small mistake", desc:"You did something small wrong that no one noticed. Admit it out loud instead of covering it up?",
+        lesson:"You own up instead of hiding it. Eli learns that honesty feels scary for a second, but hiding feels bad far longer.", badge:"helper" } },
+
+    { place:"Into the Trees", tag:"Running from the One who loves them",
+      eli:"They hear God coming and they HIDE? ...Okay, yeah, that's exactly what I'd do too.",
+      spots:[
+        { ico:"👣", label:"Hear God walking", lead:"They hear the sound of God walking in the garden in the cool of the day.",
+          clue:"Instead of running TO him as before, they run away." },
+        { ico:"🌳", label:"Watch them hide", lead:"Adam and Eve hide themselves among the trees.",
+          clue:"Hiding from someone who loves you doesn't fix anything — it only leaves you lonely and afraid." },
+      ],
+      ask:"What do Adam and Eve do when they hear God coming?",
+      options:["Run to greet him","Hide among the trees","Call out cheerfully"],
+      answer:1,
+      hint:"Ashamed, they hide themselves among the trees instead of running to God.",
+      sidequest:null },
+
+    { place:"It Wasn't Me", tag:"Passing the blame around",
+      eli:"'She made me do it!' 'The snake made me do it!' Nobody just says 'I did it,' do they?",
+      spots:[
+        { ico:"🗣️", label:"Hear God's question", lead:"God calls out, 'Where are you?' and gently asks what happened.",
+          clue:"He isn't lost — he's giving them a chance to be honest." },
+        { ico:"👉", label:"Watch the blame fly", lead:"Adam blames Eve; Eve blames the serpent.",
+          clue:"Everyone points somewhere else. No one simply says, 'I did it, and I'm sorry.'" },
+      ],
+      ask:"What do Adam and Eve do when God asks what happened?",
+      options:["Each blames someone else","Both tell the truth right away","Stay perfectly silent"],
+      answer:0,
+      hint:"Adam blames Eve, and Eve blames the serpent — everyone passes the blame.",
+      sidequest:null },
+
+    { place:"The First Hiding", tag:"Why hiding never helps",
+      eli:"Hide the mistake, then blame someone else — that's my go-to move. But it just left them scared and alone. Maybe there's a better way.",
+      final:true,
+      teaching:"The moment they did wrong, everything in them wanted to cover it up, hide in the bushes, and blame someone else. That's the oldest instinct there is — and we all feel it. But hiding from someone who loves you never makes things better; it only leaves you lonely and afraid. The wrong thing wrongdoing does isn't just the rule we broke — it's the way it tempts us to hide instead of coming clean." },
+   ] },
+
+   { title:"Love Came Looking", stops: [
+    { place:"Where Are You?", tag:"A search that isn't about finding",
+      eli:"They ran and hid — so God's angry and done with them now, right? That's how it works.",
+      spots:[
+        { ico:"🚶", label:"Hear God call", lead:"God walks through the garden calling, 'Where are you?'",
+          clue:"He knows exactly where they are — he's calling to invite them OUT of hiding." },
+        { ico:"💛", label:"See his heart", lead:"God comes toward them, not away.",
+          clue:"Even after they hid from him, love comes looking for them." },
+      ],
+      ask:"Why does God call out, 'Where are you?'",
+      options:["He truly couldn't find them","To invite them out of hiding","To scare them away"],
+      answer:1,
+      hint:"God isn't lost — he calls out to draw them gently out of hiding.",
+      sidequest:{ title:"Go find someone hiding", desc:"A friend messed up and is avoiding everyone, sure they're in trouble. Go find them and let them know they're still loved?",
+        lesson:"You go looking for someone who's hiding in shame. Eli learns that real love comes looking, even after we've messed up.", badge:"helper" } },
+
+    { place:"Consequences, but Not Abandoned", tag:"Still loved through the hard part",
+      eli:"There ARE consequences — so this is the part where he gives up on them, surely...",
+      spots:[
+        { ico:"⚖️", label:"Hear the consequences", lead:"There are real, sad results from the wrong choice.",
+          clue:"Life outside the garden will be harder now — choices have consequences." },
+        { ico:"🤍", label:"Watch what God does next", lead:"But God does not walk away from them.",
+          clue:"He keeps caring for them even now — his love doesn't switch off when we fail." },
+      ],
+      ask:"Does God stop loving Adam and Eve after they disobey?",
+      options:["Yes, he abandons them","No — he keeps caring for them","He forgets about them"],
+      answer:1,
+      hint:"There are real consequences, but God does not stop loving them.",
+      sidequest:null },
+
+    { place:"Clothed, and a Promise", tag:"Grace with a gift and a hope",
+      eli:"He MADE them real clothes? And promised to fix what's broken someday? After all that?",
+      spots:[
+        { ico:"🧥", label:"Receive the gift", lead:"God makes proper clothes for Adam and Eve to cover them.",
+          clue:"Their flimsy fig leaves weren't enough — so God himself provides what they need." },
+        { ico:"🌅", label:"Hear the promise", lead:"God gives a promise of hope for the future.",
+          clue:"One day, he promises, everything broken will be made right — a rescuer is coming." },
+      ],
+      ask:"What does God do for Adam and Eve as they leave the garden?",
+      options:["Makes them clothes and promises to make things right","Locks the gate and forgets them","Takes back all his gifts"],
+      answer:0,
+      hint:"God clothes them himself and promises that one day everything broken will be made right.",
+      sidequest:null },
+
+    { place:"The Way Back Is to Stop Hiding", tag:"Honesty meets grace",
+      eli:"They hid, they blamed — and love came looking anyway, covered them, and promised to fix things. I don't have to hide my mistakes. I can come out.",
+      final:true,
+      teaching:"Adam and Eve hid and blamed, sure they were finished. But God came walking through the garden calling, 'Where are you?' — not to catch them, but to bring them out of hiding. There were real consequences, yet he never stopped loving them; he even made them proper clothes and promised a rescuer would one day make everything right. That's the truth under the whole story: everyone does wrong, and wrong makes us want to hide. But honesty is the way back — and love comes looking for you even when you've messed up." },
+   ] },
   ]
 };
+CASE_EDEN.stops = CASE_EDEN.variants[0].stops;
 
 
 /* =====================================================================
@@ -1376,7 +2608,9 @@ const CASE_SERMON = {
       scene:"Eli figures the whole point of doing good is so everybody sees how great he is. But performing for applause is a peak that's never quite high enough — there's always someone clapping louder somewhere else.",
       lesson:"Good done to be seen leaves you empty; good done in love fills you up. You come down off the show-off summit and rejoin the climb." },
   ],
-  stops: [
+  // Four trails converging on how to live God's way (random pick in startCase).
+  variants: [
+   { title:"The Sermon on the Mount", stops: [
     { place:"Up the Mountainside", tag:"An upside-down happy list",
       eli:"Everybody climbed this mountain to hear him. And the first thing Jesus says about who's truly happy is... backwards from everything I thought.",
       spots:[
@@ -1448,8 +2682,160 @@ const CASE_SERMON = {
       final:true,
       teaching:"Jesus ended his hillside teaching with a picture. Two people build houses; the storm hits both. The wise one heard his words and actually did them — like building on solid rock, so the house stood firm. The foolish one heard the very same words but ignored them — like building on sand, and the house fell. That's the whole point of how to live: it's not enough just to hear good teaching and agree it's nice. The humble-happy list, being a light for others, loving even your enemies, trusting instead of worrying, treating people the way you'd want to be treated — these only make your life strong when you actually live them. Hearing is easy. Doing is what builds a life that stands when the storms come."
     },
+   ] },
+
+   { title:"The Upside-Down Blessings", stops: [
+    { place:"The Mountainside", tag:"A teacher sits, the crowds lean in",
+      eli:"To be happy you need to be rich, strong, and first — everybody knows that. Right?",
+      spots:[
+        { ico:"⛰️", label:"Climb to the teaching", lead:"Jesus goes up a mountainside, sits down, and his followers gather close.",
+          clue:"He's about to teach the crowd how to really live — and it won't sound like the world's advice." },
+        { ico:"👂", label:"Lean in with the crowd", lead:"The people quiet down to listen.",
+          clue:"He begins with a list of who is truly blessed — truly happy." },
+      ],
+      ask:"How does Jesus give this famous teaching?",
+      options:["Shouting from a boat","Sitting on a mountainside as crowds gather","Writing it on a wall"],
+      answer:1,
+      hint:"Jesus goes up the mountainside, sits down, and teaches the gathered crowd.",
+      sidequest:{ title:"Lift up the overlooked", desc:"Someone quiet and unnoticed did something kind. Point it out and celebrate them?",
+        lesson:"You honor someone the world would overlook. Eli learns that God's idea of 'great' isn't the loud, first, or richest.", badge:"helper" } },
+
+    { place:"Blessed Are...", tag:"A happy list the world gets backwards",
+      eli:"Wait — he says the HUMBLE and gentle are the happy ones? Not the winners? That's backwards!",
+      spots:[
+        { ico:"🕊️", label:"Hear the blessings", lead:"Jesus says the truly blessed are the humble, the gentle, the merciful, the peacemakers.",
+          clue:"Not the proud or the pushy — the kind and lowly of heart." },
+        { ico:"🔄", label:"Notice the flip", lead:"It's the exact opposite of the world's list of 'winners.'",
+          clue:"God measures a good life by the heart, not by money, muscles, or being first." },
+      ],
+      ask:"Who does Jesus say is truly blessed?",
+      options:["The richest and most powerful","The humble, gentle, and merciful","The loudest and toughest"],
+      answer:1,
+      hint:"Jesus blesses the humble, gentle, merciful, and peacemakers — the opposite of the world's list.",
+      sidequest:null },
+
+    { place:"A Different Kind of Great", tag:"God's measure of a good life",
+      eli:"So being 'great' God's way means being kind and humble, not being on top. Nobody told me that.",
+      spots:[
+        { ico:"❤️", label:"Weigh the two lists", lead:"The world cheers the strong and first; Jesus lifts up the gentle and kind.",
+          clue:"Real greatness, he says, grows in a humble heart." },
+        { ico:"🌱", label:"See where it leads", lead:"This is the foundation for everything else he'll teach.",
+          clue:"How to live starts with what you treasure — and God treasures the heart." },
+      ],
+      ask:"How is Jesus's idea of a blessed life different from the world's?",
+      options:["It values the humble and kind, not the powerful","It's exactly the same","It only cares about money"],
+      answer:0,
+      hint:"Jesus flips the world's list — the humble and merciful are the truly blessed.",
+      sidequest:null },
+
+    { place:"Blessed Are the Humble", tag:"Greatness measured by the heart",
+      eli:"I came in sure that winning the world's way was the whole point. Turns out the good life is measured by your heart, not your trophies.",
+      final:true,
+      teaching:"Jesus opened his hillside teaching with a happy list that turns the world upside down: the truly blessed aren't the richest, strongest, or first — they're the humble, the gentle, the merciful, the peacemakers. The world measures a good life by trophies; God measures it by the heart. How to live starts right here, with treasuring what God treasures — and he treasures a humble, loving heart above all the world's prizes." },
+   ] },
+
+   { title:"Salt, Light, and Love", stops: [
+    { place:"Salt and Light", tag:"Made to make a difference",
+      eli:"Keep your head down, don't stand out, look after yourself — that's the smart way to live, isn't it?",
+      spots:[
+        { ico:"🧂", label:"Hear 'you are salt'", lead:"Jesus tells the crowd they are the salt of the earth.",
+          clue:"Salt brings out good flavor and keeps things from spoiling — his followers are meant to make life better around them." },
+        { ico:"💡", label:"Hear 'you are light'", lead:"He says they are the light of the world.",
+          clue:"'Don't hide your lamp under a basket — let it shine, so people see good and thank God.'" },
+      ],
+      ask:"What does Jesus call his followers?",
+      options:["Salt of the earth and light of the world","Soldiers of an army","Judges of the people"],
+      answer:0,
+      hint:"Jesus calls them the salt of the earth and the light of the world — made to shine, not hide.",
+      sidequest:{ title:"Shine for someone", desc:"You could brighten a gloomy moment for someone if you're willing to stand out a little. Do it?",
+        lesson:"You let your light shine instead of hiding it. Eli learns we're meant to make things better around us, not just blend in.", badge:"helper" } },
+
+    { place:"Love Your Enemies", tag:"Kindness that doesn't keep score",
+      eli:"Love your FRIENDS, sure. But love the people who are MEAN to you? No way. They don't deserve it.",
+      spots:[
+        { ico:"🤝", label:"Hear the hard teaching", lead:"Jesus says anyone can love their friends — he calls for more.",
+          clue:"'Love your enemies, and pray for those who are unkind to you.'" },
+        { ico:"🕯️", label:"See the reason", lead:"He points to God, who is kind even to the ungrateful.",
+          clue:"Living God's way means loving people who could never pay you back." },
+      ],
+      ask:"What does Jesus say to do about your enemies?",
+      options:["Get even with them","Love them and pray for them","Ignore them forever"],
+      answer:1,
+      hint:"Jesus says to love your enemies and pray for those who are unkind to you.",
+      sidequest:null },
+
+    { place:"In Secret", tag:"Good done for God, not for credit",
+      eli:"What's the point of doing something good if nobody sees it and I get no credit?",
+      spots:[
+        { ico:"🤫", label:"Hear about quiet giving", lead:"Jesus says when you give or pray, don't do it to be seen and praised.",
+          clue:"Do your good deeds quietly, for God — not for a crowd's applause." },
+        { ico:"👀", label:"Learn who's watching", lead:"He promises your Father sees what's done in secret.",
+          clue:"The good no one else notices is the good God treasures most." },
+      ],
+      ask:"How does Jesus say we should do our good deeds?",
+      options:["Loudly, so everyone sees","Quietly, for God, not for applause","Only when paid"],
+      answer:1,
+      hint:"Do good quietly and for God — not to show off or be praised by others.",
+      sidequest:null },
+
+    { place:"Shine, and Love the Hard-to-Love", tag:"Living it out, not showing it off",
+      eli:"Be a light, love even the mean ones, and do good where nobody's clapping. That's a harder — and better — way to live than I thought.",
+      final:true,
+      teaching:"Jesus said his followers are salt and light — meant to make the world better and to shine, not hide. Then he raised the bar: love not just your friends but your enemies, and do your good deeds quietly for God rather than for applause. Living God's way isn't about being noticed or getting even. It's about shining with a love that doesn't keep score and doesn't need a crowd — the kind of goodness that points people to God." },
+   ] },
+
+   { title:"The Two Houses", stops: [
+    { place:"Look at the Birds", tag:"A cure for worrying",
+      eli:"How can you NOT worry? You've got to look out for yourself or you'll end up with nothing!",
+      spots:[
+        { ico:"🐦", label:"Watch the birds", lead:"Jesus points to the birds — they don't store up barns, yet God feeds them.",
+          clue:"'You are worth much more than birds. Don't worry so much about tomorrow.'" },
+        { ico:"🌷", label:"Look at the flowers", lead:"He points to the wildflowers, dressed more beautifully than a king.",
+          clue:"'Seek God's kingdom first, and trust him to take care of the rest.'" },
+      ],
+      ask:"What does Jesus point to when he tells the crowd not to worry?",
+      options:["The birds and flowers God cares for","A pile of gold","A locked storehouse"],
+      answer:0,
+      hint:"Jesus points to the birds and flowers God provides for, and says not to worry.",
+      sidequest:{ title:"Trade a worry for a kindness", desc:"You're anxious about something — turn that energy into helping someone else instead?",
+        lesson:"You swap worrying for doing good. Eli learns trusting God frees you to care for others instead of only yourself.", badge:"helper" } },
+
+    { place:"The Golden Rule", tag:"One line to live by",
+      eli:"Okay, if there's ONE rule for getting along with people, what is it?",
+      spots:[
+        { ico:"⚖️", label:"Hear the golden rule", lead:"Jesus sums up how to treat people in one line.",
+          clue:"'Do to others whatever you would want them to do to you.'" },
+        { ico:"🔁", label:"Try it out", lead:"It works for everything — kindness, honesty, sharing, forgiving.",
+          clue:"Before you act, just picture yourself on the other side of it." },
+      ],
+      ask:"What is the 'golden rule' Jesus teaches?",
+      options:["Treat others the way you'd want to be treated","Win at any cost","Only help your friends"],
+      answer:0,
+      hint:"The golden rule: do to others whatever you'd want them to do to you.",
+      sidequest:null },
+
+    { place:"Two Builders, One Storm", tag:"Hearing versus doing",
+      eli:"Two houses, same storm — and the difference is whether you actually DID what you heard? Uh oh.",
+      spots:[
+        { ico:"🪨", label:"See the wise builder", lead:"One person hears Jesus' words and actually does them.",
+          clue:"It's like building a house on rock — when the storm hits, the house stands firm." },
+        { ico:"🏖️", label:"See the foolish builder", lead:"The other hears the very same words but ignores them.",
+          clue:"It's like building on sand — when the storm hits, the house falls with a crash." },
+      ],
+      ask:"What makes the wise builder wise?",
+      options:["He builds the biggest house","He hears Jesus' words AND does them","He builds fastest"],
+      answer:1,
+      hint:"The wise builder doesn't just hear the words — he actually does them, like building on rock.",
+      sidequest:null },
+
+    { place:"Build on the Rock", tag:"A life that stands in the storm",
+      eli:"Both builders HEARD the same words. The one whose house stood actually lived them. I don't want to just nod at this stuff — I want to build my life on it.",
+      final:true,
+      teaching:"Jesus ended his hillside teaching with two builders and one storm. The wise one heard his words and actually did them — like building on rock, so the house stood. The foolish one heard the very same words but ignored them — like building on sand, and it fell. That's the whole point of how to live: don't just worry less, treat people kindly, and admire good teaching — actually live it. Hearing is easy. Doing is what builds a life that stands when the storms come." },
+   ] },
   ]
 };
+CASE_SERMON.stops = CASE_SERMON.variants[0].stops;
 
 
 const CASES = {
