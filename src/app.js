@@ -57,7 +57,14 @@
 
   /* ---- play a case, then hand off to its Workshop ---- */
   function startCase(id) {
-    const c = CASES[id]; if (!c) return;
+    let c = CASES[id]; if (!c) return;
+    // Cases with multiple investigation paths pick one at RANDOM each time they're
+    // opened (silently — no dice). The player follows a different trail to the same
+    // destination, so replays feel fresh. Shallow-copy so the registry isn't mutated.
+    if (c.variants && c.variants.length) {
+      const v = c.variants[Math.floor(Math.random() * c.variants.length)];
+      c = Object.assign({}, c, { title: v.title || c.title, stops: v.stops });
+    }
     const ws = workshopForCase(id);
     const hasRT = !!(c.roundtable && window.FootstepsRoundTable);
     window.FootstepsEngine.play(c, {

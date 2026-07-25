@@ -55,7 +55,13 @@ const CASE_JESUS = {
       scene:"You wander into a quiet wilderness. There's nothing to do here but wait — and waiting is hard. Still, you rest, you breathe, and you remember why you set out.",
       lesson:"Even the Teacher spent long, patient days in the wild before his work began. Waiting can make us stronger. You find your way back to the trail." },
   ],
-  stops: [
+  // Multiple independent investigations that all converge on Bethlehem. startCase()
+  // picks one at RANDOM each time the case is opened (no dice — silent), so players
+  // follow different witnesses/prophecies to the same manger and never feel they're
+  // repeating a level. The home card shows the generic case title; the chosen trail's
+  // own title appears only once play begins.
+  variants: [
+   { title:"The Long-Awaited One", stops: [
     { place:"Nazareth", tag:"A quiet hill town in Galilee",
       eli:"A special baby is coming?! Can we skip ahead and meet him <b>now</b>?",
       spots:[
@@ -107,8 +113,161 @@ const CASE_JESUS = {
       eli:"Wait, we're back where we started... but I feel different. I think I finally get it.",
       final:true,
       teaching:"He grew here for many quiet years — learning, helping, waiting for the right time. The most important person in the whole story spent most of it being patient. That was the lesson all along." },
+   ] },
+
+   { title:"The Shepherd's Trail", stops: [
+    { place:"Jerusalem", tag:"The busy holy city",
+      eli:"Angels?! A whole SKY full of them? Where — I want to see them right now!",
+      spots:[
+        { ico:"🛕", label:"Listen at the temple courts", lead:"Worshipers are buzzing with a strange report.",
+          clue:"A priest says shepherds rushed in at dawn claiming they saw a sky full of angels." },
+        { ico:"🧺", label:"Ask the market traders", lead:"Traders from the countryside nod knowingly.",
+          clue:"Those shepherds came from the fields just outside Bethlehem." },
+      ],
+      ask:"Where did the shepherds come from?",
+      options:["The docks of Joppa","The gardens of Jericho","The fields near Bethlehem"],
+      answer:2,
+      hint:"The traders say the shepherds came from the fields just outside Bethlehem.",
+      sidequest:{ title:"Comfort a frightened child", desc:"The crowd's excitement has scared a little one. Kneel and reassure them before rushing on?",
+        lesson:"You stop to comfort the child. Eli's in a hurry — but sees that news of a Savior is good news precisely because it reaches even the small and the scared.", badge:"helper" } },
+
+    { place:"The Shepherd Fields", tag:"Open pastures outside Bethlehem",
+      eli:"Okay, okay — tell me EVERYTHING. What exactly did the angel say?",
+      spots:[
+        { ico:"🐑", label:"Hear the shepherds' story", lead:"The shepherds are still wide-eyed with wonder.",
+          clue:"The angel told them: today in the City of David a Savior has been born." },
+        { ico:"✨", label:"Look where they point", lead:"One shepherd points back toward the town.",
+          clue:"The sign they were given: a baby wrapped in cloths, lying in a manger." },
+      ],
+      ask:"What sign did the angel say the shepherds would find?",
+      options:["A crown upon a throne","A baby lying in a manger","A star fallen in a well"],
+      answer:1,
+      hint:"The angel's sign was a newborn wrapped in swaddling cloths, lying in a manger.",
+      sidequest:null },
+
+    { place:"Bethlehem", tag:"The crowded little town",
+      eli:"They ran through the whole town searching? Which way — let's follow them!",
+      spots:[
+        { ico:"🏠", label:"Ask the townsfolk", lead:"Residents remember the shepherds well.",
+          clue:"They hurried door to door, asking everyone about a newborn baby." },
+        { ico:"👵", label:"Talk with an elderly woman", lead:"She smiles at the memory.",
+          clue:"They finally stopped at the stable behind the crowded inn." },
+      ],
+      ask:"Where did the shepherds' search finally end?",
+      options:["The stable behind the inn","The gate of the city","The house of the mayor"],
+      answer:0,
+      hint:"The elderly woman says they stopped at the stable behind the crowded inn.",
+      sidequest:null },
+
+    { place:"The Manger", tag:"A stable in Bethlehem",
+      eli:"The ordinary, overlooked shepherds were the very first ones here. I did NOT expect that.",
+      final:true,
+      teaching:"The first to worship the newborn King weren't kings or priests — they were shepherds working the night shift in the fields. God shared the greatest news of all with the humble and the ordinary first. The lowest were the first to kneel." },
+   ] },
+
+   { title:"Following the Star", stops: [
+    { place:"The East", tag:"A far-off land of star-watchers",
+      eli:"A brand-new star? Let's chase it RIGHT now — come on!",
+      spots:[
+        { ico:"🔭", label:"Study with the astronomers", lead:"Wise men (Magi) pore over the night sky.",
+          clue:"An unusual new star has risen — they believe it announces the birth of a king." },
+        { ico:"📜", label:"Search the ancient writings", lead:"A Magi carefully unrolls a foreign scroll.",
+          clue:"The old writings point them toward one land: Israel." },
+      ],
+      ask:"To which land do the wise men set out?",
+      options:["Egypt","Israel","Greece"],
+      answer:1,
+      hint:"The scrolls the Magi study point them toward the land of Israel.",
+      sidequest:{ title:"Share your provisions", desc:"The road west is long, and a poorer traveler has run short of food. Share some of yours?",
+        lesson:"You share your bread on the road. Eli wanted to press on faster — but learns a journey toward the King is better walked with open hands.", badge:"helper" } },
+
+    { place:"Jerusalem", tag:"The royal city",
+      eli:"Just ask the king where the baby is — that's easy, right?",
+      spots:[
+        { ico:"👑", label:"Visit King Herod's court", lead:"The Magi ask plainly where the one born King of the Jews can be found.",
+          clue:"Herod is troubled by the question — and secretly summons the priests and scribes." },
+        { ico:"📖", label:"Listen to the priests", lead:"The scholars search the words of the prophets.",
+          clue:"The prophet Micah named the birthplace long ago: Bethlehem." },
+      ],
+      ask:"Which town did the prophet Micah name as the birthplace?",
+      options:["Nazareth","Bethany","Bethlehem"],
+      answer:2,
+      hint:"The priests quote the prophet Micah — the ruler will come from Bethlehem.",
+      sidequest:null },
+
+    { place:"Bethlehem", tag:"The little town, at last",
+      eli:"The star's moving again — look, it's stopping right over... there!",
+      spots:[
+        { ico:"⭐", label:"Follow the star", lead:"The star goes on ahead of the Magi and halts.",
+          clue:"It stops directly over the place where the child is." },
+        { ico:"🎁", label:"Ready the treasures", lead:"The wise men open their travel chests.",
+          clue:"Gifts fit for a king: gold, frankincense, and myrrh." },
+      ],
+      ask:"What does the star finally do?",
+      options:["Stops over the child's place","Falls into the sea","Splits into three"],
+      answer:0,
+      hint:"The star goes ahead of them and stops over the very place where the child is.",
+      sidequest:null },
+
+    { place:"The Manger", tag:"A stable in Bethlehem",
+      eli:"We followed a light across the whole world... and it led us to him. Worth every single mile.",
+      final:true,
+      teaching:"The wise men traveled for months, following a star across deserts and kingdoms, just to kneel before a child and offer their finest treasures — gold, frankincense, and myrrh. The newborn King is worth any journey, and worthy of our very best." },
+   ] },
+
+   { title:"The Prophecy Hunt", stops: [
+    { place:"The Temple Library", tag:"Halls of ancient scrolls in Jerusalem",
+      eli:"Dusty old scrolls? Can't we just skip ahead and find the baby already?",
+      spots:[
+        { ico:"📜", label:"Meet the scroll keeper", lead:"An old scribe presses a scroll into your hands.",
+          clue:"He says only: find the child spoken of by the prophets." },
+        { ico:"📖", label:"Read Isaiah's scroll", lead:"You unroll the words of the prophet Isaiah.",
+          clue:"'A virgin shall conceive and bear a son.' A margin note names a young woman in Nazareth." },
+      ],
+      ask:"Where does Isaiah's clue send you first?",
+      options:["Bethlehem","Nazareth","Jericho"],
+      answer:1,
+      hint:"The margin note beside Isaiah's words points to a young woman in Nazareth.",
+      sidequest:{ title:"Reshelve the fallen scrolls", desc:"A shelf of ancient scrolls has toppled. Take a moment to set them right?",
+        lesson:"You carefully restore the scrolls. Eli wanted to rush off — but sees that these old promises were kept safe by patient hands for hundreds of years.", badge:"helper" } },
+
+    { place:"Nazareth", tag:"A quiet hill town in Galilee",
+      eli:"So the scroll was right! Let's find out where they went next!",
+      spots:[
+        { ico:"🏠", label:"Speak with Mary", lead:"Mary remembers the angel's visit clearly.",
+          clue:"'The Lord has done exactly as He promised,' she says." },
+        { ico:"🪚", label:"Ask Joseph the carpenter", lead:"Joseph is packing for a journey.",
+          clue:"'The census calls us to Bethlehem,' he says." },
+      ],
+      ask:"Where does the census send Mary and Joseph next?",
+      options:["Capernaum","Egypt","Bethlehem"],
+      answer:2,
+      hint:"Joseph says the census calls the family to Bethlehem.",
+      sidequest:null },
+
+    { place:"Bethlehem", tag:"The town of the prophecy",
+      eli:"Another scroll here too? Okay — what does THIS one say?",
+      spots:[
+        { ico:"📜", label:"Find the scroll of Micah", lead:"A second prophecy waits in Bethlehem.",
+          clue:"'But you, Bethlehem... from you shall come a ruler.'" },
+        { ico:"🏘️", label:"Ask the residents", lead:"Neighbors share fresh news from the night before.",
+          clue:"A child has just been born here — sheltered in a stable." },
+      ],
+      ask:"Which prophet foretold that the ruler would come from Bethlehem?",
+      options:["Jonah","Micah","Daniel"],
+      answer:1,
+      hint:"The scroll found in Bethlehem quotes the prophet Micah.",
+      sidequest:null },
+
+    { place:"The Manger", tag:"A stable in Bethlehem",
+      eli:"Every clue, every prophecy, written hundreds of years apart... all pointing to this one child. Wow.",
+      final:true,
+      teaching:"Prophets foretold this child hundreds of years before his birth — his mother, his town, his family line. Every ancient clue pointed to the same manger in Bethlehem. God kept every promise, down to the smallest detail. The long wait was never uncertain — it was always leading here." },
+   ] },
   ]
 };
+// default stops for the home-screen card (stop count) and as a safe fallback
+CASE_JESUS.stops = CASE_JESUS.variants[0].stops;
 
 
 /* =====================================================================
