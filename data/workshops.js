@@ -146,7 +146,7 @@ const WORKSHOPS = {
     ground: "grass",
     background: "field",                       // the golden barley field at harvest
     freeGoal: 'Build the barley harvest! The golden field is already here. Place Ruth gleaning grain — place("ruth", 2, 4) — and Boaz the kind landowner — place("boaz", 5, 3). Bring Naomi, her faithful mother-in-law, too. Add sheaves of barley, a well, a house, a donkey, and a fig tree wherever you like. Then tap the 🦉 button to bring it to life.',
-    items: ["ruth","boaz","naomi","barley","sheep","well","house","donkey","figtree","jar","landscape","dove"],
+    items: ["ruth","boaz","naomi","barley","sheep","well","house","donkey","figtree","jar","field","landscape","dove"],
     aiPreview: [ 'place("ruth", 2, 4)', 'place("boaz", 5, 3)', 'place("barley", 3, 5)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{sprite:"barley", n:6, rows:[3,5]}, extras:[{sprite:"shrub",n:4,rows:[4,5]}], dove:true, shimmer:["ruth"], wander:["sheep","donkey","ruth","boaz"] }
