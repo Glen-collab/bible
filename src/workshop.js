@@ -19,6 +19,15 @@
   // and falls back to its emoji if not. So dropping a PNG in "upgrades" a piece
   // automatically — no code change. See assets/README.md for the naming contract.
   const SPRITE_BASE = 'assets/sprites/';
+  // Cache-buster for images loaded by JS (backdrops, sprites, outlines). The scripts
+  // in index.html carry ?v=N; mirror that onto every dynamic image so a new deploy
+  // actually re-fetches updated art instead of serving a stale browser copy.
+  const ASSET_V = (function () {
+    var ss = document.getElementsByTagName('script');
+    for (var i = 0; i < ss.length; i++) { var m = ss[i].src && ss[i].src.match(/[?&]v=([^&]+)/); if (m) return '?v=' + m[1]; }
+    return '';
+  })();
+  const V = (u) => u + ASSET_V;
   // How much of its cell each sprite fills (a mouse ≠ an elephant). Tune with
   // tools/sprite-calibrator.html; default 0.85. Only affects real-art sprites.
   const SPRITE_SCALE = {
@@ -109,14 +118,14 @@
         structEl.className = 'stage-bg stage-struct'; structEl.alt = '';
         $('stage').appendChild(structEl);
       }
-      structEl.src = SCENE_BASE + file + '.png'; structName = file;
+      structEl.src = V(SCENE_BASE + file + '.png'); structName = file;
     } else {
       if (!backdropEl) {
         backdropEl = document.createElement('img');
         backdropEl.className = 'stage-bg'; backdropEl.alt = '';
         $('stage').appendChild(backdropEl);   // .stage-bg has z-index:0 so it stays behind everything
       }
-      backdropEl.src = SCENE_BASE + file + '.png'; backdropName = file;
+      backdropEl.src = V(SCENE_BASE + file + '.png'); backdropName = file;
     }
   }
   function clearBackdrop(isStruct) {
@@ -140,10 +149,10 @@
     img.style.width = s + '%'; img.style.height = s + '%';
     let triedScenes = false;
     img.onerror = function () {
-      if (!triedScenes) { triedScenes = true; img.src = SCENE_BASE + file + '.png'; } // try scenes/ next
+      if (!triedScenes) { triedScenes = true; img.src = V(SCENE_BASE + file + '.png'); } // try scenes/ next
       else { el.textContent = emoji; }                                                 // then fall back to emoji
     };
-    img.src = SPRITE_BASE + file + '.png';
+    img.src = V(SPRITE_BASE + file + '.png');
     el.appendChild(img);
   }
 
@@ -568,13 +577,13 @@
       const ico = document.createElement('span'); ico.className = 'p-ico';
       const img = document.createElement('img'); img.className = 'p-img'; img.alt = '';
       if (BACKDROPS[k]) {
-        img.src = SCENE_BASE + BACKDROPS[k] + '.png';                  // backdrop items show their scene art
+        img.src = V(SCENE_BASE + BACKDROPS[k] + '.png');               // backdrop items show their scene art
         img.onerror = function () { img.remove(); ico.textContent = ITEMS[k]; };
       } else {
         const kf = artFile(k);
         let tried = false;
-        img.onerror = function () { if (!tried) { tried = true; img.src = SCENE_BASE + kf + '.png'; } else { img.remove(); ico.textContent = ITEMS[k]; } };
-        img.src = SPRITE_BASE + kf + '.png';
+        img.onerror = function () { if (!tried) { tried = true; img.src = V(SCENE_BASE + kf + '.png'); } else { img.remove(); ico.textContent = ITEMS[k]; } };
+        img.src = V(SPRITE_BASE + kf + '.png');
       }
       ico.appendChild(img);
       const nm = document.createElement('span'); nm.className = 'p-name'; nm.textContent = '"' + k + '"';
@@ -650,8 +659,8 @@
     ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
     // backdrop outlines cover the GRID rectangle (not the overflow margins)
     const gx = ox, gy = oy, gw = 100 * px, gh = 100 * py;
-    if (backdropName) { const o = await loadImg('assets/outlines/' + backdropName + '.png'); if (o) drawFit(ctx, o, gx, gy, gw, gh, 'cover'); }
-    if (structName) { const o = await loadImg('assets/outlines/' + structName + '.png'); if (o) drawFit(ctx, o, gx, gy, gw, gh, 'contain'); }
+    if (backdropName) { const o = await loadImg(V('assets/outlines/' + backdropName + '.png')); if (o) drawFit(ctx, o, gx, gy, gw, gh, 'cover'); }
+    if (structName) { const o = await loadImg(V('assets/outlines/' + structName + '.png')); if (o) drawFit(ctx, o, gx, gy, gw, gh, 'contain'); }
     // each piece drawn into its exact captured box (already the on-screen size),
     // back-to-front so the coloring page matches the on-screen stacking order
     const ordered = boxes.slice().sort((a, b) => (a.z || 10) - (b.z || 10));

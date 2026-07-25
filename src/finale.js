@@ -17,6 +17,12 @@
 (function () {
   const CHAR_MS = 24;
   const F = {};
+  // mirror index.html's ?v=N onto dynamically-loaded sprites so updated art re-fetches
+  const ASSET_V = (function () {
+    var ss = document.getElementsByTagName('script');
+    for (var i = 0; i < ss.length; i++) { var m = ss[i].src && ss[i].src.match(/[?&]v=([^&]+)/); if (m) return '?v=' + m[1]; }
+    return '';
+  })();
   let timers = [];
   let curStage = null;   // the stage of the current run, so stop() can clean it
   let gen = 0;           // bumped on every stop() to abort any in-flight run
@@ -71,7 +77,7 @@
         img.className = 'spr-img'; img.alt = '';
         img.style.width = '100%'; img.style.height = '100%';
         img.onerror = function () { el.textContent = '🌾'; };   // last-ditch fallback
-        img.src = 'assets/sprites/' + token + '.png';
+        img.src = 'assets/sprites/' + token + '.png' + ASSET_V;
         el.appendChild(img);
       } else {
         el.textContent = token;
