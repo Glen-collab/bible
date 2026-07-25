@@ -51,7 +51,7 @@
     // Daniel's den
     pray: 1.5, lionroar: 1.75, lionsleep: 1.75, lionwalk: 1.75, guard: 1.5,
     accuser: 1.5, accuser2: 1.5, blame: 1.5, door: 1.5, bone: 0.6, skull: 0.5,
-    ruth: 1.5, boaz: 1.5, naomi: 1.5, barley: 1, figtree: 2, jar: 0.7,   // Ruth's story
+    ruth: 1, boaz: 1.5, naomi: 1, barley: 1, figtree: 2, jar: 0.7,   // Ruth's story (Ruth & Naomi placed smaller; Boaz stays)
     landscape: 3.5,   // a placeable/resizable scenery object (NOT a backdrop), sits on the field
     tree: 2.5, serpent: 1.5, fruit: 0.75, leaves: 1, adam: 1.5, eve: 1.5,
     appletree: 2.5, cherub: 1.5, flowerbush: 1, plant: 0.9, rock: 1,
