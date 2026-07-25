@@ -100,6 +100,7 @@ const WORKSHOPS = {
     grid: { cols: 8, rows: 6 },
     ground: "grass",
     background: "arena",                             // the battlefield of Elah — open ground, armies on the sides
+    aliases: { chariot: "charioteer" },              // David's scene uses the charioteer art (Moses keeps the plain chariot)
     freeGoal: 'Set up the showdown! The valley of Elah is already here. Place David the shepherd boy — place("david", 1, 3) — and the giant Goliath facing him. Line the two armies on the hills: the Israelites — place("israelites", 1, 1) — and the Philistines — place("philistines", 6, 1). Add David\'s sheep and scatter some smooth stones. Then tap the 🦉 button to bring it to life.',
     items: ["david","goliath","israelites","philistines","sheep","rocks","horse","chariot","arena","dove"],
     aiPreview: [ 'place("david", 1, 3)', 'place("goliath", 6, 3)', 'place("israelites", 1, 1)' ],
