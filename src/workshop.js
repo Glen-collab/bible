@@ -229,6 +229,7 @@
         <div class="stage-row"><div class="ruler-left" id="rulerLeft"></div>
           <div class="stage-wrap"><div id="stage" class="grid"></div></div></div>
       </div>
+      <div id="finalebar"></div>
       <div class="resizebar" id="resizebar" style="display:none">
         <div class="rz-row">
           <span class="rz-lab"><b id="rzname"></b></span>
@@ -257,7 +258,6 @@
         <div id="termout"><span class="sys">// The computer is ready. Type a command and press Run.</span></div>
         <div class="inputline"><span class="prompt">&gt;</span><input id="cmd" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder='place("${firstItem()}", 3, 4)'><button class="runbtn" onclick="FootstepsWorkshop._run()">Run</button></div>
       </div>
-      <div id="finalebar"></div>
       <div class="tutor" id="tutor">
         <div class="t-head"><div class="t-face">🦉</div><div><div class="t-name">Ada <span>· your code helper</span></div></div></div>
         <div class="t-body" id="tutorbody"></div>
@@ -793,7 +793,7 @@
     html += `<button class="btn ghost" onclick="FootstepsWorkshop._exit()">Back to the map</button>`;
     nw.innerHTML = html;
   }
-  const STOP_BTN = '<button class="btn stopbtn" onclick="FootstepsWorkshop._stopFinale()">⏹ Stop the action &amp; keep building</button>';
+  const STOP_BTN = '<button class="btn stopbtn" onclick="FootstepsWorkshop._stopFinale()">⏹ Stop and redesign your scene</button>';
   const RUN_BTN = '<button class="btn olive" onclick="FootstepsWorkshop._finale()">🦉 Bring the scene to life — watch the code run</button>';
   WS._finale = function () {
     if (window.FootstepsFinale) window.FootstepsFinale.stop();
