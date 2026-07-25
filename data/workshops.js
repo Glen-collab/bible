@@ -284,7 +284,7 @@ const WORKSHOPS = {
     ground: "garden",
     background: "eden",                    // the lush garden fills the scene
     freeGoal: "Grow the good garden! It is already all around you. Place the one special tree — place(\"appletree\", 4, 1) — with the sly serpent in its branches. Put Adam and Eve in the garden, and add flowering bushes and little plants wherever you like — place(\"flowerbush\", 2, 4). The angel who guards the way is here too — place(\"cherub\", 7, 1). Then tap the 🦉 button to bring it to life.",
-    items: ["eden","plain","god","appletree","figtree","serpent","adam","eve","cherub","lionsleep","flowerbush","plant","rock","rocks","boulder","sheep","deer","dove"],
+    items: ["eden","plain","god","appletree","figtree","bigtree","serpent","adam","eve","cherub","lionsleep","flowerbush","plant","rock","rocks","boulder","sheep","deer","dove"],
     aiPreview: [ 'place("appletree", 4, 1)', 'place("adam", 2, 3)', 'place("eve", 6, 3)', 'place("serpent", 4, 2)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{sprite:"plant", n:5, rows:[4,5]}, extras:[{sprite:"flowerbush", n:4, rows:[3,4]},{emoji:"🦋", n:3, rows:[1,2]}], dove:true, shimmer:["appletree","cherub"], wander:["serpent","deer","dove"] }
