@@ -52,7 +52,7 @@
     pray: 1.5, lionroar: 1.75, lionsleep: 1.75, lionwalk: 1.75, guard: 1.5,
     accuser: 1.5, accuser2: 1.5, blame: 1.5, door: 1.5, bone: 0.6, skull: 0.5,
     ruth: 1, boaz: 1.5, naomi: 1, barley: 1, figtree: 2, jar: 0.7,   // Ruth's story (Ruth & Naomi placed smaller; Boaz stays)
-    landscape: 3.5,   // a placeable/resizable scenery object (NOT a backdrop), sits on the field
+    // landscape is a backdrop now (see BACKDROPS) — placing it swaps the whole background
     tree: 2.5, serpent: 1.5, fruit: 0.75, leaves: 1, adam: 1.5, eve: 1.5,
     appletree: 2.5, cherub: 1.5, flowerbush: 1, plant: 0.9, rock: 1,
     // Eden story poses — two figures (sometimes with a lion or a bush), so wider
@@ -80,6 +80,10 @@
     // garden of Eden, the Damascus road, and Ruth's barley field.
     desert: 'desert', eden: 'eden', valley: 'valley', arena: 'arena', flood: 'flood',
     road: 'road', field: 'field', hillside: 'hillside',
+    // "landscape" is a general-purpose underlayment: add it to ANY scene's items and
+    // placing it swaps the whole background (cover-fit, fills the stage, behind the
+    // figures). The finale still scatters its decor on top, so nothing disappears.
+    landscape: 'landscape',
     // one mountain backdrop serves two scenes: Moses at Sinai and Jesus's sermon.
     sinai: 'mount', mount: 'mount',
   };
