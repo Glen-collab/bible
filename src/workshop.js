@@ -54,7 +54,7 @@
     ruth: 1, boaz: 1.5, naomi: 1, barley: 1, figtree: 2, jar: 0.7,   // Ruth's story (Ruth & Naomi placed smaller; Boaz stays)
     // landscape is a backdrop now (see BACKDROPS) — placing it swaps the whole background
     tree: 2.5, serpent: 1.5, fruit: 0.75, leaves: 1, adam: 1.5, eve: 1.5,
-    appletree: 2.5, cherub: 1.5, flowerbush: 1, plant: 0.9, rock: 1,
+    appletree: 2.5, cherub: 1.5, flowerbush: 1, plant: 0.9, rock: 1, god: 2.5,
     // Eden story poses — two figures (sometimes with a lion or a bush), so wider
     peace: 2.25, leave: 2, share: 2,
     reach: 2.5, taste: 1.5, bite: 1.5,
