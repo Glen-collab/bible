@@ -84,6 +84,10 @@
     // placing it swaps the whole background (cover-fit, fills the stage, behind the
     // figures). The finale still scatters its decor on top, so nothing disappears.
     landscape: 'landscape',
+    // more reusable underlayments: bare desert plain, Sinai wilderness, the ark on
+    // dry ground, Golgotha's three crosses, and the Sea of Galilee lakeside.
+    plain: 'plain', wilderness: 'wilderness', dryland: 'dryland', calvary: 'calvary', galilee: 'galilee',
+    den: 'den',   // Daniel's den interior — now also a tappable backdrop choice
     // one mountain backdrop serves two scenes: Moses at Sinai and Jesus's sermon.
     sinai: 'mount', mount: 'mount',
   };
@@ -93,6 +97,9 @@
   // Two separate <img> layers: landscape (z-index 0) behind, structure (z-index 1)
   // in front of it but still behind the pieces (z-index 2).
   const STRUCTURES = new Set(['ark']);   // tomb, manger, den are full/object art now, not structures
+  // backdrops whose art already INCLUDES the scene's structure (e.g. dryland shows the
+  // ark on land) — placing one hides the separate structure overlay so it isn't doubled
+  const SELF_CONTAINED = new Set(['dryland']);
   let backdropEl = null, backdropName = null;     // the landscape layer
   let structEl = null, structName = null;         // the structure layer
   function setBackdrop(file, isStruct) {
@@ -324,7 +331,17 @@
   function place(name, col, row, size) {
     if (typeof name !== 'string') throw { kind: 'quotes' };
     if (!(name in ITEMS)) throw { kind: 'unknownItem', got: name };
-    if (BACKDROPS[name]) { setBackdrop(BACKDROPS[name], STRUCTURES.has(name)); chime(440); return name + ' set as the scene'; }
+    if (BACKDROPS[name]) {
+      const isStruct = STRUCTURES.has(name);
+      setBackdrop(BACKDROPS[name], isStruct);
+      // when swapping the LANDSCAPE in a scene that has a structure overlay (the ark),
+      // hide the overlay if the new art already contains it, else restore it
+      if (!isStruct && CFG.structure) {
+        if (SELF_CONTAINED.has(name)) clearBackdrop(true);
+        else setBackdrop(BACKDROPS[CFG.structure] || CFG.structure, true);
+      }
+      chime(440); return name + ' set as the scene';
+    }
     if (CFG.rail && CFG.rail.item === name) { col = CFG.rail.home.col; row = CFG.rail.home.row; railMsg = railHint(false, name); }  // railed piece snaps home (sealed)
     if (typeof col !== 'number' || typeof row !== 'number') throw { kind: 'numbers' };
     if (col < 0 || col >= COLS || row < 0 || row >= ROWS) throw { kind: 'range', col, row };

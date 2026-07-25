@@ -74,7 +74,8 @@ const WORKSHOP_ITEMS = {
   // backdrop objects: placing one becomes the whole scene (manger already above)
   ark:"🚢", tomb:"⚰️", flood:"🌊", split:"🌊",
   desert:"🏜️", eden:"🌳", valley:"🏞️", arena:"🏟️",
-  field:"🌾", sinai:"⛰️", mount:"⛰️",
+  field:"🌾", sinai:"⛰️", mount:"⛰️", hillside:"🌄",
+  plain:"🏜️", wilderness:"🏜️", dryland:"⛰️", calvary:"✝️", galilee:"🏞️",
   // larger illustrated images (loaded from assets/scenes/) usable as placeable
   // pieces too — scale them up with place(name, col, row, size) or the ＋ button
   crowd:"👥", feast:"🍽️",
@@ -102,7 +103,7 @@ const WORKSHOPS = {
     background: "arena",                             // the battlefield of Elah — open ground, armies on the sides
     aliases: { chariot: "charioteer" },              // David's scene uses the charioteer art (Moses keeps the plain chariot)
     freeGoal: 'Set up the showdown! The valley of Elah is already here. Place David the shepherd boy — place("david", 1, 3) — and the giant Goliath facing him. Line the two armies on the hills: the Israelites — place("israelites", 1, 1) — and the Philistines — place("philistines", 6, 1). Add David\'s sheep and scatter some smooth stones. Then tap the 🦉 button to bring it to life.',
-    items: ["david","goliath","israelites","philistines","sheep","rocks","horse","chariot","arena","dove"],
+    items: ["david","goliath","israelites","philistines","sheep","rocks","horse","chariot","arena","plain","dove"],
     aiPreview: [ 'place("david", 1, 3)', 'place("goliath", 6, 3)', 'place("israelites", 1, 1)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: {
@@ -128,7 +129,7 @@ const WORKSHOPS = {
     ground: "sea",
     background: "flood",                             // Glen's open-water art = the sea, still closed (place "split" to part it)
     freeGoal: 'Part the Red Sea! The sea is already here. Place Moses — place("moses", 1, 3) — and when you are ready for the miracle, place("split") and the waters open. Raise Moses\'s arms with place("parting", 1, 3), then lead the people through — place("people", 2, 4) — with Pharaoh\'s chariots behind. A pillar of fire and cloud went before them: place("fire") and place("smoke"). Afterward, at the mountain, Moses received the commandments — place("mountain") and place("commandments"). Then tap the 🦉 button to bring it to life.',
-    items: ["flood","split","moses","parting","staff","people","chariot","fire","smoke","mountain","commandments","dove"],
+    items: ["flood","split","wilderness","moses","parting","staff","people","chariot","fire","smoke","mountain","commandments","dove"],
     aiPreview: [ 'place("moses", 1, 3)', 'place("split")', 'place("people", 2, 4)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     // No scattered emoji here: the sea backdrops already paint the water.
@@ -167,7 +168,7 @@ const WORKSHOPS = {
     aliases: { jesus: "jesustomb" },        // the risen Jesus (has an outline; the old global one didn't)
     sizes: { horse: 2.1, palm: 3.5, jesus: 2.75, light: 3, damascus: 3.5 },   // scaled to the people on this road
     freeGoal: 'Set the road to Damascus! The road is already here. Place Saul struck to the ground — place("saul_fallen", 2, 4) — with the light bursting from heaven above him — place("light", 3, 1). The risen Jesus appears — place("jesus", 5, 1). His horse waits nearby, and the city of Damascus lies ahead — place("damascus", 6, 1). Then tap the 🦉 button to bring it to life.',
-    items: ["road","saul_fallen","light","jesus","damascus","horse","saul","palm","donkey","dove"],
+    items: ["road","plain","saul_fallen","light","jesus","damascus","horse","saul","palm","donkey","dove"],
     aiPreview: [ 'place("saul_fallen", 2, 4)', 'place("light", 3, 1)', 'place("jesus", 5, 1)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{sprite:"rubble", n:5, rows:[4,5]}, extras:[{sprite:"clouds", n:2, rows:[0,1]}], dove:true, shimmer:["jesus","saul_fallen","light"], wander:["horse","donkey"] }
@@ -185,7 +186,7 @@ const WORKSHOPS = {
     structure: "ark",                         // …with the ark floating on top; animals board its deck
     freeBuild: true,
     freeGoal: 'Fill the ark! Start with Noah — place("noah", 3, 3) — then bring the animals aboard two by two. Each pair boards together: place("elephants", 1, 4), place("lions", 4, 4), place("giraffes", 6, 3). Add as many pairs as you like — bears, camels, zebras, ducks, bunnies, parrots, deer, lambs. The dove and raven will search for dry land — place("doves", 6, 1). Then tap the 🦉 button to bring it to life.',
-    items: ["noah","noahkneel","noah_openarms","elephants","giraffes","lions","zebras","bears","camels","deer","lambs","bunnies","ducks","parrots","doves","rainbow","dove"],
+    items: ["flood","dryland","noah","noahkneel","noah_openarms","elephants","giraffes","lions","zebras","bears","camels","deer","lambs","bunnies","ducks","parrots","doves","rainbow","dove"],
     aiPreview: [ 'place("elephants", 1, 4)', 'place("giraffes", 5, 3)', 'place("doves", 6, 1)' ],
     rungs: [
       { id:0, label:"1 · First aboard", goalItem:"elephants", target:{col:1,row:4},
@@ -215,7 +216,7 @@ const WORKSHOPS = {
     grid: { cols: 8, rows: 6 },
     background: "tomb",                               // the garden tomb at dawn (crosses on the hill, the open grave)
     aliases: { jesus: "jesustomb", angel: "angeltomb", disciples: "disciplestomb" },  // this story's own art
-    items: ["stone","jesus","angel","women","disciples","soldier","shroud","crucified","crown","jesusdeath","dove"],
+    items: ["tomb","calvary","stone","jesus","angel","women","disciples","soldier","shroud","crucified","crown","jesusdeath","dove"],
     // the stone is on a track: it sits at "home" (sealed) and rolls away to "open"
     rail: { item:"stone", home:{col:2,row:1}, open:{col:0,row:1} },
     aiPreview: [ 'place("stone", 2, 1)', 'move("stone", "left")', 'place("jesus", 4, 3)' ],
@@ -245,7 +246,7 @@ const WORKSHOPS = {
     ground: "cave",
     background: "den",                                // the stone den (Glen's dungeon interior)
     freeGoal: "Daniel in the lions' den! The stone den is already here. Place Daniel praying — place(\"pray\", 2, 3) — for God shut the lions' mouths, so lay the lions down asleep around him: place(\"lionsleep\", 5, 4). The king who threw him in comes at dawn — place(\"king\", 6, 2) — and the jealous men who accused him are here too. An angel keeps watch. Then tap the 🦉 button to bring it to life.",
-    items: ["daniel","pray","lionsleep","lion","lionwalk","lionroar","king","guard","accuser","accuser2","blame","door","bone","skull","angel","dove"],
+    items: ["den","plain","daniel","pray","lionsleep","lion","lionwalk","lionroar","king","guard","accuser","accuser2","blame","door","bone","skull","angel","dove"],
     aiPreview: [ 'place("pray", 2, 3)', 'place("lionsleep", 5, 4)', 'place("king", 6, 2)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{sprite:"rubble", n:4, rows:[4,5]}, extras:[{sprite:"bone", n:3, rows:[4,5]}], dove:true, shimmer:["pray","angel"], wander:["dove","lionwalk"] }
@@ -261,10 +262,10 @@ const WORKSHOPS = {
     subtitle: "Feeding the Five Thousand",
     grid: { cols: 8, rows: 6 },
     ground: "grass",
-    background: "hillside",                           // the green hillside by the lake
+    background: "galilee",                            // the Sea of Galilee lakeside (swap to hillside if you like)
     aliases: { jesus: "jesusfeed" },                 // this story's own Jesus
     freeGoal: "Feed the five thousand! The green hillside by the lake is already here. Place Jesus — place(\"jesus\", 4, 2) — and his disciples handing out the food. A boy brought five loaves and two fish — place(\"loaves\", 3, 3) and place(\"fish\", 5, 3). Spread the great crowd across the slope — place(\"crowd\", 2, 4) — and fill baskets with what is left over. Then tap the 🦉 button to bring it to life.",
-    items: ["jesus","disciples","loaves","fish","bread","basket","crowd","bigtree","rubble","dove"],
+    items: ["galilee","hillside","jesus","disciples","loaves","fish","bread","basket","crowd","bigtree","rubble","dove"],
     aiPreview: [ 'place("jesus", 4, 2)', 'place("loaves", 3, 3)', 'place("crowd", 2, 4)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{sprite:"flowers", n:5, rows:[4,5]}, extras:[{sprite:"clouds", n:3, rows:[0,1]}], dove:true, shimmer:["jesus"], wander:["dove","disciples"] }
@@ -282,7 +283,7 @@ const WORKSHOPS = {
     ground: "garden",
     background: "eden",                    // the lush garden fills the scene
     freeGoal: "Grow the good garden! It is already all around you. Place the one special tree — place(\"appletree\", 4, 1) — with the sly serpent in its branches. Put Adam and Eve in the garden, and add flowering bushes and little plants wherever you like — place(\"flowerbush\", 2, 4). The angel who guards the way is here too — place(\"cherub\", 7, 1). Then tap the 🦉 button to bring it to life.",
-    items: ["appletree","serpent","adam","eve","cherub","flowerbush","plant","rock","sheep","deer","dove"],
+    items: ["eden","plain","appletree","tree","serpent","adam","eve","cherub","lionsleep","flowerbush","plant","rock","rocks","boulder","sheep","deer","dove"],
     aiPreview: [ 'place("appletree", 4, 1)', 'place("adam", 2, 3)', 'place("eve", 6, 3)', 'place("serpent", 4, 2)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{sprite:"plant", n:5, rows:[4,5]}, extras:[{sprite:"flowerbush", n:4, rows:[3,4]},{emoji:"🦋", n:3, rows:[1,2]}], dove:true, shimmer:["appletree","cherub"], wander:["serpent","deer","dove"] }
@@ -301,7 +302,7 @@ const WORKSHOPS = {
     background: "mount",                       // the mountainside over the lake
     aliases: { jesus: "jesussermon", crowd: "crowdsermon", tree: "sermontree" },  // this story's own art
     freeGoal: "Gather the hillside crowd! The mountainside over the lake is already here. Place Jesus teaching — place(\"jesus\", 4, 2) — and spread the crowd across the slope to listen — place(\"crowd\", 2, 4). Add the men who came to hear, trees, flowering bushes, and clouds wherever you like. Then tap the 🦉 button to bring it to life.",
-    items: ["jesus","crowd","crowdmen","tree","flowers","shrub","tallshrub","clouds","dove"],
+    items: ["mount","galilee","jesus","crowd","crowdmen","tree","flowers","shrub","tallshrub","clouds","dove"],
     aiPreview: [ 'place("jesus", 4, 2)', 'place("crowd", 2, 4)', 'place("tree", 6, 3)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{sprite:"flowers", n:5, rows:[4,5]}, extras:[{sprite:"clouds", n:3, rows:[0,1]}], dove:true, shimmer:["jesus"], wander:["dove"] }
@@ -318,7 +319,7 @@ const WORKSHOPS = {
     freeBuild: true,
     background: "barn",                               // the stable interior at night
     freeGoal: 'Build the manger scene! The stable is already here. Lay baby Jesus in the manger — place("baby", 4, 3) — with Mary and Joseph beside him, and an angel above. Bring the ox and the donkey. The shepherds came to see him — place("shepherd") — and the wise men followed the star from far away — place("star", 4, 0) and place("wisemen", 6, 4). Then bring it to life and watch night fall.',
-    items: ["baby","mary","joseph","angel","shepherd","wisemen","star","ox","donkey","sheep","dove"],
+    items: ["barn","plain","baby","mary","joseph","angel","shepherd","wisemen","star","ox","donkey","sheep","house","dove"],
     aiPreview: [ 'place("baby", 4, 3)', 'place("mary", 3, 3)', 'place("joseph", 5, 3)', 'place("wisemen", 6, 4)' ],
     rungs: [
       { id:0, label:"1 · The baby",   goalItem:"baby", target:{col:4,row:3},
