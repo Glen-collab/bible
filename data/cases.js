@@ -904,7 +904,11 @@ const CASE_TOMB = {
       scene:"'It's over,' Eli sighs. 'Nothing good can come now.' But the 'too late' path just circles around and around, never arriving anywhere.",
       lesson:"Sometimes the very best thing comes right after the very worst — so it's worth staying till morning. You find the trail again." },
   ],
-  stops: [
+  // Four independent eyewitness trails, all converging on the risen Christ. Picked at
+  // random each time the case opens (see startCase) — the women, the runners, the
+  // guards, and the Emmaus travelers each reach the same empty tomb a different way.
+  variants: [
+   { title:"Roll the Stone Away", stops: [
     { place:"The Saddest Evening", tag:"When love shows up anyway",
       eli:"Their teacher and friend has died. Everyone's heartbroken and scared, hiding inside. Honestly? I'd probably give up too.",
       spots:[
@@ -975,8 +979,163 @@ const CASE_TOMB = {
       eli:"I walked in ready to give up when things looked hopeless. And the whole story was pointing at ONE thing: the dark part wasn't the end. That changes everything.",
       final:true,
       teaching:"On the saddest evening, everything looked finished — their friend was gone, a huge stone sealed the tomb, and it was easy to give up. But a few people loved enough to keep showing up, walking through the dark toward a problem far too big for them. When they arrived, the impossible stone was already rolled away and the tomb was empty: Jesus was alive. Their grief turned to joy, and they became the first to carry that hope to everyone else. That's what hope is. Not pretending the hard part isn't hard — but trusting that the dark part isn't the end of the story, and still taking the next step toward morning." },
+   ] },
+
+   { title:"The Runners", stops: [
+    { place:"The Locked Room", tag:"Where the disciples hide, afraid",
+      eli:"The women say the tomb is EMPTY and he's alive? Sounds too good to be true. Why get my hopes up just to be let down?",
+      spots:[
+        { ico:"🚪", label:"Enter the hidden room", lead:"Most of Jesus' friends have locked themselves away, sure the story is over.",
+          clue:"Fear had them convinced nothing good could happen now." },
+        { ico:"🏃‍♀️", label:"Hear the women's report", lead:"Mary Magdalene bursts in, breathless.",
+          clue:"'The stone is rolled away — the tomb is empty!' she cries. Most brush it off as wishful talk." },
+        { ico:"👀", label:"Watch Peter and John", lead:"Two of them can't sit still.",
+          clue:"Peter and John decide they must see for themselves, and bolt out the door." },
+      ],
+      ask:"What do Peter and John do when they hear the women's report?",
+      options:["Ignore it and stay hidden","Run to the tomb to see for themselves","Report it to the soldiers"],
+      answer:1,
+      hint:"The 'watch Peter and John' clue — they can't sit still, and run out to see for themselves.",
+      sidequest:{ title:"Encourage a doubter", desc:"A friend is scared to hope again after being let down. Gently urge them to come and see for themselves?",
+        lesson:"You coax a discouraged friend to take one more look. Eli learns hope sometimes just needs someone willing to go with you.", badge:"helper" } },
+
+    { place:"The Race to the Tomb", tag:"Two friends run through the morning",
+      eli:"They're actually RUNNING? Okay... maybe there's something to this after all.",
+      spots:[
+        { ico:"👟", label:"Keep pace with the runners", lead:"Both men run as hard as they can down the road.",
+          clue:"John, the younger, outruns Peter and reaches the tomb first." },
+        { ico:"🪨", label:"See the open door", lead:"The great sealing stone is already rolled aside.",
+          clue:"The thing that should have stopped them is standing wide open." },
+      ],
+      ask:"Who reaches the empty tomb first?",
+      options:["Peter","John, the younger","They arrive together"],
+      answer:1,
+      hint:"The clue says John, the younger, outran Peter and got there first.",
+      sidequest:null },
+
+    { place:"Inside the Tomb", tag:"What the linen cloths reveal",
+      eli:"They actually went IN? What did they find — is it really empty?",
+      spots:[
+        { ico:"🧻", label:"Look at the linen cloths", lead:"The burial wrappings are still there — but empty.",
+          clue:"The cloths lie neatly, and the head cloth is folded by itself, off to the side." },
+        { ico:"💡", label:"Watch John's face", lead:"John steps inside, sees, and understands.",
+          clue:"No grave-robber leaves the wrappings folded and tidy. Something far greater happened here." },
+      ],
+      ask:"What convinces John that this was no robbery?",
+      options:["The neatly folded cloths left behind","Muddy footprints","A ransom note"],
+      answer:0,
+      hint:"The 'linen cloths' clue — robbers don't fold the wrappings; John sees the tidy tomb and believes.",
+      sidequest:null },
+
+    { place:"He Saw and Believed", tag:"Doubt turns to faith",
+      eli:"I walked in sure it was too good to be true. But they ran, they looked, and they believed. Maybe it really is okay to let yourself hope.",
+      final:true,
+      teaching:"When the women brought impossible news, it would have been easy to stay locked away and call it wishful thinking. But Peter and John loved enough to run and look for themselves — and the empty tomb with its neatly folded cloths turned their doubt into faith. Hope often begins with simply being willing to go and see. The dark part wasn't the end after all." },
+   ] },
+
+   { title:"The Guards' Report", stops: [
+    { place:"The Sealed Tomb", tag:"Soldiers set to guard a grave",
+      eli:"They put armed SOLDIERS on a tomb? Sounds like the powerful people making sure the story stays 'over.' Figures — they always win.",
+      spots:[
+        { ico:"🪖", label:"Inspect the guard post", lead:"Roman soldiers stand watch at the tomb.",
+          clue:"The leaders feared the body might be taken, so they sealed the stone and posted a guard." },
+        { ico:"🔏", label:"Examine the seal", lead:"An official seal is stamped across the stone.",
+          clue:"No one could open it without Rome knowing — the grave was locked up tight." },
+      ],
+      ask:"Why did the leaders post soldiers at the tomb?",
+      options:["To honor Jesus","To make sure no one could move the body","To keep the rain out"],
+      answer:1,
+      hint:"The 'guard post' clue — they feared the body would be taken, so they sealed and guarded it.",
+      sidequest:{ title:"Speak up for the truth", desc:"Someone is being pressured to repeat a story they know is false. Quietly stand with the truth?",
+        lesson:"You choose honesty when going along would be easier. Eli sees the truth is worth standing for, even against powerful people.", badge:"helper" } },
+
+    { place:"The Morning Everything Shook", tag:"When the guards' watch fell apart",
+      eli:"So did the tough soldiers keep it shut? ...What actually happened out there?",
+      spots:[
+        { ico:"🌋", label:"Feel the ground shake", lead:"At dawn the earth trembles violently.",
+          clue:"An angel rolls the great stone back as if it weighs nothing at all." },
+        { ico:"😨", label:"See the guards' faces", lead:"The hardened soldiers freeze in terror.",
+          clue:"The mighty guards shake and fall down like dead men. Their sealed tomb is now wide open and empty." },
+      ],
+      ask:"What happens to the guards on Easter morning?",
+      options:["They march away in triumph","They shake with fear as the tomb opens","They roll the stone shut again"],
+      answer:1,
+      hint:"The 'guards' faces' clue — the earthquake and angel leave the soldiers helpless; the tomb stands open.",
+      sidequest:null },
+
+    { place:"The Cover-Up", tag:"A bribe to bury the truth",
+      eli:"Wait — they're going to PAY the guards to lie about it? See? The powerful always win in the end...",
+      spots:[
+        { ico:"💰", label:"Follow the money", lead:"The leaders meet the shaken soldiers in secret.",
+          clue:"They hand over a large sum of money to say the disciples stole the body while they slept." },
+        { ico:"🗣️", label:"Trace the rumor", lead:"The false story is sent out through the city.",
+          clue:"But if the guards were asleep, how could they know who took him? The cover story falls apart." },
+      ],
+      ask:"What are the guards paid to say?",
+      options:["That the disciples stole the body","That they saw an angel","That nothing happened at all"],
+      answer:0,
+      hint:"The 'follow the money' clue — they're bribed to claim the disciples stole the body while they slept.",
+      sidequest:null },
+
+    { place:"The Truth They Couldn't Bury", tag:"An empty tomb no one could explain",
+      eli:"They sealed it, guarded it, and even paid people to lie — and STILL couldn't keep him in the grave. The truth won. I didn't think it could.",
+      final:true,
+      teaching:"The most powerful people around did everything they could to keep the story shut: a sealed stone, armed guards, even a bribe to spread a lie. But no seal, no soldier, and no cover-up could keep Jesus in the tomb. The empty grave they worked so hard to explain away became the very proof that He had risen. Hope isn't fragile — the truth of Easter is stronger than every power that tried to bury it." },
+   ] },
+
+   { title:"The Road to Emmaus", stops: [
+    { place:"Leaving Jerusalem", tag:"Two friends walking home, heavy-hearted",
+      eli:"They're leaving town, heads down, sure it's all over. Honestly? That's exactly what I'd do.",
+      spots:[
+        { ico:"🚶", label:"Join the two travelers", lead:"Two of Jesus' followers walk the road to a village called Emmaus.",
+          clue:"They'd hoped Jesus was the one to rescue Israel — but he'd died, and now they're trudging home sad." },
+        { ico:"🗨️", label:"Listen to their talk", lead:"They go over everything that happened that weekend.",
+          clue:"They even mention the women's strange report of an empty tomb — but they can't bring themselves to believe it." },
+      ],
+      ask:"Why are the two disciples leaving Jerusalem?",
+      options:["They gave up hope after Jesus died","They were chased out of the city","They were headed to a feast"],
+      answer:0,
+      hint:"The 'join the travelers' clue — their hope was crushed when Jesus died, so they're heading home.",
+      sidequest:{ title:"Walk with the lonely", desc:"Someone nearby is trudging along downhearted and alone. Fall into step and keep them company?",
+        lesson:"You walk a while beside someone low. Eli learns hope often returns when we're not left to walk the dark road alone.", badge:"helper" } },
+
+    { place:"The Stranger on the Road", tag:"A traveler who explains everything",
+      eli:"Some stranger just... joined them? And they don't even realize who he is?",
+      spots:[
+        { ico:"🧑", label:"Meet the stranger", lead:"A man falls into step with them along the road.",
+          clue:"They don't recognize him — but he gently asks why they look so sad." },
+        { ico:"📜", label:"Hear him open the scriptures", lead:"The stranger walks them through the old promises.",
+          clue:"He shows how the prophets said the Messiah would suffer and then rise. Their hearts begin to burn with hope." },
+      ],
+      ask:"What does the stranger do as they walk together?",
+      options:["Explains how the scriptures pointed to this all along","Asks them for directions","Warns them of robbers ahead"],
+      answer:0,
+      hint:"The 'open the scriptures' clue — he shows how the prophets foretold the Messiah would rise.",
+      sidequest:null },
+
+    { place:"The Breaking of Bread", tag:"Recognized at the table",
+      eli:"They invited him to stay for supper — and THEN what? Who IS he?!",
+      spots:[
+        { ico:"🍞", label:"Watch him break the bread", lead:"At the table, the stranger takes bread, blesses it, and breaks it.",
+          clue:"In that familiar moment, something clicks — their eyes are opened." },
+        { ico:"😲", label:"See the recognition", lead:"Suddenly they know exactly who he is.",
+          clue:"It's Jesus — alive! And the instant they recognize him, he vanishes from their sight." },
+      ],
+      ask:"When do the two travelers finally recognize the stranger?",
+      options:["When he breaks the bread","When he says his name","When he shows them a map"],
+      answer:0,
+      hint:"The 'breaking bread' clue — their eyes are opened the moment he breaks the bread; it's Jesus, alive.",
+      sidequest:null },
+
+    { place:"Their Hearts Burned Within Them", tag:"Hope walking home",
+      eli:"They started that road ready to give up — and the whole time, the risen Jesus was walking right beside them. They just couldn't see it yet. That gives me chills.",
+      final:true,
+      teaching:"Two friends walked away from Jerusalem with their hopes crushed, certain the story was over. But the risen Jesus fell into step beside them — unrecognized — and showed them the whole story had been leading here all along. When he broke the bread, their eyes were opened: he was alive. They ran back to Jerusalem that very night with hearts on fire. Sometimes hope is walking right beside us in the dark, long before we recognize it. The worst part was never the end." },
+   ] },
   ]
 };
+// default stops for the home-screen card (stop count) and as a safe fallback
+CASE_TOMB.stops = CASE_TOMB.variants[0].stops;
 
 
 /* =====================================================================
