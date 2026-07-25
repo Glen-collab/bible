@@ -169,7 +169,7 @@ const WORKSHOPS = {
     aliases: { jesus: "jesustomb" },        // the risen Jesus (has an outline; the old global one didn't)
     sizes: { horse: 2.1, palm: 3.5, jesus: 2.75, light: 3, damascus: 3.5 },   // scaled to the people on this road
     freeGoal: 'Set the road to Damascus! The road is already here. Place Saul struck to the ground — place("saul_fallen", 2, 4) — with the light bursting from heaven above him — place("light", 3, 1). The risen Jesus appears — place("jesus", 5, 1). His horse waits nearby, and the city of Damascus lies ahead — place("damascus", 6, 1). Then tap the 🦉 button to bring it to life.',
-    items: ["road","plain","saul_fallen","light","jesus","damascus","horse","saul","palm","donkey","dove"],
+    items: ["road","plain","saul_fallen","light","jesus","damascus","horse","saul","palm","shrub","tallshrub","flowers","donkey","dove"],
     aiPreview: [ 'place("saul_fallen", 2, 4)', 'place("light", 3, 1)', 'place("jesus", 5, 1)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{sprite:"rubble", n:5, rows:[4,5]}, extras:[{sprite:"clouds", n:2, rows:[0,1]}], dove:true, shimmer:["jesus","saul_fallen","light"], wander:["horse","donkey"] }
@@ -284,7 +284,7 @@ const WORKSHOPS = {
     ground: "garden",
     background: "eden",                    // the lush garden fills the scene
     freeGoal: "Grow the good garden! It is already all around you. Place the one special tree — place(\"appletree\", 4, 1) — with the sly serpent in its branches. Put Adam and Eve in the garden, and add flowering bushes and little plants wherever you like — place(\"flowerbush\", 2, 4). The angel who guards the way is here too — place(\"cherub\", 7, 1). Then tap the 🦉 button to bring it to life.",
-    items: ["eden","plain","god","appletree","figtree","bigtree","serpent","adam","eve","cherub","lionsleep","flowerbush","plant","rock","rocks","sheep","deer","dove"],
+    items: ["eden","plain","god","appletree","figtree","bigtree","palm","serpent","adam","eve","cherub","lionsleep","flowers","shrub","tallshrub","flowerbush","plant","rock","rocks","sheep","deer","dove"],
     aiPreview: [ 'place("appletree", 4, 1)', 'place("adam", 2, 3)', 'place("eve", 6, 3)', 'place("serpent", 4, 2)' ],
     practice: { enabled:true, prompt:"I'll call out where each piece goes." },
     finale: { sky:"day", twinkle:0, grass:{sprite:"plant", n:5, rows:[4,5]}, extras:[{sprite:"flowerbush", n:4, rows:[3,4]},{emoji:"🦋", n:3, rows:[1,2]}], dove:true, shimmer:["appletree","cherub"], wander:["serpent","deer","dove"] }
