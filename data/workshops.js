@@ -283,6 +283,7 @@ const WORKSHOPS = {
     grid: { cols: 8, rows: 6 },
     ground: "garden",
     background: "eden",                    // the lush garden fills the scene
+    sizes: { figtree:2.5, serpent:1, adam:1, eve:1, flowers:2.5, shrub:1.5, flowerbush:1.75, plant:1.5, rock:1.75, rocks:1.75 },   // Eden-only sizes (these pieces are shared with other scenes)
     freeGoal: "Grow the good garden! It is already all around you. Place the one special tree — place(\"appletree\", 4, 1) — with the sly serpent in its branches. Put Adam and Eve in the garden, and add flowering bushes and little plants wherever you like — place(\"flowerbush\", 2, 4). The angel who guards the way is here too — place(\"cherub\", 7, 1). Then tap the 🦉 button to bring it to life.",
     items: ["eden","plain","god","appletree","figtree","bigtree","palm","serpent","adam","eve","cherub","lionsleep","flowers","shrub","tallshrub","flowerbush","plant","rock","rocks","sheep","deer","dove"],
     aiPreview: [ 'place("appletree", 4, 1)', 'place("adam", 2, 3)', 'place("eve", 6, 3)', 'place("serpent", 4, 2)' ],
