@@ -55,14 +55,20 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  const lastVariant = {};   // per-case index of the trail played last, so we don't repeat it
   /* ---- play a case, then hand off to its Workshop ---- */
   function startCase(id) {
     let c = CASES[id]; if (!c) return;
     // Cases with multiple investigation paths pick one at RANDOM each time they're
-    // opened (silently — no dice). The player follows a different trail to the same
-    // destination, so replays feel fresh. Shallow-copy so the registry isn't mutated.
+    // opened (silently — no dice), avoiding an immediate repeat so every replay hands
+    // the player a fresh trail to the same destination. Shallow-copy so the registry
+    // isn't mutated.
     if (c.variants && c.variants.length) {
-      const v = c.variants[Math.floor(Math.random() * c.variants.length)];
+      let idx, guard = 0;
+      do { idx = Math.floor(Math.random() * c.variants.length); guard++; }
+      while (c.variants.length > 1 && idx === lastVariant[id] && guard < 20);
+      lastVariant[id] = idx;
+      const v = c.variants[idx];
       c = Object.assign({}, c, { title: v.title || c.title, stops: v.stops });
     }
     const ws = workshopForCase(id);
