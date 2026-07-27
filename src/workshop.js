@@ -588,7 +588,14 @@
       ico.appendChild(img);
       const nm = document.createElement('span'); nm.className = 'p-name'; nm.textContent = '"' + k + '"';
       b.appendChild(ico); b.appendChild(nm);
-      b.onclick = () => { const c = $('cmd'); c.value = `place("${k}", 3, 3)`; c.focus(); };
+      b.onclick = () => {
+        // aim so the piece lands CENTERED on the grid — big pieces (a size-3.5 palm,
+        // a mountain) otherwise spill down-right from a fixed 3,3 corner anchor
+        const sz = (CFG.sizes && CFG.sizes[k]) || DEFAULT_SIZE[k] || 1;
+        const col = Math.max(0, Math.min(COLS - 1, Math.round((COLS - sz) / 2)));
+        const row = Math.max(0, Math.min(ROWS - 1, Math.round((ROWS - sz) / 2)));
+        const c = $('cmd'); c.value = `place("${k}", ${col}, ${row})`; c.focus();
+      };
       p.appendChild(b);
     });
   }
