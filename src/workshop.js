@@ -43,7 +43,7 @@
   // next to single figures. Kids can still override with place(name, c, r, size).
   const DEFAULT_SIZE = {
     boulder: 5,
-    man: 1.5, female: 1.5, angel: 1.5, mary: 1, joseph: 1, jesus: 2, king: 1.5, goliath: 2.25, david: 1.25, daniel: 1.5,
+    man: 1.5, female: 1.5, angel: 1.5, mary: 1, joseph: 1, jesus: 2, king: 1.5, goliath: 2.25, david: 1.25, daniel: 1,
     baby: 1.2, cow: 1.5, noah: 1, armies: 2.5, chariot: 1.8, horse: 1.25,
     sheep: 1.25, donkey: 1.5,
     noah_openarms: 1.5, noahkneel: 1,
@@ -59,7 +59,7 @@
     palm: 2, house: 2, well: 1.5, ox: 1.5,  // props and buildings
     // Daniel's den
     pray: 1.5, lionroar: 1.75, lionsleep: 1.75, lionwalk: 1.75, guard: 1.5,
-    accuser: 1.5, accuser2: 1.5, blame: 1.5, door: 1.5, bone: 0.6, skull: 0.5,
+    accuser: 1.25, accuser2: 1.25, blame: 1.75, door: 1.5, bone: 0.6, skull: 0.5,   // blame's art reads small, so a bigger number to match
     ruth: 1, boaz: 1.5, naomi: 1, barley: 1, figtree: 2, jar: 0.7,   // Ruth's story (Ruth & Naomi placed smaller; Boaz stays)
     // landscape is a backdrop now (see BACKDROPS) — placing it swaps the whole background
     tree: 2.5, serpent: 1.5, fruit: 0.75, leaves: 1, adam: 1.5, eve: 1.5,
