@@ -104,11 +104,17 @@
           <span class="cc-theme">${w.subtitle || 'Learn to code'} · real JavaScript</span></span>
         <span class="cc-arrow">→</span></button>`;
     });
-    return `<div class="section-lab">Build a scene</div>${cards}`;
+    // collapsible, collapsed by default — the campaign (cases) stays the main path
+    return `<div class="section-lab build-head" id="buildHead" onclick="FootstepsApp._toggleBuild()"><span class="build-caret">▸</span> Build a scene</div><div class="build-wrap" id="buildWrap">${cards}</div>`;
   }
   function startScene(id) { const w = WORKSHOPS[id]; if (w) startWorkshop(w); }
+  function toggleBuild() {
+    const w = document.getElementById('buildWrap'); if (!w) return;
+    const open = w.classList.toggle('open');
+    const car = document.querySelector('#buildHead .build-caret'); if (car) car.textContent = open ? '▾' : '▸';
+  }
 
-  window.FootstepsApp = { renderHome, startCase, startWorkshop, startScene };
+  window.FootstepsApp = { renderHome, startCase, startWorkshop, startScene, _toggleBuild: toggleBuild };
 
   document.addEventListener('DOMContentLoaded', renderHome);
 })();

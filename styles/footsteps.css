@@ -48,6 +48,10 @@ h1 em{font-style:italic;color:var(--olive-deep);}
   padding:16px 18px;margin:22px 0 8px;font-size:14px;line-height:1.6;color:var(--ink-soft);}
 .intro-note b{color:var(--ink);}
 .section-lab{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--terra);font-weight:600;margin:24px 4px 12px;}
+.build-head{cursor:pointer;user-select:none;display:flex;align-items:center;gap:6px;}
+.build-caret{display:inline-block;font-size:10px;}
+.build-wrap{display:none;}
+.build-wrap.open{display:block;}
 .case-card{display:flex;align-items:center;gap:14px;text-align:left;width:100%;background:#fff;border:1.5px solid var(--parch-deep);
   border-radius:16px;padding:16px 18px;margin-bottom:11px;cursor:pointer;box-shadow:0 4px 0 var(--parch-deep);
   transition:transform .12s;font-family:'Spline Sans';color:var(--ink);}
