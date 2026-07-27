@@ -303,6 +303,7 @@ const WORKSHOPS = {
     ground: "hill",
     background: "mount",                       // the mountainside over the lake
     aliases: { jesus: "jesussermon", crowd: "crowdsermon", tree: "sermontree" },  // this story's own art
+    sizes: { shrub:1.75, flowers:1.75, clouds:3 },   // Sermon-only sizes (shrub/flowers are shared)
     freeGoal: "Gather the hillside crowd! The mountainside over the lake is already here. Place Jesus teaching — place(\"jesus\", 4, 2) — and spread the crowd across the slope to listen — place(\"crowd\", 2, 4). Add the men who came to hear, trees, flowering bushes, and clouds wherever you like. Then tap the 🦉 button to bring it to life.",
     items: ["mount","galilee","jesus","crowd","crowdmen","tree","flowers","shrub","tallshrub","clouds","dove"],
     aiPreview: [ 'place("jesus", 4, 2)', 'place("crowd", 2, 4)', 'place("tree", 6, 3)' ],
