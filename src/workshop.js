@@ -634,10 +634,11 @@
   // a white silhouette of an image, fit into a w×h box — used to blank the
   // background (and pieces behind) before drawing a piece's outline, so hollow
   // shapes like a sun don't show what's behind them on the coloring page.
-  function whiteSilhouette(img, w, h) {
+  function whiteSilhouette(img, w, h, stretch) {
     const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(w)); c.height = Math.max(1, Math.round(h));
     const cx = c.getContext('2d');
-    drawFit(cx, img, 0, 0, c.width, c.height, 'contain');
+    if (stretch) cx.drawImage(img, 0, 0, c.width, c.height);      // fill the whole rect (match the outline's footprint)
+    else drawFit(cx, img, 0, 0, c.width, c.height, 'contain');
     cx.globalCompositeOperation = 'source-in'; cx.fillStyle = '#fff'; cx.fillRect(0, 0, c.width, c.height);
     return c;
   }
@@ -683,8 +684,15 @@
         if (b.flipped) ctx.scale(-1, 1);
         ctx.translate(-cx, -cy);
         if (colored) {   // blank out whatever is behind this piece, then draw its lines
-          const sil = whiteSilhouette(colored, bw, bh), p = 0.03;
-          ctx.drawImage(sil, bx - bw * p, by - bh * p, bw * (1 + 2 * p), bh * (1 + 2 * p));
+          // Size the white blank to where the OUTLINE actually lands, not the colored
+          // art's own box — the two files can have different aspect ratios, which would
+          // otherwise leave a white halo around the piece. Stretch the colored
+          // silhouette into the outline's rect so it matches (+2% to cover the lines).
+          const oR = img.width / img.height, bR = bw / bh; let odw, odh;
+          if (oR > bR) { odw = bw; odh = bw / oR; } else { odh = bh; odw = bh * oR; }
+          const odx = bx + (bw - odw) / 2, ody = by + (bh - odh) / 2, p = 0.02;
+          const sil = whiteSilhouette(colored, odw * (1 + 2 * p), odh * (1 + 2 * p), true);
+          ctx.drawImage(sil, odx - odw * p, ody - odh * p, odw * (1 + 2 * p), odh * (1 + 2 * p));
         }
         drawFit(ctx, img, bx, by, bw, bh, 'contain');
         ctx.restore();
