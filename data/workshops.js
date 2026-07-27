@@ -321,6 +321,7 @@ const WORKSHOPS = {
     grid: { cols: 8, rows: 6 },
     freeBuild: true,
     background: "barn",                               // the stable interior at night
+    sizes: { shepherd:1.5, wisemen:2.75, ox:1 },      // manger-scene sizes
     freeGoal: 'Build the manger scene! The stable is already here. Lay baby Jesus in the manger — place("baby", 4, 3) — with Mary and Joseph beside him, and an angel above. Bring the ox and the donkey. The shepherds came to see him — place("shepherd") — and the wise men followed the star from far away — place("star", 4, 0) and place("wisemen", 6, 4). Then bring it to life and watch night fall.',
     items: ["barn","plain","baby","mary","joseph","angel","shepherd","wisemen","star","ox","donkey","sheep","house","dove"],
     aiPreview: [ 'place("baby", 4, 3)', 'place("mary", 3, 3)', 'place("joseph", 5, 3)', 'place("wisemen", 6, 4)' ],
