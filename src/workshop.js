@@ -67,9 +67,9 @@
     // Eden story poses — two figures (sometimes with a lion or a bush), so wider
     peace: 2.25, leave: 2, share: 2,
     reach: 2.5, taste: 1.5, bite: 1.5,
-    crowd: 4.25, den: 5,
+    crowd: 4.75, den: 5,
     tomb: 3, sermon: 4, teaching: 3.5, healing: 3.5,
-    feast: 1.5, fishbread: 1.5, loaves: 1.5,
+    feast: 1.5, fishbread: 1.5, loaves: 1.25,
     // Feeding the 5,000
     jesusfeed: 1.75, disciples: 2.25, fish: 1, bread: 0.7, basket: 1, bigtree: 2.5, rubble: 1,
     // The empty tomb
