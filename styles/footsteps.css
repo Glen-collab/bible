@@ -343,9 +343,10 @@ footer{text-align:center;font-size:11px;color:var(--ink-soft);opacity:.7;margin-
 .rt-reveal{margin:14px auto 0;display:block;}
 .rt-answer{margin:14px auto 2px;max-width:34ch;font-family:'Fraunces';font-size:16.5px;line-height:1.45;color:var(--olive-deep);
   background:rgba(107,122,63,.1);border:1px solid rgba(107,122,63,.25);border-radius:12px;padding:12px 15px;animation:rise .3s ease;}
-.rt-nav{display:flex;gap:10px;margin-top:20px;}
-.rt-nav .btn{margin-top:0;}
-.rt-nav .btn.ghost{flex:0 0 auto;padding:14px 18px;}
+.rt-nav{display:flex;gap:10px;margin-top:20px;align-items:stretch;}
+.rt-nav .btn{margin-top:0;width:auto;}              /* override .btn width:100% so flex can size them */
+.rt-nav .btn.ghost{flex:0 0 auto;padding:14px 20px;}/* small back button, sized to the arrow */
+.rt-nav .btn:not(.ghost){flex:1;}                   /* next / finish fills the rest, fully on screen */
 .rt-badge .bi{font-size:54px;animation:pop .5s;}
 .rt-badge .bn{font-family:'Fraunces';font-size:18px;color:var(--olive-deep);margin-top:6px;}
 
