@@ -28,6 +28,34 @@ unique and match what you register in your Apple Developer account.
 
 ---
 
+## Status: already done on the Mac (2026-07-28)
+
+The iOS project is **built, signed, and committed**. `ios/` is in the repo, the
+signing team is set (`DEVELOPMENT_TEAM = M7A7RJL78X`, automatic signing), and
+the app has been verified running in the iPhone 17 simulator and building a
+signed Release for a real device. You can skip straight to **Archive** below.
+
+Two setup gotchas that were hit and fixed, for reference:
+
+- **CocoaPods was not installed.** No Homebrew on this Mac, and macOS ships
+  Ruby 2.6, so a plain `gem install cocoapods` fails on modern dependencies.
+  What worked (no sudo):
+  ```bash
+  gem install --user-install ffi -v 1.15.5
+  gem install --user-install zeitwerk -v 2.6.18
+  gem install --user-install i18n -v 1.14.8
+  gem install --user-install --conservative activesupport -v 6.1.7.10
+  gem install --user-install --conservative cocoapods -v 1.12.1
+  ```
+  `~/.gem/ruby/2.6.0/bin` was added to `PATH` in `~/.zshrc`.
+- **`npm run icons` pointed at the wrong folder** — it defaulted to `assets/`
+  (the game art) instead of `resources/`. The script now passes
+  `--assetPath resources`.
+- npm 11 blocks package install scripts; `npm approve-scripts sharp` is needed
+  once before `npm run icons` will work.
+
+---
+
 ## First-time build (run in the repo folder on your Mac)
 
 ```bash

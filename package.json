@@ -6,7 +6,7 @@
   "scripts": {
     "build:web": "node scripts/build-web.js",
     "sync": "npm run build:web && npx cap sync ios",
-    "icons": "npx @capacitor/assets generate --ios",
+    "icons": "npx @capacitor/assets generate --ios --assetPath resources",
     "open:ios": "npx cap open ios"
   },
   "dependencies": {
@@ -18,5 +18,8 @@
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^6.1.0"
+  },
+  "allowScripts": {
+    "sharp@0.32.6": true
   }
 }
