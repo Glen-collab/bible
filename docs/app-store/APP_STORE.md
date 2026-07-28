@@ -20,9 +20,22 @@ Working notes for the iOS 1.0 submission. Build steps live in `../../MAC_SETUP.m
 - [x] App icon (1024², real artwork) + splash generated
 - [x] `ITSAppUsesNonExemptEncryption = false` in Info.plist
 - [x] Screenshots captured, 1320×2868 (6.9")
-- [ ] **App Store Connect record created** ← blocks the upload
-- [ ] Archive → export → validate → upload
-- [ ] Listing filled in, submitted
+- [x] **Explicit App ID registered** — `com.bestrongagain.footsteps`, id `5Y58T65P6H`
+- [x] App Store Connect record — name accepted as-is, **Apple ID `6795695844`**,
+      SKU `footsteps-ios-001`
+- [x] **Build 1.0 (1) uploaded 2026-07-28**, delivery UUID
+      `6e2ee733-c2b3-4cb6-86bb-e02e402e6a3c`, 23.5 MB, VERIFY + UPLOAD both clean
+- [ ] Listing filled in, build selected, submitted for review
+
+**Trap worth remembering:** the account has a **wildcard App ID (`*`, "XC Wildcard")**,
+and automatic signing will silently use it. A signed device build can therefore
+succeed while the explicit App ID does not exist — which is exactly what happened
+here, and it only surfaced as a missing entry in App Store Connect's bundle-ID
+dropdown. Wildcards cannot be used for App Store distribution. Check with
+`GET /v1/bundleIds` rather than trusting a green build.
+
+Check state any time: `~/weekend-planner/.venv/bin/python <S>/asc.py` (that venv
+has pyjwt + requests; system python 3.9 does not).
 
 ## Screenshots
 
