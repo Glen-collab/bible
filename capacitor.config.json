@@ -1,0 +1,17 @@
+{
+  "appId": "com.bestrongagain.footsteps",
+  "appName": "Footsteps of the Teacher",
+  "webDir": "www",
+  "backgroundColor": "#f6ecd4",
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#f6ecd4"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "backgroundColor": "#f6ecd4",
+      "showSpinner": false
+    }
+  }
+}

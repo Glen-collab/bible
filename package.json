@@ -1,0 +1,22 @@
+{
+  "name": "footsteps-of-the-teacher",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A faith-based deduction-and-discovery game for kids that teaches Bible stories and the basics of real coding.",
+  "scripts": {
+    "build:web": "node scripts/build-web.js",
+    "sync": "npm run build:web && npx cap sync ios",
+    "icons": "npx @capacitor/assets generate --ios",
+    "open:ios": "npx cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.1.0",
+    "@capacitor/ios": "^6.1.0",
+    "@capacitor/splash-screen": "^6.0.2",
+    "@capacitor/status-bar": "^6.0.1"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^6.1.0"
+  }
+}
