@@ -702,12 +702,37 @@
         ctx.fillText(b.emoji, bx + bw / 2, by + bh / 2);
       }
     }
+    const dataUrl = canvas.toDataURL('image/png');
+
+    // In the iOS app printing goes through a tiny native AirPrint plugin.
+    // WKWebView has no window.print() at all — it is a silent no-op — so the
+    // browser path below would do nothing inside the app.
+    if (isNativeApp()) { await printNative(dataUrl); return; }
+
     const old = document.getElementById('print-page'); if (old) old.remove();
     const pg = document.createElement('div'); pg.id = 'print-page';
-    const im = document.createElement('img'); im.className = 'print-sheet'; im.src = canvas.toDataURL('image/png');
+    const im = document.createElement('img'); im.className = 'print-sheet'; im.src = dataUrl;
     pg.appendChild(im); document.body.appendChild(pg);
     window.onafterprint = function () { const p = document.getElementById('print-page'); if (p) p.remove(); window.onafterprint = null; };
     if (im.complete) window.print(); else im.onload = () => window.print();
+  }
+
+  // running inside the Capacitor app (as opposed to the web build on Pages)?
+  function isNativeApp() {
+    const C = window.Capacitor;
+    return !!(C && typeof C.isNativePlatform === 'function' && C.isNativePlatform());
+  }
+
+  // Hand the PNG to the native AirPrint sheet (ios/App/App/FootstepsPrintPlugin.swift).
+  // Cancelling the print dialog resolves normally, so only a real failure speaks up.
+  async function printNative(dataUrl) {
+    const P = (window.Capacitor && window.Capacitor.Plugins) || {};
+    if (!P.FootstepsPrint) { tutorSay('Sorry — printing is not available here.'); return; }
+    try {
+      await P.FootstepsPrint.printImage({ data: dataUrl });
+    } catch (e) {
+      tutorSay('Sorry — that page could not be sent to the printer.');
+    }
   }
   WS._print = printColoringPage;
   WS._toggleGrid = function () {

@@ -31,6 +31,8 @@
   const BADGE = { talk: { icon: '🫖', name: 'Round Table' }, facts: { icon: '📜', name: 'Bible Facts' } };
 
   let C, opts, cur, step, mode;
+  let doneModes;                               // routes finished this visit, so the
+                                               // done screen can offer the other one
   const lastPick = {};                         // persists across visits (in-memory)
 
   function pick(pool, key) {
@@ -62,7 +64,7 @@
   }
 
   RT.play = function (caseObj, options) {
-    C = caseObj; opts = options || {};
+    C = caseObj; opts = options || {}; doneModes = new Set();
     const sb = $('statusbar'); if (sb) sb.style.display = 'none';
     const hd = $('appheader'); if (hd) hd.style.display = 'none';
     renderIntro();
@@ -130,14 +132,27 @@
 
   function renderDone() {
     step = cur.prompts.length;
+    if (mode) doneModes.add(mode);
     const badge = BADGE[mode] || BADGE.talk;
     const blurb = mode === 'facts'
       ? "You know this story well — and every fact you remember makes it more your own. When you're ready, take up the pen and build the scene in code."
       : "You talked it over — and that conversation is part of the story now, too. When you're ready, take up the pen and build the scene in code.";
+
+    // The two routes are a choice, not a fork in the road — whichever one you
+    // just finished, the other is still here until you leave for the workshop.
+    const hasFacts = !!(C.roundtable && C.roundtable.facts && C.roundtable.facts.length);
+    let otherBtn = '';
+    if (mode === 'facts' && !doneModes.has('talk')) {
+      otherBtn = `<button class="btn" onclick="FootstepsRoundTable._start('talk')">Talk it over too →</button>`;
+    } else if (mode === 'talk' && hasFacts && !doneModes.has('facts')) {
+      otherBtn = `<button class="btn" onclick="FootstepsRoundTable._start('facts')">🎲 Play Bible Facts too →</button>`;
+    }
+
     $('screen').innerHTML = dots(cur.prompts.length) + `<div class="card" style="text-align:center">
       <div class="rt-badge"><div class="bi">${badge.icon}</div><div class="bn">${badge.name}</div></div>
       <p class="blurb" style="margin-top:10px">${blurb}</p>
-      <button class="btn olive" onclick="FootstepsRoundTable._done()">Take up the pen — build the scene →</button>
+      ${otherBtn}
+      <button class="btn olive" ${otherBtn ? 'style="margin-top:10px"' : ''} onclick="FootstepsRoundTable._done()">Take up the pen — build the scene →</button>
     </div>`;
     scrollTop();
   }
