@@ -25,7 +25,23 @@ Working notes for the iOS 1.0 submission. Build steps live in `../../MAC_SETUP.m
       SKU `footsteps-ios-001`
 - [x] **Build 1.0 (1) uploaded 2026-07-28**, delivery UUID
       `6e2ee733-c2b3-4cb6-86bb-e02e402e6a3c`, 23.5 MB, VERIFY + UPLOAD both clean
-- [x] **SUBMITTED FOR REVIEW 2026-07-29** — version 1.0 `WAITING_FOR_REVIEW`
+- [x] **SUBMITTED FOR REVIEW 2026-07-29** — version 1.0 `WAITING_FOR_REVIEW`,
+      **build 1.0 (2)** attached
+
+**Build 1 was pulled from review.** It shipped with `window.print()` as the only
+print path, which is a **silent no-op in WKWebView** — "Print Coloring Page" did
+nothing in the app while working fine on the Pages site. That is a Guideline 2.1
+(App Completeness) rejection waiting to happen on a button that appears in every
+workshop. Cancelled the submission (state goes to `DEVELOPER_REJECTED`, which is
+not a strike), fixed it, and resubmitted with build 2. Fix is a print-only
+AirPrint plugin — deliberately not a share sheet, because a share sheet lets the
+user tap "Save Image", which **terminates the app** unless
+`NSPhotoLibraryAddUsageDescription` is in Info.plist. Print-only needs no
+permissions at all.
+
+Also in build 2: the Round Table used to strand whichever of "Talk it over" /
+"Bible Facts" you didn't pick, going straight to the workshop. The done screen
+now offers the route not yet taken.
 
 **As submitted:** Category **Education** primary, **Games → Family + Adventure**
 secondary. Kids category was NOT available in the dropdown (likely gated by the
