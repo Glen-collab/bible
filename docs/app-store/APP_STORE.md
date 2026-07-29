@@ -25,7 +25,23 @@ Working notes for the iOS 1.0 submission. Build steps live in `../../MAC_SETUP.m
       SKU `footsteps-ios-001`
 - [x] **Build 1.0 (1) uploaded 2026-07-28**, delivery UUID
       `6e2ee733-c2b3-4cb6-86bb-e02e402e6a3c`, 23.5 MB, VERIFY + UPLOAD both clean
-- [ ] Listing filled in, build selected, submitted for review
+- [x] **SUBMITTED FOR REVIEW 2026-07-29** — version 1.0 `WAITING_FOR_REVIEW`
+
+**As submitted:** Category **Education** primary, **Games → Family + Adventure**
+secondary. Kids category was NOT available in the dropdown (likely gated by the
+9+ age rating), so the Kids-category constraints in this doc no longer bind —
+an outbound link would no longer require a parental gate. Age rating **9+**
+globally (12+ Vietnam, regional variants Brazil/Korea) from answering Cartoon or
+Fantasy Violence: Infrequent/Mild. Price **USD 4.99**, proceeds **$4.24** —
+i.e. the **85% Small Business Program rate is active** on this account.
+Copyright `2026 Glen Rogers`. Privacy published as **Data Not Collected**.
+
+**Two things that blocked "Add for Review" and are easy to miss** — neither is on
+the version page: **Content Rights** (App Information → answer No third-party
+content) and **App Review contact information** (bottom of the version page:
+name, phone, email; "sign-in required" stays UNCHECKED — there are no accounts).
+Also: App Privacy must be **Published**, not just filled in, or submit stays
+greyed out.
 
 **Trap worth remembering:** the account has a **wildcard App ID (`*`, "XC Wildcard")**,
 and automatic signing will silently use it. A signed device build can therefore
