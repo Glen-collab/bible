@@ -197,7 +197,7 @@
     ITEMS = window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS;
     COLS = CFG.grid.cols; ROWS = CFG.grid.rows;
     sprites = []; showGrid = true; rung = 0; mode = 'guided'; score = 0; target = null;
-    backdropEl = null; backdropName = null; structEl = null; structName = null; railMsg = null;
+    backdropEl = null; backdropName = null; structEl = null; structName = null; railMsg = null; railSnapNote = null;
     render();
   };
 
@@ -361,9 +361,13 @@
       railSnapped = (typeof col === 'number' && typeof row === 'number') &&
                     (col !== CFG.rail.home.col || row !== CFG.rail.home.row);
       col = CFG.rail.home.col; row = CFG.rail.home.row;
-      railMsg = railSnapped
-        ? 'Good try — but the great stone is far too heavy to lift. It sits in a carved track and can only <b>roll</b>, so it always starts sealed over the door. Use <code>move("' + name + '", "left")</code> to roll it away.'
-        : railHint(false, name);
+      // railSnapNote survives into onRungComplete: snapping the stone home SATISFIES
+      // rung 0, so without it the celebration fires and the explanation is dropped —
+      // the kid types the wrong numbers and Ada says "You did it!"
+      railSnapNote = railSnapped
+        ? 'Good try — but the great stone is far too heavy to lift. It sits in a carved track and can only <b>roll</b>, so it always starts sealed over the door, whatever numbers you give it.'
+        : null;
+      railMsg = railSnapNote || railHint(false, name);
     }
     if (typeof col !== 'number' || typeof row !== 'number') throw { kind: 'numbers' };
     if (col < 0 || col >= COLS || row < 0 || row >= ROWS) throw { kind: 'range', col, row };
@@ -402,7 +406,7 @@
         dest = dO < dH ? open : home;
       } else { dest = (a === 'left') ? open : home; }
       moveRec(s, dest.col, dest.row); sweepChime();
-      railMsg = railHint(dest === open, name);
+      railMsg = railHint(dest === open, name); railSnapNote = null;   // a roll never discards coords
       return name + (dest === open ? ' rolls away — the tomb is open!' : ' rolls back — sealed.') + centerNote(dest.col, dest.row, s.size);
     }
     // move("name", col, row) -> go straight to that square
@@ -466,7 +470,8 @@
 
   /* ---- tap-a-piece to resize it (＋ / −) or delete it ---- */
   let selected = null;
-  let railMsg = null;   // Ada's next open/close hint after a railed piece moves
+  let railMsg = null;       // Ada's next open/close hint after a railed piece moves
+  let railSnapNote = null;  // set only when the rail DISCARDED typed coords — must outlive a rung completion
   function railHint(isOpen, name) {
     return isOpen
       ? 'The tomb is <b>open</b>. Roll the stone back to seal it: <code>move("' + name + '", "right")</code>.'
@@ -833,16 +838,19 @@
     catch (err) { threw = err; }
     if (threw === null) {
       print('✓ ' + (result || 'done'), 'ok'); cmd.value = '';
-      if (mode === 'practice') { railMsg = null; checkPractice(); return; }
+      if (mode === 'practice') { railMsg = railSnapNote = null; checkPractice(); return; }
       if (CFG.freeBuild) {
         if (railMsg) { tutorSay(railMsg); railMsg = null; }
         else tutorSay(`Nice — that ran! Add as many as you like, then tap <b>🦉 Bring the scene to life</b>.`);
+        railSnapNote = null;
         return;
       }
-      if (rungCheck(CFG.rungs[rung])()) onRungComplete();
+      // the rail can satisfy a rung with coords the kid never typed, so the snap note
+      // rides along into the celebration instead of being overwritten by it
+      if (rungCheck(CFG.rungs[rung])()) onRungComplete(railSnapNote);
       else if (railMsg) tutorSay(railMsg);
       else tutorSay(`Nice — that ran! ${nudge()}`);
-      railMsg = null;
+      railMsg = railSnapNote = null;
       return;
     }
     const ex = explainError(threw); print('… ' + ex.msg, 'err');
@@ -859,7 +867,10 @@
     return `Keep going toward the goal above!`;
   }
 
-  function onRungComplete() {
+  // `lead` is an optional explanation that must not be lost to the celebration —
+  // e.g. the rail discarded the coords the kid typed but still satisfied the rung.
+  // tutorSay() replaces the panel, so it is prepended in one call, not said after.
+  function onRungComplete(lead) {
     happyChime();
     const last = rung === CFG.rungs.length - 1;
     const msgs = [
@@ -868,7 +879,7 @@
       `🪵 <b>In place.</b> You're building a whole scene, one real line at a time.`,
       `⭐ <b>Beautiful.</b> Every piece placed with real code. You're a scribe now.`,
     ];
-    tutorSay(msgs[Math.min(rung, msgs.length - 1)]);
+    tutorSay((lead ? lead + '<br><br>' : '') + msgs[Math.min(rung, msgs.length - 1)]);
     $('dym').innerHTML = '';
     const nw = $('nextwrap');
     if (!last) { nw.innerHTML = `<button class="btn" onclick="FootstepsWorkshop._advance()">Next step →</button>`; return; }
