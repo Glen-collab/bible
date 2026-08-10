@@ -121,6 +121,12 @@ Standalone workshops on the home screen (also become case rewards as their cases
 
 - **SSH deploy key** (no tokens): remote `git@github.com:Glen-collab/bible.git`, per-repo
   `core.sshCommand` → `~/.ssh/footsteps_deploy`. `git push origin main` just works; Pages auto-rebuilds.
+- **⚠️ BUMP `?v=NN` IN `index.html` IN THE SAME COMMIT as any `src/`, `data/`, or
+  `styles/` change.** Every script and stylesheet is pinned (`src/workshop.js?v=83`), so
+  without a bump, returning visitors keep the cached old file and never see the fix —
+  the change looks live on Pages and is invisible in the browser. One `sed` does it:
+  `sed -i '' 's/?v=83/?v=84/g' index.html`. (Doesn't affect the iOS app: Capacitor
+  bundles `www/` into the binary, so there is no HTTP cache there.)
 - **Tests: there is no test file in the repo.** Earlier notes describe a `jsc` harness with 600–887
   checks — it was never committed and is not in git history. Don't go looking for it.
 - **Verify with node instead** — `node` IS installed now (v24, `~/.local/bin/node`), so the old
