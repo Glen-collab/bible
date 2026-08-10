@@ -218,18 +218,20 @@ const WORKSHOPS = {
     background: "tomb",                               // the garden tomb at dawn (crosses on the hill, the open grave)
     aliases: { jesus: "jesustomb", angel: "angeltomb", disciples: "disciplestomb" },  // this story's own art
     items: ["tomb","calvary","stone","jesus","angel","women","disciples","soldier","shroud","crucified","crown","jesusdeath","dove"],
-    // the stone is on a track: it sits at "home" (sealed) and rolls away to "open"
-    rail: { item:"stone", home:{col:2,row:1}, open:{col:0,row:1} },
-    aiPreview: [ 'place("stone", 2, 1)', 'move("stone", "left")', 'place("jesus", 4, 3)' ],
+    // the stone is on a track: it sits at "home" (sealed) and rolls away to "open".
+    // Coords are the piece's TOP-LEFT corner and stone spans 2.5 cells, so home
+    // centers at (5.75, 3.75) — right on the doorway of the tomb backdrop.
+    rail: { item:"stone", home:{col:5,row:3}, open:{col:2,row:3} },
+    aiPreview: [ 'place("stone", 5, 3)', 'move("stone", "left")', 'place("jesus", 5, 3)' ],
     rungs: [
-      { id:0, label:"1 · Seal it",  goalItem:"stone", target:{col:2,row:1},
+      { id:0, label:"1 · Seal it",  goalItem:"stone", target:{col:5,row:3},
         goal:'Roll the great stone over the door: place("stone"). It sits right at the entrance.' },
       { id:1, label:"2 · Roll it away", goalMove:{item:"stone",dir:"left"},
         goal:'On the third day, roll the stone away: move("stone", "left"). Roll it back with move("stone", "right").' },
-      { id:2, label:"3 · He is risen", goalItem:"jesus", target:{col:4,row:3},
-        goal:'The tomb is empty — reveal the risen Jesus: place("jesus", 4, 3).' },
-      { id:3, label:"4 · The angel", goalItem:"angel", target:{col:2,row:2},
-        goal:'An angel greets the women at dawn: place("angel", 2, 2). Add the women who came — place("women", 1, 4).' },
+      { id:2, label:"3 · He is risen", goalItem:"jesus", target:{col:5,row:3},
+        goal:'The tomb is empty — reveal the risen Jesus: place("jesus", 5, 3). He stands right where the stone was.' },
+      { id:3, label:"4 · The angel", goalItem:"angel", target:{col:4,row:4},
+        goal:'An angel greets the women at dawn: place("angel", 4, 4). Add the women who came — place("women", 1, 4).' },
     ],
     practice: { enabled:true, prompt:"I'll call out where the figures go." },
     finale: { sky:"day", twinkle:0, grass:{sprite:"flowers", n:5, rows:[4,5]}, extras:[{sprite:"rubble", n:4, rows:[3,5]}], dove:true, shimmer:["jesus","angel"], wander:["dove"] }
