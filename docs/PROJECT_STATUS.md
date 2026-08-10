@@ -121,8 +121,21 @@ Standalone workshops on the home screen (also become case rewards as their cases
 
 - **SSH deploy key** (no tokens): remote `git@github.com:Glen-collab/bible.git`, per-repo
   `core.sshCommand` → `~/.ssh/footsteps_deploy`. `git push origin main` just works; Pages auto-rebuilds.
-- **Tests** (no node in this env — uses macOS `jsc`): data + module-load validation, place/move/flock,
-  full end-to-end workshop+finale, round-table flow, all-workshops driver. 600+ checks; run before each push.
+- **Tests: there is no test file in the repo.** Earlier notes describe a `jsc` harness with 600–887
+  checks — it was never committed and is not in git history. Don't go looking for it.
+- **Verify with node instead** — `node` IS installed now (v24, `~/.local/bin/node`), so the old
+  "no node in this env" note is stale. `node --check data/<file>.js` for syntax, and to read a data
+  file the browser-globals way:
+  ```bash
+  node -e 'const fs=require("fs"),vm=require("vm");const ctx={};ctx.window=ctx;
+  vm.createContext(ctx);vm.runInContext(fs.readFileSync("data/workshops.js","utf8"),ctx);
+  console.log(Object.keys(ctx.FOOTSTEPS_WORKSHOPS.WORKSHOPS));'
+  ```
+  (each data file exports one `FOOTSTEPS_*` global, not the inner names directly.)
+- **Checking whether a piece lands on the art:** coords are the piece's **top-left corner** and it
+  spans `DEFAULT_SIZE` cells, so the visual center is `col + (size-1)/2`, and as a fraction of the
+  backdrop that's `center / COLS` across, `center / ROWS` down. This is how the Empty Tomb
+  coordinates were found to be pointing at sky.
 
 ---
 
