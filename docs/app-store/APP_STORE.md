@@ -27,6 +27,16 @@ Working notes for the iOS 1.0 submission. Build steps live in `../../MAC_SETUP.m
       `6e2ee733-c2b3-4cb6-86bb-e02e402e6a3c`, 23.5 MB, VERIFY + UPLOAD both clean
 - [x] **SUBMITTED FOR REVIEW 2026-07-29** — version 1.0 `WAITING_FOR_REVIEW`,
       **build 1.0 (2)** attached
+- [x] **Guideline 1.3 information request 2026-08-06** — the four Kids-Category
+      questions (analytics / ads / data shared / other collection). All four are
+      **no**, verified in code. **Answered in Resolution Center.** Not a code
+      rejection; no new build was required and 1.0 (2) stayed attached. Standing
+      answers + re-runnable verification: `KIDS-CATEGORY-ANSWERS.md`
+- [ ] **Awaiting Apple** — as of 2026-08-09 the version reads `REJECTED` and the
+      review submission `UNRESOLVED_ISSUES`; that is the state a Resolution Center
+      message puts it in, and it does not clear just because you replied
+- [ ] Work queued for **1.1** (do not upload while 1.0 is in review):
+      `V1.1-CHANGELOG.md`
 
 **Build 1 was pulled from review.** It shipped with `window.print()` as the only
 print path, which is a **silent no-op in WKWebView** — "Print Coloring Page" did
@@ -44,9 +54,15 @@ Also in build 2: the Round Table used to strand whichever of "Talk it over" /
 now offers the route not yet taken.
 
 **As submitted:** Category **Education** primary, **Games → Family + Adventure**
-secondary. Kids category was NOT available in the dropdown (likely gated by the
+secondary. ~~Kids category was NOT available in the dropdown (likely gated by the
 9+ age rating), so the Kids-category constraints in this doc no longer bind —
-an outbound link would no longer require a parental gate. Age rating **9+**
+an outbound link would no longer require a parental gate.~~ **❌ THAT WAS WRONG —
+corrected 2026-08-06.** Apple's own Guideline 1.3 message says *"The app has been
+submitted for the Kids Category."* **Kids-category rules DO bind this app**, so the
+"Kids Category compliance" section below stands and an outbound link WOULD require a
+parental gate. Do not re-derive the old conclusion from the category dropdown. Standing
+answers to the Kids questions, with re-runnable verification:
+`KIDS-CATEGORY-ANSWERS.md`. Age rating **9+**
 globally (12+ Vietnam, regional variants Brazil/Korea) from answering Cartoon or
 Fantasy Violence: Infrequent/Mild. Price **USD 4.99**, proceeds **$4.24** —
 i.e. the **85% Small Business Program rate is active** on this account.
