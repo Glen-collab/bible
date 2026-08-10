@@ -351,7 +351,20 @@
       }
       chime(440); return name + ' set as the scene';
     }
-    if (CFG.rail && CFG.rail.item === name) { col = CFG.rail.home.col; row = CFG.rail.home.row; railMsg = railHint(false, name); }  // railed piece snaps home (sealed)
+    // A railed piece (the tomb stone) lives on a track — it can only ever sit at
+    // "home" (sealed, centered on the doorway) or "open", so it snaps home here and
+    // any col/row the kid typed is discarded. SAY SO when that happens: quietly
+    // reporting back different numbers than they typed would teach them their
+    // arguments don't matter, which is the opposite of the point of this app.
+    let railSnapped = false;
+    if (CFG.rail && CFG.rail.item === name) {
+      railSnapped = (typeof col === 'number' && typeof row === 'number') &&
+                    (col !== CFG.rail.home.col || row !== CFG.rail.home.row);
+      col = CFG.rail.home.col; row = CFG.rail.home.row;
+      railMsg = railSnapped
+        ? 'Good try — but the great stone is far too heavy to lift. It sits in a carved track and can only <b>roll</b>, so it always starts sealed over the door. Use <code>move("' + name + '", "left")</code> to roll it away.'
+        : railHint(false, name);
+    }
     if (typeof col !== 'number' || typeof row !== 'number') throw { kind: 'numbers' };
     if (col < 0 || col >= COLS || row < 0 || row >= ROWS) throw { kind: 'range', col, row };
     size = (typeof size === 'number' && size > 0) ? Math.max(0.25, Math.min(10, size)) : ((CFG && CFG.sizes && CFG.sizes[name]) || DEFAULT_SIZE[name] || 1);
@@ -366,7 +379,10 @@
     rec.z = frontZ() + 1; el.style.zIndex = rec.z;             // newest piece stacks on top (adjustable via front/back)
     sprites.push(rec); el._cell = rec; invalidateSnapshot();   // a new piece each time — overlapping is fine, nothing is replaced
     chime(520 + col * 40);
-    return name + ' placed at ' + col + ', ' + row + (size !== 1 ? ', size ' + size : '') + centerNote(col, row, size);
+    // when the rail overrode what was typed, the echo says so rather than quietly
+    // reporting numbers the kid never wrote
+    return name + (railSnapped ? ' rolled to its place on the track at ' : ' placed at ')
+      + col + ', ' + row + (size !== 1 ? ', size ' + size : '') + centerNote(col, row, size);
   }
   function el_cell(el, rec) { el._cell = rec; }
   function moveRec(rec, nc, nr) {   // relocate a piece; never removes whatever it lands on
