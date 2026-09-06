@@ -11,78 +11,68 @@ from two months ago.
 ---
 
 ```
-Footsteps of the Teacher has no accounts and no login, so no demo account is needed.
-Nothing in the app is gated or purchasable.
+Footsteps of the Teacher has no accounts and no login, so no demo account is
+needed. Nothing is gated or purchasable.
 
 WHAT IT IS
-A faith-based app for children, in two halves that run back to back.
-
-First, a deduction case. The child walks a Bible figure's journey, investigates the
-places along it, weighs the clues they find, and decides where the trail leads next.
-A wrong choice is not a failure — it becomes a short "detour" with a lesson attached,
-and no progress is lost. They earn Wisdom (a reward track, never a currency) and badges.
-
-Then, a coding workshop for that same story. The child types real JavaScript into a
-console — place("donkey", 3, 4) — and the piece appears on a grid over the story's
-artwork. An owl named Ada tutors gently and reads intent, so a near-miss gets "did you
-mean...?" rather than an error. Between the two sits a Round Table: a short parent-and-
-child discussion of the theme.
+A Bible app for children in two halves. First a detective-style case: the child
+walks a Bible figure's journey, gathers clues at each place, and decides where the
+trail leads. A wrong answer is not a failure — it becomes a short "detour" with a
+lesson, and no progress is lost. Then a coding workshop for that same story, where
+the child types real JavaScript — place("donkey", 3, 4) — and the piece appears on
+the artwork. An owl named Ada tutors them.
 
 HOW TO SEE IT WORK
-1. Open the app and tap any case on the home screen — "The Long-Awaited One" is the
-   shortest.
-2. Tap the spots at each location to gather clues, then answer the question. Answering
-   wrongly on purpose is worth doing: it shows the detour, which is the heart of the
-   design.
-3. Finish the case to reach the win screen with Wisdom, rank and badges.
-4. Continue into the coding workshop. Type the command Ada suggests and press Run.
-5. In the workshop, tap any placed piece to select it. The arrows nudge it a quarter of
-   a square; "Print Coloring Page" opens the system print sheet.
+1. Tap any case on the home screen. "The Long-Awaited One" is the shortest.
+2. Tap the spots to gather clues, then answer the question.
+3. Answer wrongly once on purpose — the detour is the heart of the design and you
+   will not see it otherwise.
+4. Finish the case, then continue into the coding workshop and type the command
+   Ada suggests.
+5. In the workshop, tap a placed piece to select it. The arrows nudge it a quarter
+   of a square.
 
-KIDS CATEGORY — THE FOUR STANDING ANSWERS
+KIDS CATEGORY — THE FOUR ANSWERS
 1. Third-party analytics: NO.
 2. Third-party advertising: NO.
 3. Data shared with third parties: NO.
 4. Any other user or device data collected: NO.
 
-The app is entirely offline and makes no network requests at all. There is no fetch,
-XMLHttpRequest, WebSocket or sendBeacon anywhere in the shipped code, and no analytics
-or advertising SDK is linked. It stores nothing: no localStorage, no sessionStorage, no
-IndexedDB, no cookies — no progress or state persists between launches. It requests no
-permissions; the Info.plist contains no usage-description keys at all. Fonts are bundled
-rather than fetched, so no request leaves the device for them either. There are no links
-out of the app, so no parental gate is required because there is nothing to gate.
+The app runs entirely offline — it works in airplane mode and makes no network
+requests at all. It saves nothing: no progress or settings persist between
+launches. It asks for no permissions of any kind. There are no links out of the
+app, so there is nothing a parental gate would protect. This matches our App
+Privacy declaration of Data Not Collected.
 
-This matches our App Privacy declaration of Data Not Collected.
+The only system feature it uses is AirPrint, for the "Print Coloring Page" button.
 
-The only native functionality beyond drawing the screen is AirPrint, used by the "Print
-Coloring Page" button. It presents the system print sheet through
-UIPrintInteractionController and needs no permission and no photo-library access.
-
-ON THE AGE RATING
-Rated 9+ and placed in the 9-11 Kids band. The app references Bible narrative that
-includes conflict — David and Goliath, the plagues, the crucifixion — but never depicts
-violence: there is no violent imagery, and no violent action the child performs. The
-framing is consistently the opposite; the David case turns on him choosing NOT to strike
-the king who hunted him, and one chapter is titled "Not by Sword or Spear". The 9-11 band
-also matches the actual audience, since the workshops have children typing real
-JavaScript.
+AGE RATING
+Rated 9+, in the 9-11 Kids band. The stories reference conflict — David and
+Goliath, the plagues, the crucifixion — but nothing violent is ever shown, and the
+child never performs a violent action. The framing runs the other way: the David
+case turns on him choosing not to strike the king hunting him, and a chapter is
+titled "Not by Sword or Spear". The 9-11 band also fits an audience old enough to
+type JavaScript.
 
 WHAT CHANGED IN 1.1
-The Empty Tomb workshop's piece coordinates were retuned to match its artwork. The nudge
-arrows now move a piece a quarter of a grid square instead of a whole one. Badges that
-have not been earned yet now show what they are for instead of the word "Locked", and
-finishing a case one badge short names the one still outstanding.
+The Empty Tomb workshop now lines up with its artwork. The nudge arrows move a
+piece a quarter of a square instead of a whole one. Badges not yet earned show
+what they are for instead of saying "Locked", and finishing a case one badge short
+names the one still missing.
 
-DEVICES TESTED
-iPhone 17 Pro and iPhone 14, both iOS 26.6, physical devices. iPhone only —
-TARGETED_DEVICE_FAMILY is 1.
-
-EXTERNAL SERVICES
-None. No backend of ours, no analytics, no advertising, no third-party SDKs, no AI
-services. The app works with the device in airplane mode.
-
-DATA DELETION
-There is no account to delete and nothing is stored. Deleting the app removes it
-entirely.
+Tested on iPhone 17 Pro and iPhone 14, iOS 26.6. iPhone only.
 ```
+
+---
+
+## Why this is shorter than it was
+
+The first draft ran to 673 words and named APIs — `fetch`, `sendBeacon`,
+`UIPrintInteractionController`, `TARGETED_DEVICE_FAMILY`. All true, and all of it buried
+the four answers a Kids-Category reviewer is actually looking for. A reviewer skims. The
+claims are unchanged, just said in plain words: "works in airplane mode" is the same fact
+as "no fetch, XMLHttpRequest, WebSocket or sendBeacon", and easier to check.
+
+The technical evidence still exists, in `KIDS-CATEGORY-ANSWERS.md`, with the commands to
+re-run it. That is the right place for it — send it **if** they ask a follow-up, rather
+than opening with it.
