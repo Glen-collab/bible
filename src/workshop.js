@@ -161,6 +161,13 @@
   // A list (not one-per-cell) lets pieces STACK and overlap freely — placing one never
   // deletes another. A flock is just several sprites with the same name.
   let sprites, showGrid, rung, mode, score, target, actx;
+  // The d-pad's step. A quarter reads as "just a touch" on screen and still lands on
+  // values a kid can read back off the ruler.
+  const NUDGE = 0.25;
+  // Ada explains the arrows-versus-code difference once per workshop, not every tap.
+  let nudgeExplained = false;
+  // Keeps a nudged piece on the board, and off floating-point dust like 5.250000000001.
+  function clampCell(v, span) { return Math.round(Math.max(0, Math.min(span - 1, v)) * 100) / 100; }
   // A snapshot of the scene AS DESIGNED, captured right before the finale animates
   // the pieces — so "Print" always uses the layout the kid built, not the moved one.
   let sceneSnapshot = null;
@@ -197,12 +204,21 @@
     ITEMS = window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS;
     COLS = CFG.grid.cols; ROWS = CFG.grid.rows;
     sprites = []; showGrid = true; rung = 0; mode = 'guided'; score = 0; target = null;
+    nudgeExplained = false;
     backdropEl = null; backdropName = null; structEl = null; structName = null; railMsg = null; railSnapNote = null;
     render();
   };
 
   function findByName(name) { return sprites.find((s) => s.name === name) || null; }
-  const itemAt = (name, c, r) => sprites.some((s) => s.name === name && s.col === c && s.row === r);
+  // Checks the SQUARE a piece was placed on, not where it is drawn.
+  //
+  // The arrows shift a piece by a quarter square for looks. That must not change whether
+  // a rung is satisfied, in either direction: a kid who typed the right numbers and then
+  // tidied the piece up must keep the tick, and a kid who typed the wrong numbers must
+  // not earn it by dragging the piece into range with the d-pad. Typing the coordinates
+  // is what completes a goal; nudging is decoration.
+  const itemAt = (name, c, r) =>
+    sprites.some((s) => s.name === name && s.cellCol === c && s.cellRow === r);
 
   /* ---- build a check() for a rung from its data shape ---- */
   function rungCheck(r) {
@@ -211,10 +227,10 @@
       const { item, dir } = r.goalMove;
       return () => {
         const s = findByName(item); if (!s) return false;
-        if (dir === 'right') return s.col >= COLS - 2;
-        if (dir === 'left') return s.col <= 1;
-        if (dir === 'down') return s.row >= ROWS - 2;
-        if (dir === 'up') return s.row <= 1;
+        if (dir === 'right') return s.cellCol >= COLS - 2;
+        if (dir === 'left') return s.cellCol <= 1;
+        if (dir === 'down') return s.cellRow >= ROWS - 2;
+        if (dir === 'up') return s.cellRow <= 1;
         return false;
       };
     }
@@ -334,7 +350,10 @@
     el.style.height = (size * 100 / ROWS) + '%';
   }
   // pieces anchor by their corner; this reports where the visual center lands
-  function numStr(n) { return (n % 1 === 0) ? String(n) : n.toFixed(1); }
+  // toFixed(1) turned a nudged 5.25 into "5.3", so the note under the piece disagreed
+  // with where it actually was. Two decimals, trailing zeros dropped: 5 -> "5",
+  // 5.5 -> "5.5", 5.25 -> "5.25".
+  function numStr(n) { return String(Math.round(n * 100) / 100); }
   function centerCells(col, row, size) { size = size || 1; return numStr(col + (size - 1) / 2) + ', ' + numStr(row + (size - 1) / 2); }
   function centerNote(col, row, size) { return '  // center at grid ' + centerCells(col, row, size); }
   function place(name, col, row, size) {
@@ -379,7 +398,9 @@
     positionEl(el, col, row, size);
     el.onclick = () => selectSprite(el);   // tap a piece to select/resize it
     $('stage').appendChild(el);
-    const rec = { name, el, col, row, size, rot: 0, flipped: false, _cx: col + size / 2, _cy: row + size / 2 };
+    // col/row are where it is DRAWN and may carry a quarter-square nudge; cellCol/cellRow
+    // are the square the kid actually named, and are what the rung checks read.
+    const rec = { name, el, col, row, cellCol: col, cellRow: row, size, rot: 0, flipped: false, _cx: col + size / 2, _cy: row + size / 2 };
     rec.z = frontZ() + 1; el.style.zIndex = rec.z;             // newest piece stacks on top (adjustable via front/back)
     sprites.push(rec); el._cell = rec; invalidateSnapshot();   // a new piece each time — overlapping is fine, nothing is replaced
     chime(520 + col * 40);
@@ -390,7 +411,7 @@
   }
   function el_cell(el, rec) { el._cell = rec; }
   function moveRec(rec, nc, nr) {   // relocate a piece; never removes whatever it lands on
-    rec.col = nc; rec.row = nr; invalidateSnapshot();
+    rec.col = nc; rec.row = nr; rec.cellCol = nc; rec.cellRow = nr; invalidateSnapshot();
     rec.el.classList.add('moving');
     positionEl(rec.el, nc, nr, rec.size);
     rec._cx = nc + (rec.size || 1) / 2; rec._cy = nr + (rec.size || 1) / 2;
@@ -566,12 +587,27 @@
       print('> move("' + c.name + '", "' + dir + '")', 'echo'); chime(480);
       return;
     }
-    const nc = Math.max(0, Math.min(COLS - 1, c.col + dx));
-    const nr = Math.max(0, Math.min(ROWS - 1, c.row + dy));
+    // A QUARTER of a square, not a whole one. The arrows are the fine-adjust tool —
+    // for when a piece sits almost right and a full cell overshoots. Whole-cell jumps
+    // are what move() in the console is for.
+    const nc = clampCell(c.col + dx * NUDGE, COLS);
+    const nr = clampCell(c.row + dy * NUDGE, ROWS);
     if (nc === c.col && nr === c.row) return;
-    moveRec(c, nc, nr);
-    showCode('move("' + c.name + '", ' + nc + ', ' + nr + ')' + centerNote(nc, nr, c.size || 1));
-    print('> move("' + c.name + '", ' + nc + ', ' + nr + ')', 'echo');
+    // Not moveRec: that would rewrite the logical square and let the d-pad satisfy a goal.
+    c.col = nc; c.row = nr; invalidateSnapshot();
+    c.el.classList.add('moving');
+    positionEl(c.el, nc, nr, c.size);
+    c._cx = nc + (c.size || 1) / 2; c._cy = nr + (c.size || 1) / 2;
+    // Deliberately NOT echoed as move("name", 5.25, 4): move() rounds its arguments,
+    // so a kid typing that back would watch the piece jump to 5 and reasonably
+    // conclude the app lies to them. A nudge is a thing the arrows can do and code
+    // cannot, so it is shown as a note rather than as a command.
+    showCode('// nudged ' + c.name + ' to ' + numStr(nc) + ', ' + numStr(nr));
+    print('  … ' + c.name + ' nudged a quarter square → ' + numStr(nc) + ', ' + numStr(nr), 'sys');
+    if (!nudgeExplained) {
+      nudgeExplained = true;
+      tutorSay('These arrows move a piece a <b>quarter</b> of a square — for when something is nearly right. Typing <code>move("' + c.name + '", 5, 3)</code> jumps a <b>whole</b> square. Little arrows for little moves.');
+    }
     chime(480);
   };
 
