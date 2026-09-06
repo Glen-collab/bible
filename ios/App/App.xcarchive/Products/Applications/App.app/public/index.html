@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Footsteps of the Teacher</title>
+<meta name="description" content="A faith-based deduction-and-discovery game for kids that teaches biblical stories and the basics of real coding.">
+<!-- iOS app-shell hints (harmless on the web) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Footsteps">
+<meta name="theme-color" content="#f6ecd4">
+<link rel="stylesheet" href="styles/footsteps.css?v=85">
+</head>
+<body>
+<div id="app">
+  <div class="statusbar" id="statusbar" style="display:none"></div>
+  <header id="appheader" style="display:none">
+    <div class="kicker">A Walk-With-the-Teacher Game</div>
+    <h1>Footsteps <em>of the Teacher</em></h1>
+  </header>
+  <div id="screen"></div>
+</div>
+
+<!-- badges modal (shared) -->
+<div class="modal" id="badgeModal" onclick="if(event.target.id==='badgeModal')this.classList.remove('show')">
+  <div class="sheet">
+    <h3>Your Badges</h3>
+    <div class="badgegrid" id="badgegrid"></div>
+    <button class="btn ghost" style="margin-top:16px" onclick="document.getElementById('badgeModal').classList.remove('show')">Close</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- content (data) -->
+<script src="data/cases.js?v=85"></script>
+<script src="data/workshops.js?v=85"></script>
+<!-- engines -->
+<script src="src/engine.js?v=85"></script>
+<script src="src/roundtable.js?v=85"></script>
+<script src="src/finale.js?v=85"></script>
+<script src="src/workshop.js?v=85"></script>
+<!-- app shell -->
+<script src="src/app.js?v=85"></script>
+</body>
+</html>

@@ -1,0 +1,1006 @@
+/* =====================================================================
+   FOOTSTEPS OF THE TEACHER — Workshop engine (learn real code)
+   ---------------------------------------------------------------------
+   The kid types REAL JavaScript — place("donkey", 3, 4), move("donkey",
+   "right") — and watches the scene build on a grid. Ada the owl reads
+   messy attempts and offers the corrected real line ("did you mean…?").
+
+   Config-driven: renders any workshop from data/workshops.js.
+     FootstepsWorkshop.play(workshopConfig, { onExit });
+
+   The tutor "brain" is inferIntent() — a pure (messy text -> suggested
+   line) function, deliberately swappable for a future Claude API call.
+   ===================================================================== */
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const WS = {};
+
+  // A sprite shows real art (assets/sprites/<name>.png) if that file exists,
+  // and falls back to its emoji if not. So dropping a PNG in "upgrades" a piece
+  // automatically — no code change. See assets/README.md for the naming contract.
+  const SPRITE_BASE = 'assets/sprites/';
+  // Cache-buster for images loaded by JS (backdrops, sprites, outlines). The scripts
+  // in index.html carry ?v=N; mirror that onto every dynamic image so a new deploy
+  // actually re-fetches updated art instead of serving a stale browser copy.
+  const ASSET_V = (function () {
+    var ss = document.getElementsByTagName('script');
+    for (var i = 0; i < ss.length; i++) { var m = ss[i].src && ss[i].src.match(/[?&]v=([^&]+)/); if (m) return '?v=' + m[1]; }
+    return '';
+  })();
+  const V = (u) => u + ASSET_V;
+  // How much of its cell each sprite fills (a mouse ≠ an elephant). Tune with
+  // tools/sprite-calibrator.html; default 0.85. Only affects real-art sprites.
+  const SPRITE_SCALE = {
+    mouse:0.40, snail:0.42, butterfly:0.50, squirrel:0.55, toucan:0.55, fawn:0.60, owl:0.62, dove:0.60,
+    flamingo:0.68, monkey:0.70, deer:0.72, ostrich:0.75, kangaroo:0.78, panda:0.80, rainbow:0.90,
+    lion:0.95, zebra:0.95, tiger:0.98, gorilla:1.00, camel:1.00, ox:1.00, hippo:1.05, rhino:1.05, elephant:1.15, giraffe:1.20,
+    goliath:1.15, joseph:1.05, mary:0.95, david:0.90, man:0.90, female:0.90, daniel:0.90,
+    harp:0.90, tablets:0.95,
+    boulder:0.85,
+  };
+  // Default number of cells a piece spans when no size is given. Big illustrated
+  // images (crowds, scenes) are drawn wide, so they need more cells to look right
+  // next to single figures. Kids can still override with place(name, c, r, size).
+  const DEFAULT_SIZE = {
+    boulder: 5,
+    man: 1.5, female: 1.5, angel: 1.5, mary: 1, joseph: 1, jesus: 2, king: 1.25, goliath: 2.25, david: 1.25, daniel: 1,
+    baby: 1.2, cow: 1.5, noah: 1, armies: 2.5, chariot: 1.8, horse: 1.25,
+    sheep: 1.25, donkey: 1.5,
+    noah_openarms: 1.5, noahkneel: 1,
+    // ark animal pairs — two side by side, so wider
+    elephants: 3, camels: 2.75, giraffes: 2.5, lions: 2.5, zebras: 2.5, bears: 2.25,
+    deer: 3, lambs: 2, doves: 1.75, ducks: 1.5, parrots: 1.5, bunnies: 1.3,
+    israelites: 3, philistines: 3, rocks: 1.2,   // the two armies span the hillsides
+    moses: 1.5, water: 2, staff: 1.2, wheat: 1, light: 2,
+    parting: 1.75, people: 2.5, mountain: 7, commandments: 1.75, smoke: 1.5, fire: 1,   // mountain starts big (can grow to the 10 cap)
+    harp: 1.25, tablets: 1.5,   // same spans as david / moses
+    wisemen: 3.5, camel: 1.5,               // the three magi are drawn side by side
+    saul: 1.75, saul_fallen: 2.5, damascus: 3,   // Paul standing / struck down; the city
+    palm: 2, house: 2, well: 1.5, ox: 1.5,  // props and buildings
+    // Daniel's den
+    pray: 1.5, lionroar: 1.75, lionsleep: 1.75, lionwalk: 1.75, guard: 1.5,
+    accuser: 1.25, accuser2: 1.25, blame: 1.75, door: 1.5, bone: 0.6, skull: 0.5,   // blame's art reads small, so a bigger number to match
+    ruth: 1, boaz: 1.5, naomi: 1, barley: 1, figtree: 2, jar: 0.7,   // Ruth's story (Ruth & Naomi placed smaller; Boaz stays)
+    // landscape is a backdrop now (see BACKDROPS) — placing it swaps the whole background
+    tree: 2.5, serpent: 1.5, fruit: 0.75, leaves: 1, adam: 1.5, eve: 1.5,
+    appletree: 2.5, cherub: 1.5, flowerbush: 1, plant: 0.9, rock: 1, god: 2.5,
+    // Eden story poses — two figures (sometimes with a lion or a bush), so wider
+    peace: 2.25, leave: 2, share: 2,
+    reach: 2.5, taste: 1.5, bite: 1.5,
+    crowd: 4.75, den: 5,
+    tomb: 3, sermon: 4, teaching: 3.5, healing: 3.5,
+    feast: 1.5, fishbread: 1.5, loaves: 1.25,
+    // Feeding the 5,000
+    jesusfeed: 1.75, disciples: 2.25, fish: 1, bread: 0.7, basket: 1, bigtree: 2.5, rubble: 1,
+    // The empty tomb
+    women: 2.25, stone: 2.5, soldier: 1.5, shroud: 1, crucified: 2.25, crown: 0.6, jesusdeath: 2,
+    // Sermon on the Mount
+    crowdmen: 3, flowers: 1, shrub: 1, tallshrub: 1.75, clouds: 2,
+  };
+  const SCENE_BASE = 'assets/scenes/';
+  // "Backdrop" items: placing one sets the whole scene behind the grid (instead of
+  // dropping a small piece), and everything else places on top. item name -> scene file.
+  const BACKDROPS = {
+    ark: 'ark', tomb: 'tomb', barn: 'barn',   // barn = the manger scene's stable interior backdrop
+    // The Red Sea has two states: closed, then opened. Placing one replaces the
+    // other, so the sea "parts" when the kid swaps the backdrop.
+    split: 'split',
+    // reusable painted scenes: desert (David's valley + any dry-land story), the
+    // garden of Eden, the Damascus road, and Ruth's barley field.
+    desert: 'desert', eden: 'eden', valley: 'valley', arena: 'arena', flood: 'flood',
+    road: 'road', field: 'field', hillside: 'hillside',
+    // "landscape" is a general-purpose underlayment: add it to ANY scene's items and
+    // placing it swaps the whole background (cover-fit, fills the stage, behind the
+    // figures). The finale still scatters its decor on top, so nothing disappears.
+    landscape: 'landscape',
+    // more reusable underlayments: bare desert plain, Sinai wilderness, the ark on
+    // dry ground, Golgotha's three crosses, and the Sea of Galilee lakeside.
+    plain: 'plain', wilderness: 'wilderness', dryland: 'dryland', calvary: 'calvary', galilee: 'galilee',
+    den: 'den',   // Daniel's den interior — now also a tappable backdrop choice
+    // one mountain backdrop serves two scenes: Moses at Sinai and Jesus's sermon.
+    sinai: 'mount', mount: 'mount',
+  };
+  // Backdrops come in two kinds. LANDSCAPES fill the whole scene (desert, eden, sea…).
+  // STRUCTURES are transparent buildings that sit IN a landscape (the stable, the ark,
+  // the tomb, the den) — so they layer ON TOP of a landscape instead of replacing it.
+  // Two separate <img> layers: landscape (z-index 0) behind, structure (z-index 1)
+  // in front of it but still behind the pieces (z-index 2).
+  const STRUCTURES = new Set(['ark']);   // tomb, manger, den are full/object art now, not structures
+  // backdrops whose art already INCLUDES the scene's structure (e.g. dryland shows the
+  // ark on land) — placing one hides the separate structure overlay so it isn't doubled
+  const SELF_CONTAINED = new Set(['dryland']);
+  let backdropEl = null, backdropName = null;     // the landscape layer
+  let structEl = null, structName = null;         // the structure layer
+  function setBackdrop(file, isStruct) {
+    if (isStruct) {
+      if (!structEl) {
+        structEl = document.createElement('img');
+        structEl.className = 'stage-bg stage-struct'; structEl.alt = '';
+        $('stage').appendChild(structEl);
+      }
+      structEl.src = V(SCENE_BASE + file + '.png'); structName = file;
+    } else {
+      if (!backdropEl) {
+        backdropEl = document.createElement('img');
+        backdropEl.className = 'stage-bg'; backdropEl.alt = '';
+        $('stage').appendChild(backdropEl);   // .stage-bg has z-index:0 so it stays behind everything
+      }
+      backdropEl.src = V(SCENE_BASE + file + '.png'); backdropName = file;
+    }
+  }
+  function clearBackdrop(isStruct) {
+    if (isStruct) { if (structEl) { structEl.remove(); structEl = null; } structName = null; }
+    else { if (backdropEl) { backdropEl.remove(); backdropEl = null; } backdropName = null; }
+  }
+  // does an item's scene file currently sit on either layer?
+  function backdropShowing(name) {
+    return backdropName === BACKDROPS[name] || structName === BACKDROPS[name];
+  }
+  // a scene may map an item to its own art file (e.g. a different Jesus per story):
+  // CFG.aliases = { jesus: "jesusfeed" }. The kid still types place("jesus").
+  function artFile(name) { return (CFG && CFG.aliases && CFG.aliases[name]) || name; }
+  function paintSprite(el, name) {
+    const emoji = (window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS[name]) || '';
+    const file = artFile(name);
+    el.textContent = '';
+    const img = document.createElement('img');
+    img.className = 'spr-img'; img.alt = '';
+    const s = (SPRITE_SCALE[name] || 0.85) * 100;
+    img.style.width = s + '%'; img.style.height = s + '%';
+    let triedScenes = false;
+    img.onerror = function () {
+      if (!triedScenes) { triedScenes = true; img.src = V(SCENE_BASE + file + '.png'); } // try scenes/ next
+      else { el.textContent = emoji; }                                                 // then fall back to emoji
+    };
+    img.src = V(SPRITE_BASE + file + '.png');
+    el.appendChild(img);
+  }
+
+  let CFG, ITEMS, COLS, ROWS, opts;
+  // sprites: a flat LIST of placed pieces { name, el, col, row, size, rot, flipped, _cx, _cy }.
+  // A list (not one-per-cell) lets pieces STACK and overlap freely — placing one never
+  // deletes another. A flock is just several sprites with the same name.
+  let sprites, showGrid, rung, mode, score, target, actx;
+  // The d-pad's step. A quarter reads as "just a touch" on screen and still lands on
+  // values a kid can read back off the ruler.
+  const NUDGE = 0.25;
+  // Ada explains the arrows-versus-code difference once per workshop, not every tap.
+  let nudgeExplained = false;
+  // Keeps a nudged piece on the board, and off floating-point dust like 5.250000000001.
+  function clampCell(v, span) { return Math.round(Math.max(0, Math.min(span - 1, v)) * 100) / 100; }
+  // A snapshot of the scene AS DESIGNED, captured right before the finale animates
+  // the pieces — so "Print" always uses the layout the kid built, not the moved one.
+  let sceneSnapshot = null;
+  function captureDesign() {
+    // Capture each piece's EXACT rendered box (the image element, or the div for an
+    // emoji) as a % of the stage — so the printed coloring page is pixel-for-pixel
+    // what's on screen, whatever the kid resized it to.
+    const sr = $('stage').getBoundingClientRect();
+    return sprites.map((s) => {
+      const img = s.el.querySelector('img');
+      const box = (img || s.el).getBoundingClientRect();
+      return {
+        x0: (box.left - sr.left) / sr.width * 100, y0: (box.top - sr.top) / sr.height * 100,
+        w: box.width / sr.width * 100, h: box.height / sr.height * 100,
+        rot: s.rot, flipped: s.flipped, name: s.name, z: s.z || 10,
+        imgSrc: img ? img.src : null, emoji: img ? null : s.el.textContent,
+      };
+    });
+  }
+  function invalidateSnapshot() { sceneSnapshot = null; }
+  // put every placed piece back where the kid designed it — undoing any roam
+  // drift or shimmer from a finale run, so the scene is clean to edit again
+  function restoreDesign() {
+    sprites.forEach((rec) => {
+      rec.el.classList.remove('roam', 'shimmer', 'moving');
+      positionEl(rec.el, rec.col, rec.row, rec.size);
+      applyTransform(rec.el, rec);   // keep the kid's flip/rotate; drop any shimmer scale
+    });
+  }
+
+  WS.play = function (config, options) {
+    CFG = config;
+    opts = options || {};
+    ITEMS = window.FOOTSTEPS_WORKSHOPS.WORKSHOP_ITEMS;
+    COLS = CFG.grid.cols; ROWS = CFG.grid.rows;
+    sprites = []; showGrid = true; rung = 0; mode = 'guided'; score = 0; target = null;
+    nudgeExplained = false;
+    backdropEl = null; backdropName = null; structEl = null; structName = null; railMsg = null; railSnapNote = null;
+    render();
+  };
+
+  function findByName(name) { return sprites.find((s) => s.name === name) || null; }
+  // Checks the SQUARE a piece was placed on, not where it is drawn.
+  //
+  // The arrows shift a piece by a quarter square for looks. That must not change whether
+  // a rung is satisfied, in either direction: a kid who typed the right numbers and then
+  // tidied the piece up must keep the tick, and a kid who typed the wrong numbers must
+  // not earn it by dragging the piece into range with the d-pad. Typing the coordinates
+  // is what completes a goal; nudging is decoration.
+  const itemAt = (name, c, r) =>
+    sprites.some((s) => s.name === name && s.cellCol === c && s.cellRow === r);
+
+  /* ---- build a check() for a rung from its data shape ---- */
+  function rungCheck(r) {
+    if (r.goalItem && BACKDROPS[r.goalItem]) return () => backdropShowing(r.goalItem);
+    if (r.goalMove) {
+      const { item, dir } = r.goalMove;
+      return () => {
+        const s = findByName(item); if (!s) return false;
+        if (dir === 'right') return s.cellCol >= COLS - 2;
+        if (dir === 'left') return s.cellCol <= 1;
+        if (dir === 'down') return s.cellRow >= ROWS - 2;
+        if (dir === 'up') return s.cellRow <= 1;
+        return false;
+      };
+    }
+    if (r.goalItem && r.target) return () => itemAt(r.goalItem, r.target.col, r.target.row);
+    if (r.goalItem) return () => !!findByName(r.goalItem);
+    return () => true;
+  }
+
+  /* ---- render the whole workshop UI into #screen ---- */
+  function render() {
+    const hdr = $('appheader'); if (hdr) hdr.style.display = 'none';
+    const sb = $('statusbar'); if (sb) sb.style.display = 'none';
+    $('screen').innerHTML = `
+      <div class="workshop-head">
+        <button class="backbtn" style="float:left" onclick="FootstepsWorkshop._exit()">← Map</button>
+        <div class="kicker">Workshop · ${CFG.subtitle || 'Same Truth, New Scribes'}</div>
+        <h2>${wsTitle(CFG.title)}</h2>
+      </div>
+      <div class="rungs" id="rungs"></div>
+      <div class="goal" id="goal"></div>
+      <div class="railtip" id="railtip" style="display:none"></div>
+      <div class="toolbar">
+        <div class="toggle" id="gridToggle" onclick="FootstepsWorkshop._toggleGrid()"><span class="sw"></span> Grid</div>
+        <button class="palettebtn" onclick="FootstepsWorkshop._togglePalette()">📦 Objects</button>
+        <button class="palettebtn" onclick="FootstepsWorkshop._toggleCommands()">⌨️ Commands</button>
+        <button class="palettebtn printbtn" onclick="FootstepsWorkshop._print()">🖨️ Print Coloring Page</button>
+      </div>
+      <div class="palette" id="palette"></div>
+      <div class="palette" id="commands"></div>
+      <div class="stage-outer">
+        <div class="ruler-top" id="rulerTop"></div>
+        <div class="stage-row"><div class="ruler-left" id="rulerLeft"></div>
+          <div class="stage-wrap"><div id="stage" class="grid"></div></div></div>
+      </div>
+      <div id="finalebar"></div>
+      <div class="resizebar" id="resizebar" style="display:none">
+        <div class="rz-row">
+          <span class="rz-lab"><b id="rzname"></b></span>
+          <button class="rz-b" title="smaller" onclick="FootstepsWorkshop._resize(-1)">−</button>
+          <span id="rzval">1.00×</span>
+          <button class="rz-b" title="bigger" onclick="FootstepsWorkshop._resize(1)">＋</button>
+          <button class="rz-b" title="rotate" onclick="FootstepsWorkshop._rotateSelected()">↻</button>
+          <button class="rz-b" title="flip" onclick="FootstepsWorkshop._flipSelected()">⇋</button>
+          <button class="rz-b" title="send to back" onclick="FootstepsWorkshop._sendBack()">↧</button>
+          <button class="rz-b" title="bring to front" onclick="FootstepsWorkshop._bringFront()">↥</button>
+          <button class="rz-b rz-del" title="delete" onclick="FootstepsWorkshop._deleteSelected()">🗑</button>
+          <button class="rz-done" onclick="FootstepsWorkshop._deselect()">done</button>
+        </div>
+        <div class="rz-dpad">
+          <span class="rz-dlab">nudge</span>
+          <button class="rz-b" title="up" onclick="FootstepsWorkshop._nudge(0,-1)">↑</button>
+          <button class="rz-b" title="left" onclick="FootstepsWorkshop._nudge(-1,0)">←</button>
+          <button class="rz-b" title="down" onclick="FootstepsWorkshop._nudge(0,1)">↓</button>
+          <button class="rz-b" title="right" onclick="FootstepsWorkshop._nudge(1,0)">→</button>
+        </div>
+        <div class="rz-code" id="rzcode"></div>
+      </div>
+      <div class="scorebar" id="scorebar"><span id="scoretxt">Practice</span><b id="scoreval">0</b></div>
+      <div class="console">
+        <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="ttl">code.js — type real JavaScript</span></div>
+        <div id="termout"><span class="sys">// The computer is ready. Type a command and press Run.</span></div>
+        <div class="inputline"><span class="prompt">&gt;</span><input id="cmd" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder='place("${firstItem()}", 3, 4)'><button class="runbtn" onclick="FootstepsWorkshop._run()">Run</button></div>
+      </div>
+      <div class="tutor" id="tutor">
+        <div class="t-head"><div class="t-face">🦉</div><div><div class="t-name">Ada <span>· your code helper</span></div></div></div>
+        <div class="t-body" id="tutorbody"></div>
+        <div id="dym"></div>
+      </div>
+      <div id="nextwrap"></div>`;
+
+    // size the stage + rulers to the grid
+    const stage = $('stage');
+    stage.style.aspectRatio = `${COLS}/${ROWS}`;
+    stage.style.backgroundSize = `${100 / COLS}% ${100 / ROWS}%`;
+    // optional preset scene background (e.g. the ark) — pieces get placed on top of it
+    if (CFG.background) setBackdrop(CFG.background);
+    if (CFG.structure) setBackdrop(BACKDROPS[CFG.structure] || CFG.structure, true);  // a structure that shows on top of the landscape (e.g. the ark on the flood)
+    // optional simple CSS landscape so pieces stand on ground instead of floating
+    if (CFG.ground) stage.classList.add('ground-' + CFG.ground);
+    $('rulerTop').style.gridTemplateColumns = `22px repeat(${COLS},1fr)`;
+    $('rulerLeft').style.gridTemplateRows = `repeat(${ROWS},1fr)`;
+
+    buildRulers(); buildPalette(); buildCommands(); renderRungs();
+    if (CFG.rail) {
+      const rt = $('railtip'); rt.style.display = 'block';
+      rt.innerHTML = '🦉 <b>Ada:</b> the stone rolls on a track — <code>move("' + CFG.rail.item + '", "left")</code> opens the tomb, <code>move("' + CFG.rail.item + '", "right")</code> seals it.';
+    }
+    // always-available "bring the scene to life" — place freely, then run it whenever
+    if (CFG.finale && window.FootstepsFinale) {
+      $('finalebar').innerHTML = '<button class="btn olive" onclick="FootstepsWorkshop._finale()">🦉 Bring the scene to life — watch the code run</button>';
+    }
+    tutorSay(CFG.freeBuild
+      ? `Fill the scene! Type <code>${escapeHtml(firstCommand())}</code> (or tap <b>📦 Objects</b>), place as many as you like in any order, then tap <b>🦉 Bring the scene to life</b>. Tap any piece to move or resize it.`
+      : (CFG.rungs[0].goal
+        ? `Let's start! Type <code>${escapeHtml(CFG.rungs[0].command || firstCommand())}</code> and press Run. The two numbers are <b>column</b> (across ↔) and <b>row</b> (down ↕). Once a piece is on the stage, <b>tap it</b> to make it bigger or smaller.`
+        : `Let's build the scene! Follow the goal above.`));
+    const cmd = $('cmd');
+    cmd.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); WS._run(); } });
+    cmd.focus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function wsTitle(t) {
+    // italicize the noun after "the"/"Build the" for a little flourish, else plain
+    return t.replace(/\b(the [^,]+)$/i, '<em>$1</em>');
+  }
+  function firstItem() { const r = (CFG.rungs || []).find(x => x.goalItem); if (r) return r.goalItem; return (CFG.items && CFG.items[0]) || Object.keys(ITEMS)[0]; }
+  function firstCommand() { const r = (CFG.rungs || [])[0]; return (r && r.goalItem && r.target) ? `place("${r.goalItem}", ${r.target.col}, ${r.target.row})` : `place("${firstItem()}", 3, 3)`; }
+
+  /* ---- the real functions the kid's JS calls ---- */
+  function positionEl(el, col, row) {
+    el.style.left = (col * (100 / COLS)) + '%';
+    el.style.top = (row * (100 / ROWS)) + '%';
+  }
+  function sizeSprite(el, size) {
+    el.style.width = (size * 100 / COLS) + '%';
+    el.style.height = (size * 100 / ROWS) + '%';
+  }
+  // pieces anchor by their corner; this reports where the visual center lands
+  // toFixed(1) turned a nudged 5.25 into "5.3", so the note under the piece disagreed
+  // with where it actually was. Two decimals, trailing zeros dropped: 5 -> "5",
+  // 5.5 -> "5.5", 5.25 -> "5.25".
+  function numStr(n) { return String(Math.round(n * 100) / 100); }
+  function centerCells(col, row, size) { size = size || 1; return numStr(col + (size - 1) / 2) + ', ' + numStr(row + (size - 1) / 2); }
+  function centerNote(col, row, size) { return '  // center at grid ' + centerCells(col, row, size); }
+  function place(name, col, row, size) {
+    if (typeof name !== 'string') throw { kind: 'quotes' };
+    if (!(name in ITEMS)) throw { kind: 'unknownItem', got: name };
+    if (BACKDROPS[name]) {
+      const isStruct = STRUCTURES.has(name);
+      setBackdrop(BACKDROPS[name], isStruct);
+      // when swapping the LANDSCAPE in a scene that has a structure overlay (the ark),
+      // hide the overlay if the new art already contains it, else restore it
+      if (!isStruct && CFG.structure) {
+        if (SELF_CONTAINED.has(name)) clearBackdrop(true);
+        else setBackdrop(BACKDROPS[CFG.structure] || CFG.structure, true);
+      }
+      chime(440); return name + ' set as the scene';
+    }
+    // A railed piece (the tomb stone) lives on a track — it can only ever sit at
+    // "home" (sealed, centered on the doorway) or "open", so it snaps home here and
+    // any col/row the kid typed is discarded. SAY SO when that happens: quietly
+    // reporting back different numbers than they typed would teach them their
+    // arguments don't matter, which is the opposite of the point of this app.
+    let railSnapped = false;
+    if (CFG.rail && CFG.rail.item === name) {
+      railSnapped = (typeof col === 'number' && typeof row === 'number') &&
+                    (col !== CFG.rail.home.col || row !== CFG.rail.home.row);
+      col = CFG.rail.home.col; row = CFG.rail.home.row;
+      // railSnapNote survives into onRungComplete: snapping the stone home SATISFIES
+      // rung 0, so without it the celebration fires and the explanation is dropped —
+      // the kid types the wrong numbers and Ada says "You did it!"
+      railSnapNote = railSnapped
+        ? 'Good try — but the great stone is far too heavy to lift. It sits in a carved track and can only <b>roll</b>, so it always starts sealed over the door, whatever numbers you give it.'
+        : null;
+      railMsg = railSnapNote || railHint(false, name);
+    }
+    if (typeof col !== 'number' || typeof row !== 'number') throw { kind: 'numbers' };
+    if (col < 0 || col >= COLS || row < 0 || row >= ROWS) throw { kind: 'range', col, row };
+    size = (typeof size === 'number' && size > 0) ? Math.max(0.25, Math.min(10, size)) : ((CFG && CFG.sizes && CFG.sizes[name]) || DEFAULT_SIZE[name] || 1);
+    const el = document.createElement('div');
+    el.className = 'sprite celebrate';
+    sizeSprite(el, size);
+    paintSprite(el, name);
+    positionEl(el, col, row, size);
+    el.onclick = () => selectSprite(el);   // tap a piece to select/resize it
+    $('stage').appendChild(el);
+    // col/row are where it is DRAWN and may carry a quarter-square nudge; cellCol/cellRow
+    // are the square the kid actually named, and are what the rung checks read.
+    const rec = { name, el, col, row, cellCol: col, cellRow: row, size, rot: 0, flipped: false, _cx: col + size / 2, _cy: row + size / 2 };
+    rec.z = frontZ() + 1; el.style.zIndex = rec.z;             // newest piece stacks on top (adjustable via front/back)
+    sprites.push(rec); el._cell = rec; invalidateSnapshot();   // a new piece each time — overlapping is fine, nothing is replaced
+    chime(520 + col * 40);
+    // when the rail overrode what was typed, the echo says so rather than quietly
+    // reporting numbers the kid never wrote
+    return name + (railSnapped ? ' rolled to its place on the track at ' : ' placed at ')
+      + col + ', ' + row + (size !== 1 ? ', size ' + size : '') + centerNote(col, row, size);
+  }
+  function el_cell(el, rec) { el._cell = rec; }
+  function moveRec(rec, nc, nr) {   // relocate a piece; never removes whatever it lands on
+    rec.col = nc; rec.row = nr; rec.cellCol = nc; rec.cellRow = nr; invalidateSnapshot();
+    rec.el.classList.add('moving');
+    positionEl(rec.el, nc, nr, rec.size);
+    rec._cx = nc + (rec.size || 1) / 2; rec._cy = nr + (rec.size || 1) / 2;
+  }
+  function move(name, a, b) {
+    const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
+    // railed piece: only rolls between "home" (sealed) and "open"
+    if (CFG.rail && CFG.rail.item === name) {
+      const home = CFG.rail.home, open = CFG.rail.open;
+      let dest;
+      if (typeof a === 'number' && typeof b === 'number') {
+        const dH = Math.abs(a - home.col) + Math.abs(b - home.row), dO = Math.abs(a - open.col) + Math.abs(b - open.row);
+        dest = dO < dH ? open : home;
+      } else { dest = (a === 'left') ? open : home; }
+      moveRec(s, dest.col, dest.row); sweepChime();
+      railMsg = railHint(dest === open, name); railSnapNote = null;   // a roll never discards coords
+      return name + (dest === open ? ' rolls away — the tomb is open!' : ' rolls back — sealed.') + centerNote(dest.col, dest.row, s.size);
+    }
+    // move("name", col, row) -> go straight to that square
+    if (typeof a === 'number' && typeof b === 'number') {
+      const nc = Math.max(0, Math.min(COLS - 1, Math.round(a)));
+      const nr = Math.max(0, Math.min(ROWS - 1, Math.round(b)));
+      moveRec(s, nc, nr); sweepChime();
+      return name + ' moves to ' + nc + ', ' + nr + centerNote(nc, nr, s.size);
+    }
+    // move("name", dir) or move("name", dir, steps)
+    const dir = a;
+    const d = { left: [-1, 0], right: [1, 0], up: [0, -1], down: [0, 1] }[dir];
+    if (!d) throw { kind: 'dir', got: dir };
+    const steps = (typeof b === 'number' && b > 0) ? b : (COLS + ROWS); // no count given -> slide to the edge
+    const nc = Math.max(0, Math.min(COLS - 1, s.col + d[0] * steps));
+    const nr = Math.max(0, Math.min(ROWS - 1, s.row + d[1] * steps));
+    moveRec(s, nc, nr); sweepChime();
+    return name + ' moves ' + dir + (typeof b === 'number' ? ' ' + b : '') + centerNote(nc, nr, s.size);
+  }
+
+  function removeRec(rec) {
+    const i = sprites.indexOf(rec); if (i >= 0) sprites.splice(i, 1); invalidateSnapshot();
+    rec.el.remove(); if (selected === rec.el) WS._deselect();
+  }
+  function remove(name) {
+    if (BACKDROPS[name] && backdropShowing(name)) { clearBackdrop(STRUCTURES.has(name)); return name + ' removed from the scene'; }
+    const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
+    removeRec(s);
+    return name + ' removed';
+  }
+  function applyTransform(el, rec) {
+    const t = `rotate(${rec.rot || 0}deg) scaleX(${rec.flipped ? -1 : 1})`;
+    const img = el.querySelector && el.querySelector('img');
+    if (img) img.style.transform = t; else el.style.transform = t;
+  }
+  function flip(name) {
+    const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
+    s.flipped = !s.flipped; applyTransform(s.el, s);
+    return name + (s.flipped ? ' flipped' : ' unflipped');
+  }
+  function rotate(name, deg) {
+    const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
+    if (typeof deg !== 'number') deg = 90;
+    s.rot = (s.rot || 0) + deg; applyTransform(s.el, s);
+    return name + ' rotated to ' + (((s.rot % 360) + 360) % 360) + '°';
+  }
+  /* ---- stacking order (like clipart "bring to front" / "send to back") ---- */
+  // pieces live at z >= 2 (above the landscape at 0 and any structure at 1).
+  function frontZ() { return sprites.reduce((m, x) => Math.max(m, x.z || 10), 10); }
+  function backZ() { return sprites.reduce((m, x) => Math.min(m, x.z || 10), 10); }
+  function toFront(rec) { rec.z = frontZ() + 1; rec.el.style.zIndex = rec.z; invalidateSnapshot(); }
+  function toBack(rec) { rec.z = Math.max(2, backZ() - 1); rec.el.style.zIndex = rec.z; invalidateSnapshot(); }
+  function bring_to_front(name) {
+    const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
+    toFront(s); return name + ' brought to the front';
+  }
+  function move_back(name) {
+    const s = findByName(name); if (!s) throw { kind: 'notPlaced', got: name };
+    toBack(s); return name + ' moved to the back';
+  }
+
+  /* ---- tap-a-piece to resize it (＋ / −) or delete it ---- */
+  let selected = null;
+  let railMsg = null;       // Ada's next open/close hint after a railed piece moves
+  let railSnapNote = null;  // set only when the rail DISCARDED typed coords — must outlive a rung completion
+  function railHint(isOpen, name) {
+    return isOpen
+      ? 'The tomb is <b>open</b>. Roll the stone back to seal it: <code>move("' + name + '", "right")</code>.'
+      : 'The stone is <b>sealed</b> over the door. Roll it away to open the tomb: <code>move("' + name + '", "left")</code>.';
+  }
+  function codeColor(s) {
+    s = String(s);
+    const i = s.indexOf('//');
+    let code = i >= 0 ? s.slice(0, i) : s;
+    const cmt = i >= 0 ? s.slice(i) : '';
+    code = code
+      .replace(/("[^"]*")/g, '<span class="c-str">$1</span>')
+      .replace(/\b(-?\d+(?:\.\d+)?)\b/g, '<span class="c-num">$1</span>')
+      .replace(/\b(place|move_back|move|remove|flip|rotate|bring_to_front)\b/g, '<span class="c-fn">$1</span>');
+    return code + (cmt ? '<span class="c-cmt">' + cmt + '</span>' : '');
+  }
+  function showCode(str) {
+    const el = $('rzcode'); if (!el) return;
+    el.innerHTML = codeColor(str);
+    el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+  }
+  function selectSprite(el) {
+    if (!el._cell) return;
+    if (selected) selected.classList.remove('selected');
+    selected = el; el.classList.add('selected');
+    const bar = $('resizebar'); if (!bar) return;
+    bar.style.display = 'flex';
+    const c = el._cell;
+    $('rzname').textContent = c.name;
+    $('rzval').textContent = (c.size || 1).toFixed(2) + '×';
+    showCode('place("' + c.name + '", ' + c.col + ', ' + c.row + ((c.size && c.size !== 1) ? ', ' + c.size : '') + ')' + centerNote(c.col, c.row, c.size || 1));
+  }
+  WS._resize = function (dir) {
+    if (!selected || !selected._cell) return;
+    const c = selected._cell;
+    const sz = Math.max(0.25, Math.min(10, (c.size || 1) + dir * 0.25));
+    c.size = sz; sizeSprite(selected, sz); invalidateSnapshot();
+    // grow from the remembered center so the piece stays put as it changes size
+    selected.style.left = ((c._cx - sz / 2) * 100 / COLS) + '%';
+    selected.style.top = ((c._cy - sz / 2) * 100 / ROWS) + '%';
+    $('rzval').textContent = sz.toFixed(2) + '×';
+    showCode('place("' + c.name + '", ' + c.col + ', ' + c.row + ', ' + sz + ')  // center at grid ' + numStr(c._cx - 0.5) + ', ' + numStr(c._cy - 0.5));
+    print('> place("' + c.name + '", ' + c.col + ', ' + c.row + ', ' + sz + ')', 'echo');
+    chime(500 + sz * 120);
+  };
+  WS._deselect = function () {
+    if (selected) selected.classList.remove('selected');
+    selected = null;
+    const bar = $('resizebar'); if (bar) bar.style.display = 'none';
+  };
+  WS._deleteSelected = function () {
+    if (!selected || !selected._cell) return;
+    const nm = selected._cell.name;
+    removeRec(selected._cell);
+    print('> remove("' + nm + '")', 'echo'); print('✓ ' + nm + ' removed', 'ok');
+    chime(300);
+  };
+  WS._flipSelected = function () {
+    if (!selected || !selected._cell) return;
+    flip(selected._cell.name);
+    showCode('flip("' + selected._cell.name + '")');
+    print('> flip("' + selected._cell.name + '")', 'echo');
+  };
+  WS._rotateSelected = function () {
+    if (!selected || !selected._cell) return;
+    rotate(selected._cell.name, 45);
+    showCode('rotate("' + selected._cell.name + '", 45)');
+    print('> rotate("' + selected._cell.name + '", 45)', 'echo');
+  };
+  WS._bringFront = function () {
+    if (!selected || !selected._cell) return;
+    toFront(selected._cell);   // act on THIS piece (a flock can share a name)
+    showCode('bring_to_front("' + selected._cell.name + '")');
+    print('> bring_to_front("' + selected._cell.name + '")', 'echo'); chime(640);
+  };
+  WS._sendBack = function () {
+    if (!selected || !selected._cell) return;
+    toBack(selected._cell);
+    showCode('move_back("' + selected._cell.name + '")');
+    print('> move_back("' + selected._cell.name + '")', 'echo'); chime(360);
+  };
+  WS._nudge = function (dx, dy) {
+    if (!selected || !selected._cell) return;
+    const c = selected._cell;
+    // a railed piece (the tomb stone) only rolls left/right — no floating up/down
+    if (CFG.rail && CFG.rail.item === c.name) {
+      if (dx === 0) { tutorSay('The stone rolls on a track — use ← to open, → to close.'); return; }
+      const dir = dx < 0 ? 'left' : 'right';
+      move(c.name, dir); railMsg = null;
+      tutorSay(railHint(dir === 'left', c.name));
+      showCode('move("' + c.name + '", "' + dir + '")');
+      print('> move("' + c.name + '", "' + dir + '")', 'echo'); chime(480);
+      return;
+    }
+    // A QUARTER of a square, not a whole one. The arrows are the fine-adjust tool —
+    // for when a piece sits almost right and a full cell overshoots. Whole-cell jumps
+    // are what move() in the console is for.
+    const nc = clampCell(c.col + dx * NUDGE, COLS);
+    const nr = clampCell(c.row + dy * NUDGE, ROWS);
+    if (nc === c.col && nr === c.row) return;
+    // Not moveRec: that would rewrite the logical square and let the d-pad satisfy a goal.
+    c.col = nc; c.row = nr; invalidateSnapshot();
+    c.el.classList.add('moving');
+    positionEl(c.el, nc, nr, c.size);
+    c._cx = nc + (c.size || 1) / 2; c._cy = nr + (c.size || 1) / 2;
+    // Deliberately NOT echoed as move("name", 5.25, 4): move() rounds its arguments,
+    // so a kid typing that back would watch the piece jump to 5 and reasonably
+    // conclude the app lies to them. A nudge is a thing the arrows can do and code
+    // cannot, so it is shown as a note rather than as a command.
+    showCode('// nudged ' + c.name + ' to ' + numStr(nc) + ', ' + numStr(nr));
+    print('  … ' + c.name + ' nudged a quarter square → ' + numStr(nc) + ', ' + numStr(nr), 'sys');
+    if (!nudgeExplained) {
+      nudgeExplained = true;
+      tutorSay('These arrows move a piece a <b>quarter</b> of a square — for when something is nearly right. Typing <code>move("' + c.name + '", 5, 3)</code> jumps a <b>whole</b> square. Little arrows for little moves.');
+    }
+    chime(480);
+  };
+
+  /* ---- sound ---- */
+  function chime(f) { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); const o = actx.createOscillator(), g = actx.createGain(); o.type = 'sine'; o.frequency.value = f; o.connect(g); g.connect(actx.destination); g.gain.setValueAtTime(.0001, actx.currentTime); g.gain.exponentialRampToValueAtTime(.15, actx.currentTime + .02); g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime + .25); o.start(); o.stop(actx.currentTime + .26); } catch (e) {} }
+  function sweepChime() { [440, 560, 680, 820].forEach((f, i) => setTimeout(() => chime(f), i * 90)); }
+  function happyChime() { [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => chime(f), i * 80)); }
+
+  function print(t, cls) { const s = document.createElement('span'); s.className = cls || ''; s.textContent = t + '\n'; $('termout').appendChild(s); $('termout').scrollTop = $('termout').scrollHeight; }
+
+  function buildRulers() {
+    const rt = $('rulerTop'); rt.innerHTML = '<span></span>';
+    for (let c = 0; c < COLS; c++) rt.innerHTML += `<span>${c}</span>`;
+    const rl = $('rulerLeft'); rl.innerHTML = '';
+    for (let r = 0; r < ROWS; r++) rl.innerHTML += `<span>${r}</span>`;
+  }
+  function buildPalette() {
+    const items = CFG.items && CFG.items.length ? CFG.items : Object.keys(ITEMS);
+    const p = $('palette'); p.innerHTML = '';
+    items.forEach((k) => {
+      if (!ITEMS[k]) return;
+      const b = document.createElement('button');
+      b.className = 'p-item';
+      const ico = document.createElement('span'); ico.className = 'p-ico';
+      const img = document.createElement('img'); img.className = 'p-img'; img.alt = '';
+      if (BACKDROPS[k]) {
+        img.src = V(SCENE_BASE + BACKDROPS[k] + '.png');               // backdrop items show their scene art
+        img.onerror = function () { img.remove(); ico.textContent = ITEMS[k]; };
+      } else {
+        const kf = artFile(k);
+        let tried = false;
+        img.onerror = function () { if (!tried) { tried = true; img.src = V(SCENE_BASE + kf + '.png'); } else { img.remove(); ico.textContent = ITEMS[k]; } };
+        img.src = V(SPRITE_BASE + kf + '.png');
+      }
+      ico.appendChild(img);
+      const nm = document.createElement('span'); nm.className = 'p-name'; nm.textContent = '"' + k + '"';
+      b.appendChild(ico); b.appendChild(nm);
+      b.onclick = () => {
+        // aim so the piece lands CENTERED on the grid — big pieces (a size-3.5 palm,
+        // a mountain) otherwise spill down-right from a fixed 3,3 corner anchor
+        const sz = (CFG.sizes && CFG.sizes[k]) || DEFAULT_SIZE[k] || 1;
+        const col = Math.max(0, Math.min(COLS - 1, Math.round((COLS - sz) / 2)));
+        const row = Math.max(0, Math.min(ROWS - 1, Math.round((ROWS - sz) / 2)));
+        const c = $('cmd'); c.value = `place("${k}", ${col}, ${row})`; c.focus();
+      };
+      p.appendChild(b);
+    });
+  }
+  function buildCommands() {
+    const it = firstItem();
+    const CMDS = [
+      ['place("' + it + '", 3, 3)', 'put something on the stage'],
+      ['place("' + it + '", 3, 3, 2)', 'bigger or smaller (size)'],
+      ['move("' + it + '", "right")', 'slide it to the edge'],
+      ['move("' + it + '", "right", 2)', 'move it 2 squares (distance)'],
+      ['move("' + it + '", 3, 4)', 'move it to a spot'],
+      ['remove("' + it + '")', 'take it off the stage'],
+      ['flip("' + it + '")', 'face the other way'],
+      ['rotate("' + it + '", 90)', 'turn it around'],
+    ];
+    const p = $('commands'); p.innerHTML = '';
+    CMDS.forEach(([code, desc]) => {
+      const b = document.createElement('button'); b.className = 'p-item cmd-item';
+      b.innerHTML = `<span class="cmd-code">${escapeHtml(code)}</span><span class="cmd-desc">${desc}</span>`;
+      b.onclick = () => { const c = $('cmd'); c.value = code; c.focus(); };
+      p.appendChild(b);
+    });
+  }
+  WS._togglePalette = function () { $('palette').classList.toggle('open'); $('commands').classList.remove('open'); };
+  WS._toggleCommands = function () { $('commands').classList.toggle('open'); $('palette').classList.remove('open'); };
+
+  // Build a printable coloring page. Every placed piece (and the backdrop) is
+  // drawn in its line-art (_bw) outline onto ONE white canvas at the same spot,
+  // then handed to the device's print dialog. Rendering to a single image is the
+  // reliable way across browsers (esp. iOS Safari) — no colored app content can
+  // leak into the print. Wireless printer discovery lives in the OS dialog
+  // (AirPrint on iPad/iPhone); a web page can't reach printers itself.
+  function loadImg(src) {
+    return new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+  }
+  // a white silhouette of an image, fit into a w×h box — used to blank the
+  // background (and pieces behind) before drawing a piece's outline, so hollow
+  // shapes like a sun don't show what's behind them on the coloring page.
+  function whiteSilhouette(img, w, h, stretch) {
+    const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(w)); c.height = Math.max(1, Math.round(h));
+    const cx = c.getContext('2d');
+    if (stretch) cx.drawImage(img, 0, 0, c.width, c.height);      // fill the whole rect (match the outline's footprint)
+    else drawFit(cx, img, 0, 0, c.width, c.height, 'contain');
+    cx.globalCompositeOperation = 'source-in'; cx.fillStyle = '#fff'; cx.fillRect(0, 0, c.width, c.height);
+    return c;
+  }
+  function drawFit(ctx, img, x, y, w, h, mode) {
+    const r = img.width / img.height, br = w / h; let dw, dh;
+    const cover = mode === 'cover';
+    if ((r > br) === !cover) { dw = w; dh = w / r; } else { dh = h; dw = h * r; }
+    ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+  }
+  async function outlineFor(coloredSrc) {
+    const o = coloredSrc.replace('/sprites/', '/outlines/').replace('/scenes/', '/outlines/');
+    return (await loadImg(o)) || (await loadImg(coloredSrc));   // fall back to colored if no outline yet
+  }
+  async function printColoringPage() {
+    // Use the frozen design snapshot if the finale has moved pieces; otherwise the
+    // live layout. Boxes are in % of the stage; grow the page if a piece runs past
+    // an edge so nothing is cut off.
+    const px = COLS * 170 / 100, py = ROWS * 170 / 100;   // canvas px per 1% of the stage
+    const boxes = (sceneSnapshot || captureDesign());
+    let minX = 0, minY = 0, maxX = 100, maxY = 100;
+    boxes.forEach((b) => { minX = Math.min(minX, b.x0); minY = Math.min(minY, b.y0); maxX = Math.max(maxX, b.x0 + b.w); maxY = Math.max(maxY, b.y0 + b.h); });
+    const ox = -minX * px, oy = -minY * py;               // where the grid's 0,0 lands on the canvas
+    const CW = (maxX - minX) * px, CH = (maxY - minY) * py;
+    const canvas = document.createElement('canvas'); canvas.width = Math.round(CW); canvas.height = Math.round(CH);
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // backdrop outlines cover the GRID rectangle (not the overflow margins)
+    const gx = ox, gy = oy, gw = 100 * px, gh = 100 * py;
+    if (backdropName) { const o = await loadImg(V('assets/outlines/' + backdropName + '.png')); if (o) drawFit(ctx, o, gx, gy, gw, gh, 'cover'); }
+    if (structName) { const o = await loadImg(V('assets/outlines/' + structName + '.png')); if (o) drawFit(ctx, o, gx, gy, gw, gh, 'contain'); }
+    // each piece drawn into its exact captured box (already the on-screen size),
+    // back-to-front so the coloring page matches the on-screen stacking order
+    const ordered = boxes.slice().sort((a, b) => (a.z || 10) - (b.z || 10));
+    for (const b of ordered) {
+      const bx = b.x0 * px + ox, by = b.y0 * py + oy, bw = b.w * px, bh = b.h * py;
+      if (b.imgSrc) {
+        const img = await outlineFor(b.imgSrc); if (!img) continue;
+        const colored = await loadImg(b.imgSrc);   // for the white footprint
+        ctx.save();
+        const cx = bx + bw / 2, cy = by + bh / 2;
+        ctx.translate(cx, cy);
+        if (b.rot) ctx.rotate(b.rot * Math.PI / 180);
+        if (b.flipped) ctx.scale(-1, 1);
+        ctx.translate(-cx, -cy);
+        if (colored) {   // blank out whatever is behind this piece, then draw its lines
+          // Size the white blank to where the OUTLINE actually lands, not the colored
+          // art's own box — the two files can have different aspect ratios, which would
+          // otherwise leave a white halo around the piece. Stretch the colored
+          // silhouette into the outline's rect so it matches (+2% to cover the lines).
+          const oR = img.width / img.height, bR = bw / bh; let odw, odh;
+          if (oR > bR) { odw = bw; odh = bw / oR; } else { odh = bh; odw = bh * oR; }
+          const odx = bx + (bw - odw) / 2, ody = by + (bh - odh) / 2, p = 0.02;
+          const sil = whiteSilhouette(colored, odw * (1 + 2 * p), odh * (1 + 2 * p), true);
+          ctx.drawImage(sil, odx - odw * p, ody - odh * p, odw * (1 + 2 * p), odh * (1 + 2 * p));
+        }
+        drawFit(ctx, img, bx, by, bw, bh, 'contain');
+        ctx.restore();
+      } else if (b.emoji) {   // emoji piece
+        ctx.font = (Math.min(bw, bh) * 0.9) + 'px sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#000';
+        ctx.fillText(b.emoji, bx + bw / 2, by + bh / 2);
+      }
+    }
+    const dataUrl = canvas.toDataURL('image/png');
+
+    // In the iOS app printing goes through a tiny native AirPrint plugin.
+    // WKWebView has no window.print() at all — it is a silent no-op — so the
+    // browser path below would do nothing inside the app.
+    if (isNativeApp()) { await printNative(dataUrl); return; }
+
+    const old = document.getElementById('print-page'); if (old) old.remove();
+    const pg = document.createElement('div'); pg.id = 'print-page';
+    const im = document.createElement('img'); im.className = 'print-sheet'; im.src = dataUrl;
+    pg.appendChild(im); document.body.appendChild(pg);
+    window.onafterprint = function () { const p = document.getElementById('print-page'); if (p) p.remove(); window.onafterprint = null; };
+    if (im.complete) window.print(); else im.onload = () => window.print();
+  }
+
+  // running inside the Capacitor app (as opposed to the web build on Pages)?
+  function isNativeApp() {
+    const C = window.Capacitor;
+    return !!(C && typeof C.isNativePlatform === 'function' && C.isNativePlatform());
+  }
+
+  // Hand the PNG to the native AirPrint sheet (ios/App/App/FootstepsPrintPlugin.swift).
+  // Cancelling the print dialog resolves normally, so only a real failure speaks up.
+  async function printNative(dataUrl) {
+    const P = (window.Capacitor && window.Capacitor.Plugins) || {};
+    if (!P.FootstepsPrint) { tutorSay('Sorry — printing is not available here.'); return; }
+    try {
+      await P.FootstepsPrint.printImage({ data: dataUrl });
+    } catch (e) {
+      tutorSay('Sorry — that page could not be sent to the printer.');
+    }
+  }
+  WS._print = printColoringPage;
+  WS._toggleGrid = function () {
+    showGrid = !showGrid;
+    $('stage').classList.toggle('grid', showGrid);
+    $('gridToggle').classList.toggle('off', !showGrid);
+    $('rulerTop').style.opacity = showGrid ? 1 : .2;
+    $('rulerLeft').style.opacity = showGrid ? 1 : .2;
+  };
+
+  function renderRungs() {
+    const r = $('rungs');
+    if (CFG.freeBuild) {   // no numbered steps — place anything, then bring it to life
+      r.style.display = 'none';
+      $('goal').innerHTML = `<div class="g-lab">Free build</div><div class="g-txt">${linkifyCode(CFG.freeGoal || 'Place whatever you like — one or many, in any order — then tap the owl button to bring it to life.')}</div>`;
+      return;
+    }
+    r.style.display = '';
+    r.innerHTML = '';
+    CFG.rungs.forEach((x, i) => {
+      const d = document.createElement('span');
+      d.className = 'rung ' + (i < rung ? 'done' : i === rung ? 'here' : '');
+      d.textContent = x.label;
+      r.appendChild(d);
+    });
+    $('goal').innerHTML = `<div class="g-lab">Your goal</div><div class="g-txt">${linkifyCode(CFG.rungs[rung].goal)}</div>`;
+  }
+  function tutorSay(html) { $('tutorbody').innerHTML = html; $('dym').innerHTML = ''; }
+
+  function didYouMean(q, line) {
+    $('dym').innerHTML = `<div class="didyoumean"><div class="dym-q">${q}</div><code class="dym-code">${escapeHtml(line)}</code><div class="dym-btns"><button class="dym-yes" onclick="FootstepsWorkshop._accept('${line.replace(/'/g, "\\'")}')">Yes, show me!</button><button class="dym-no" onclick="FootstepsWorkshop._dismiss()">Let me try</button></div></div>`;
+  }
+  WS._accept = function (l) { $('cmd').value = l; $('dym').innerHTML = ''; WS._run(true); };
+  WS._dismiss = function () { $('dym').innerHTML = ''; $('cmd').focus(); };
+
+  /* ---- the tutor brain: messy text -> suggested real line (swappable) ---- */
+  function inferIntent(raw) {
+    const t = raw.trim(), low = t.toLowerCase();
+    let item = null;
+    for (const k of Object.keys(ITEMS)) { if (low.includes(k)) item = k; }
+    if (!item && /d[o0]nk|donky|donki|dnky/.test(low)) item = 'donkey';
+    if (!item && /mang|crib/.test(low)) item = 'manger';
+    if (!item && /star/.test(low)) item = 'star';
+    if (!item && /sheep|lamb/.test(low)) item = 'sheep';
+    if (!item && /sheph/.test(low)) item = 'shepherd';
+    const nums = (t.match(/-?\d+/g) || []).map(Number);
+    const dir = (low.match(/left|right|up|down/) || [])[0];
+    const wantsMove = /move|go|walk|run|slide|cross/.test(low);
+    const wantsPlace = /place|put|add|make|draw|set|spawn/.test(low) || (!wantsMove && nums.length >= 2);
+    if (wantsMove && item) return { line: `move("${item}", "${dir || 'right'}")`, why: `Looks like you want to <b>move the ${item}</b>.` };
+    if ((wantsPlace || item) && item) { const c = nums[0] ?? 3, r = nums[1] ?? 4; return { line: `place("${item}", ${c}, ${r})`, why: `Looks like you're placing the <b>${item}</b>${nums.length >= 2 ? ` at column ${c}, row ${r}` : ''}.` }; }
+    if (nums.length >= 2 && !item) {
+      const cur = CFG.rungs[rung];
+      const gi = (mode === 'practice' && target) ? target.item : (cur && cur.goalItem ? cur.goalItem : firstItem());
+      return { line: `place("${gi}", ${nums[0]}, ${nums[1]})`, why: `Did you want to place the <b>${gi}</b> there?` };
+    }
+    return null;
+  }
+
+  function explainError(e) {
+    if (e && e.kind) switch (e.kind) {
+      case 'quotes': return { msg: `The name needs quotes around it, like "${firstItem()}".` };
+      case 'unknownItem': return { msg: `I don't know "${e.got}". Tap "Objects you can place" to see the list.` };
+      case 'numbers': return { msg: `Both spots need to be numbers — a column and a row.` };
+      case 'range': return { msg: `That's off the stage. Columns go 0–${COLS - 1}, rows go 0–${ROWS - 1}. You wrote ${e.col}, ${e.row}.` };
+      case 'notPlaced': return { msg: `Place the ${e.got} first, then you can move it.` };
+      case 'dir': return { msg: `Use a direction — "left", "right", "up", or "down". Add a number for distance, like move("${firstItem()}", "right", 2), or move to a spot with move("${firstItem()}", 3, 2).` };
+    }
+    if (e instanceof Error && e.name === 'ReferenceError') {
+      const m = (e.message.match(/variable:\s*([A-Za-z_$][\w$]*)/) || e.message.match(/([A-Za-z_$][\w$]*)\s+is not defined/) || [])[1];
+      return { msg: `${m ? `"${m}"` : 'That'} isn't a command I know — the two commands are place(…) and move(…).` };
+    }
+    return { msg: `That's not quite valid code yet — usually a missing quote, comma, or bracket.` };
+  }
+
+  WS._run = function (fromSug) {
+    const cmd = $('cmd');
+    const raw = cmd.value; if (!raw.trim()) return;
+    print('> ' + raw, 'echo');
+    let result, threw = null;
+    try { result = Function('place', 'move', 'remove', 'flip', 'rotate', 'bring_to_front', 'move_back', `"use strict"; return (${raw});`)(place, move, remove, flip, rotate, bring_to_front, move_back); }
+    catch (err) { threw = err; }
+    if (threw === null) {
+      print('✓ ' + (result || 'done'), 'ok'); cmd.value = '';
+      if (mode === 'practice') { railMsg = railSnapNote = null; checkPractice(); return; }
+      if (CFG.freeBuild) {
+        if (railMsg) { tutorSay(railMsg); railMsg = null; }
+        else tutorSay(`Nice — that ran! Add as many as you like, then tap <b>🦉 Bring the scene to life</b>.`);
+        railSnapNote = null;
+        return;
+      }
+      // the rail can satisfy a rung with coords the kid never typed, so the snap note
+      // rides along into the celebration instead of being overwritten by it
+      if (rungCheck(CFG.rungs[rung])()) onRungComplete(railSnapNote);
+      else if (railMsg) tutorSay(railMsg);
+      else tutorSay(`Nice — that ran! ${nudge()}`);
+      railMsg = railSnapNote = null;
+      return;
+    }
+    const ex = explainError(threw); print('… ' + ex.msg, 'err');
+    const g = inferIntent(raw);
+    if (g) { tutorSay(`${g.why} ${ex.msg}`); didYouMean('Did you mean this?', g.line); }
+    else tutorSay(`${ex.msg}<br><br>Remember the shape: <code>place("${firstItem()}", 3, 4)</code> — word in quotes, then two numbers.`);
+    cmd.value = '';
+  };
+
+  function nudge() {
+    const r = CFG.rungs[rung];
+    if (r.goalMove) return `Send it ${r.goalMove.dir}: <code>move("${r.goalMove.item}", "${r.goalMove.dir}")</code>.`;
+    if (r.goalItem && r.target) return `Get it to <b>column ${r.target.col}, row ${r.target.row}</b>: <code>place("${r.goalItem}", ${r.target.col}, ${r.target.row})</code>.`;
+    return `Keep going toward the goal above!`;
+  }
+
+  // `lead` is an optional explanation that must not be lost to the celebration —
+  // e.g. the rail discarded the coords the kid typed but still satisfied the rung.
+  // tutorSay() replaces the panel, so it is prepended in one call, not said after.
+  function onRungComplete(lead) {
+    happyChime();
+    const last = rung === CFG.rungs.length - 1;
+    const msgs = [
+      `🎉 <b>You did it!</b> You wrote real JavaScript and it appeared — that's exactly how coders put things on a screen.`,
+      `✨ <b>Nicely done!</b> One line of code brought it to life.`,
+      `🪵 <b>In place.</b> You're building a whole scene, one real line at a time.`,
+      `⭐ <b>Beautiful.</b> Every piece placed with real code. You're a scribe now.`,
+    ];
+    tutorSay((lead ? lead + '<br><br>' : '') + msgs[Math.min(rung, msgs.length - 1)]);
+    $('dym').innerHTML = '';
+    const nw = $('nextwrap');
+    if (!last) { nw.innerHTML = `<button class="btn" onclick="FootstepsWorkshop._advance()">Next step →</button>`; return; }
+    // last guided step done — the finale button is already always-visible below the console
+    let html = '';
+    if (CFG.finale && window.FootstepsFinale) tutorSay(`⭐ <b>You finished the steps!</b> Add anything else you like, then tap <b>🦉 Bring the scene to life</b> below to watch your code run.`);
+    if (CFG.practice && CFG.practice.enabled) html += `<button class="btn olive" onclick="FootstepsWorkshop._practice()">Practice on your own →</button>`;
+    html += `<button class="btn ghost" onclick="FootstepsWorkshop._exit()">Back to the map</button>`;
+    nw.innerHTML = html;
+  }
+  const STOP_BTN = '<button class="btn stopbtn" onclick="FootstepsWorkshop._stopFinale()">⏹ Stop and redesign your scene</button>';
+  const RUN_BTN = '<button class="btn olive" onclick="FootstepsWorkshop._finale()">🦉 Bring the scene to life — watch the code run</button>';
+  WS._finale = function () {
+    if (window.FootstepsFinale) window.FootstepsFinale.stop();
+    restoreDesign();                   // clear any leftover animation from a prior run
+    sceneSnapshot = captureDesign();   // freeze the designed layout before pieces move
+    $('nextwrap').innerHTML = '';
+    const fb = $('finalebar'); if (fb) { fb.style.display = 'block'; fb.innerHTML = STOP_BTN; }   // Run becomes Stop while it plays
+    return window.FootstepsFinale.run({
+      stage: $('stage'), out: $('termout'), ada: $('tutorbody'),
+      sprites: sprites, COLS: COLS, ROWS: ROWS, ITEMS: ITEMS, config: CFG.finale,
+      onDone: finaleDone,
+    });
+  };
+  // Stop the live scene: strip the animation, snap pieces back, return to build mode
+  WS._stopFinale = function () {
+    if (window.FootstepsFinale) window.FootstepsFinale.stop();
+    restoreDesign();
+    invalidateSnapshot();
+    $('nextwrap').innerHTML = '';
+    const fb = $('finalebar'); if (fb) fb.innerHTML = RUN_BTN;
+    tutorSay('Paused the scene. <b>Add more pieces or take some away</b> — then tap <b>🦉 Bring the scene to life</b> to run it again.');
+  };
+  function finaleDone() {
+    const fb = $('finalebar'); if (fb) { fb.style.display = 'block'; fb.innerHTML = STOP_BTN; }   // stays Stop — the action keeps looping
+    let html = '';
+    if (CFG.practice && CFG.practice.enabled) html += `<button class="btn olive" onclick="FootstepsWorkshop._practice()">Practice on your own →</button>`;
+    html += `<button class="btn ghost" onclick="FootstepsWorkshop._exit()">Back to the map</button>`;
+    $('nextwrap').innerHTML = html;
+  }
+  WS._advance = function () { if (CFG.freeBuild) return; rung++; $('nextwrap').innerHTML = ''; renderRungs(); tutorSay(linkifyCode(CFG.rungs[rung].goal)); $('cmd').focus(); };
+
+  /* ---- free practice mode ---- */
+  WS._practice = function () {
+    mode = 'practice'; score = 0;
+    $('nextwrap').innerHTML = ''; $('rungs').style.display = 'none';
+    $('scorebar').classList.add('show');
+    $('goal').innerHTML = `<div class="g-lab">Practice Mode</div><div class="g-txt">${CFG.practice.prompt || "I'll call out a spot — you write the code to place it there."}</div>`;
+    tutorSay(`Free practice! Use the grid numbers to aim. When you're confident, hide the grid and picture it in your head — that's what real coders do.`);
+    newTarget();
+  };
+  function newTarget() {
+    clearTargetMark();
+    const keys = (CFG.items && CFG.items.length ? CFG.items : Object.keys(ITEMS)).filter(k => ITEMS[k] && !BACKDROPS[k]);
+    const item = keys[Math.floor(Math.random() * keys.length)];
+    const col = Math.floor(Math.random() * COLS), row = Math.floor(Math.random() * ROWS);
+    target = { item, col, row };
+    const m = document.createElement('div');
+    m.className = 'target-mark'; m.id = 'tmark';
+    m.style.width = (100 / COLS) + '%'; m.style.height = (100 / ROWS) + '%';
+    m.style.left = (col * (100 / COLS)) + '%'; m.style.top = (row * (100 / ROWS)) + '%';
+    $('stage').appendChild(m);
+    $('scoretxt').textContent = `Place the ${item} at ${col}, ${row}`;
+    tutorSay(`Place the <b>${item}</b> at <b>column ${col}, row ${row}</b>. Write the code and press Run!`);
+  }
+  function clearTargetMark() { const m = $('tmark'); if (m) m.remove(); }
+  function checkPractice() {
+    if (itemAt(target.item, target.col, target.row)) {
+      score++; $('scoreval').textContent = score; happyChime();
+      tutorSay(`✅ <b>Perfect!</b> The ${target.item} is exactly where I asked. ${score >= 3 ? "You're getting good at this!" : ''}`);
+      $('cmd').value = ''; setTimeout(newTarget, 1150);
+    } else {
+      const s = findByName(target.item);
+      if (s) tutorSay(`So close! The ${target.item} landed at <b>${s.col}, ${s.row}</b>, but I asked for <b>${target.col}, ${target.row}</b>. First number is column (across), second is row (down). Try again!`);
+    }
+  }
+
+  WS._exit = function () { if (window.FootstepsFinale) window.FootstepsFinale.stop(); if (opts.onExit) opts.onExit(); };
+
+  /* ---- small helpers ---- */
+  function escapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function linkifyCode(s) {
+    // wrap place(...)/move(...) calls in the goal text with <code>
+    return String(s).replace(/((?:place|move)\([^)]*\))/g, '<code>$1</code>');
+  }
+
+  window.FootstepsWorkshop = WS;
+})();
