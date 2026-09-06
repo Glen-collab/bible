@@ -244,6 +244,19 @@
   Engine._win = function () {
     award(roles.finish);
     const got = Object.keys(earned).length, tot = Object.keys(C.badges).length;
+    // The detour badge is only awarded on a wrong answer, so a player who gets
+    // everything right finishes on 5 of 6 with no way to tell why — which reads as the
+    // app being broken rather than as a thing still to find. When exactly one is
+    // missing, say what it is. The detour gets its own wording because "you did not
+    // make a mistake" is a strange thing to be told off for.
+    const missing = Object.keys(C.badges).filter((k) => !earned[k]);
+    let badgeNote = '';
+    if (missing.length === 1) {
+      const b = C.badges[missing[0]];
+      badgeNote = (missing[0] === roles.detour)
+        ? `<p class="blurb" style="margin-top:10px">Every badge but one. <b>${b.icon} ${b.name}</b> is only found on a road you didn't need to take — walk a wrong way once, and find your way back.</p>`
+        : `<p class="blurb" style="margin-top:10px">Every badge but one. <b>${b.icon} ${b.name}</b> — ${b.desc.charAt(0).toLowerCase() + b.desc.slice(1)}.</p>`;
+    }
     const R = window.FOOTSTEPS_CASES.SHARED_RANKS;
     const rank = wisdom >= 12 ? R.high : wisdom >= 8 ? R.mid : R.low;
     const label = opts.completeLabel || 'Back to the map';
@@ -257,6 +270,7 @@
         <div class="stat"><span>Wisdom gathered</span><b>${wisdom}</b></div>
         <div class="stat"><span>Badges</span><b>${got} of ${tot}</b></div>
       </div>
+      ${badgeNote}
       <button class="btn" onclick="FootstepsEngine._complete()">${label}</button>
       <button class="btn ghost" onclick="FootstepsEngine._badges()">See your badges</button>
       <button class="btn olive" onclick="FootstepsEngine._exit()">Back to the map</button></div>`;
@@ -273,7 +287,11 @@
     g.innerHTML = '';
     Object.entries(C.badges).forEach(([k, b]) => {
       const has = earned[k];
-      g.innerHTML += `<div class="badge ${has ? '' : 'locked'}"><div class="bi">${b.icon}</div><div class="bn">${b.name}</div><div class="bd">${has ? b.desc : 'Locked'}</div></div>`;
+      // A locked badge used to read only "Locked", which turns a badge you have not
+      // earned yet into one you cannot tell how to earn. The description IS the
+      // instruction — "Solved a stop with no hints" tells a kid exactly what to do —
+      // so it is shown either way, just dimmed.
+      g.innerHTML += `<div class="badge ${has ? '' : 'locked'}"><div class="bi">${b.icon}</div><div class="bn">${b.name}</div><div class="bd">${b.desc}</div></div>`;
     });
     $('badgeModal').classList.add('show');
   }
